@@ -47,10 +47,10 @@ export async function POST(req: NextRequest) {
 
     // Step 3: Apply tag to subscriber
     if (subscriberId && tagId) {
-      await fetch(`${KIT_API}/tags/${tagId}/subscribers`, {
+      await fetch(`${KIT_API}/tags/${tagId}/subscribers/${subscriberId}`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({ subscriber_id: subscriberId }),
+        body: JSON.stringify({}),
       })
     }
 
