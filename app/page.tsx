@@ -94,7 +94,7 @@ export default function Home() {
               You&apos;re on the list.
             </p>
             <p className="font-inter text-sm text-[#8A8178]">
-              We&apos;ll be in touch when your profile is ready.
+              We&apos;ll be in touch when knwn is ready for previews.
             </p>
           </div>
         )}
