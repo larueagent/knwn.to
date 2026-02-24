@@ -9,15 +9,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        parchment: "#F5F0E8",
+        surface: "#FFFFFF",
+        border: "#E0D9CE",
+        "text-primary": "#1A1714",
+        "text-secondary": "#8A8178",
+        accent: "#B8821A",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        syne: ["var(--font-syne)", "sans-serif"],
+        inter: ["var(--font-inter)", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
+      },
+      borderColor: {
+        DEFAULT: "#E0D9CE",
       },
     },
   },
   plugins: [],
 };
-
 export default config;
