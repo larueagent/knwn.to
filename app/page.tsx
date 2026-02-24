@@ -38,8 +38,8 @@ export default function Home() {
     <main className="min-h-screen bg-parchment flex flex-col">
       {/* Nav */}
       <nav className="px-6 py-5 flex items-center justify-between border-b border-[#E0D9CE]">
-        <span className="font-syne font-bold text-lg tracking-tight text-[#1A1714]">
-          KNWN.TO
+        <span className="font-syne font-bold text-xl tracking-tighter text-[#1A1714]">
+          knwn.to
         </span>
         <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
           by LaRue
