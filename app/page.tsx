@@ -8,44 +8,89 @@ export default function Home() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setEmail("");
-    setTimeout(() => setSubmitted(false), 3000);
+    if (email) {
+      setSubmitted(true);
+    }
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6 py-12 bg-[#0a0a0a]">
-      <div className="max-w-4xl w-full text-center space-y-8">
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight">
-          Your story, all of it.
-        </h1>
-        <p className="text-lg md:text-xl lg:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-          knwn.to is the athlete identity platform. Not just your highlights — your readiness, your composure, your growth.
+    <main className="min-h-screen bg-parchment flex flex-col">
+      {/* Nav */}
+      <nav className="px-6 py-5 flex items-center justify-between border-b border-[#E0D9CE]">
+        <span className="font-syne font-bold text-lg tracking-tight text-[#1A1714]">
+          KNWN.TO
+        </span>
+        <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
+          by LaRue
+        </span>
+      </nav>
+
+      {/* Hero */}
+      <section className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
+        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">
+          Early Access
         </p>
-        <div className="pt-8">
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+        <h1 className="font-syne font-bold text-5xl md:text-7xl text-[#1A1714] leading-tight mb-6 max-w-3xl">
+          Your athletic identity,{" "}
+          <span className="text-[#B8821A]">on record.</span>
+        </h1>
+        <p className="font-inter text-lg text-[#8A8178] max-w-xl mb-12 leading-relaxed">
+          knwn.to builds the profile that speaks for you — beyond highlights.
+          Mental performance, coachability, preparation, character. A record
+          coaches and programs can actually read.
+        </p>
+
+        {!submitted ? (
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col sm:flex-row gap-3 w-full max-w-md"
+          >
             <input
               type="email"
+              required
+              placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              disabled={submitted}
-              className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
+              className="flex-1 px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
             />
             <button
               type="submit"
-              disabled={submitted}
-              className="px-6 py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all disabled:opacity-50 whitespace-nowrap"
+              className="px-6 py-3 bg-[#B8821A] text-white font-syne font-semibold text-sm rounded hover:bg-[#a07115] transition-colors whitespace-nowrap"
             >
-              {submitted ? "Added to waitlist" : "Get early access"}
+              Get Early Access
             </button>
           </form>
-        </div>
-        <div className="pt-16">
-          <p className="text-sm text-gray-600">Built for athletes who know there is more to the story.</p>
-        </div>
-      </div>
+        ) : (
+          <div className="bg-white border border-[#E0D9CE] rounded px-8 py-5 text-center">
+            <p className="font-syne font-semibold text-[#1A1714] mb-1">
+              You&apos;re on the list.
+            </p>
+            <p className="font-inter text-sm text-[#8A8178]">
+              We&apos;ll be in touch when your profile is ready.
+            </p>
+          </div>
+        )}
+      </section>
+
+      {/* Sample profile teaser */}
+      <section className="px-6 pb-16 flex justify-center">
+        <a
+          href="/jaime"
+          className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] tracking-widest uppercase transition-colors"
+        >
+          See a sample profile &rarr;
+        </a>
+      </section>
+
+      {/* Footer */}
+      <footer className="px-6 py-5 border-t border-[#E0D9CE] flex items-center justify-between">
+        <span className="font-mono text-xs text-[#8A8178]">
+          knwn.to &mdash; built by LaRue
+        </span>
+        <span className="font-mono text-xs text-[#8A8178]">
+          &copy; {new Date().getFullYear()}
+        </span>
+      </footer>
     </main>
   );
 }
