@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -38,9 +39,13 @@ export default function Home() {
     <main className="min-h-screen bg-parchment flex flex-col">
       {/* Nav */}
       <nav className="px-6 py-5 flex items-center justify-between border-b border-[#E0D9CE]">
-        <span className="font-syne font-bold text-xl tracking-tighter text-[#1A1714]">
-          knwn.to
-        </span>
+        <Image
+          src="/logo-black.png"
+          alt="knwn.to"
+          width={120}
+          height={40}
+          priority
+        />
         <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
           by LaRue
         </span>
@@ -79,54 +84,31 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-3 bg-[#B8821A] text-white font-syne font-semibold text-sm rounded hover:bg-[#a07115] transition-colors whitespace-nowrap disabled:opacity-60"
+                className="px-6 py-3 bg-[#B8821A] text-white font-syne font-semibold text-sm rounded hover:bg-[#A0711A] transition-colors disabled:opacity-60 whitespace-nowrap"
               >
                 {loading ? "Joining..." : "Get Early Access"}
               </button>
             </form>
             {error && (
-              <p className="font-inter text-sm text-red-500 mt-3">{error}</p>
+              <p className="mt-3 font-mono text-xs text-red-600">{error}</p>
             )}
           </>
         ) : (
-          <div className="bg-white border border-[#E0D9CE] rounded px-8 py-5 text-center">
-            <p className="font-syne font-semibold text-[#1A1714] mb-1">
+          <div className="text-center">
+            <p className="font-syne font-bold text-2xl text-[#1A1714] mb-2">
               You&apos;re on the list.
             </p>
-            <p className="font-inter text-sm text-[#8A8178]">
-              We&apos;ll be in touch when knwn is ready for previews.
+            <p className="font-inter text-[#8A8178]">
+              We&apos;ll be in touch when early access opens.
             </p>
           </div>
         )}
       </section>
 
-      {/* Sample profile teaser */}
-      <section className="px-6 pb-16 flex justify-center">
-        <a
-          href="/jaime"
-          className="group flex items-center gap-3 px-6 py-4 bg-white border border-[#E0D9CE] rounded-lg hover:border-[#B8821A] transition-colors max-w-sm w-full"
-        >
-          <div className="w-10 h-10 rounded-full bg-[#E0D9CE] flex items-center justify-center flex-shrink-0">
-            <span className="font-syne font-bold text-sm text-[#8A8178]">JR</span>
-          </div>
-          <div className="flex-1 text-left">
-            <p className="font-syne font-semibold text-sm text-[#1A1714]">
-              Jaime Rivera
-            </p>
-            <p className="font-inter text-xs text-[#8A8178]">
-              knwn.to/jaime &rarr;
-            </p>
-          </div>
-          <span className="font-mono text-xs text-[#B8821A] tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">
-            Preview
-          </span>
-        </a>
-      </section>
-
       {/* Footer */}
-      <footer className="px-6 py-5 border-t border-[#E0D9CE] flex items-center justify-between">
+      <footer className="px-6 py-6 border-t border-[#E0D9CE] flex items-center justify-between">
         <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
-          &copy; 2025 LaRue
+          &copy; {new Date().getFullYear()} LaRue
         </span>
         <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
           knwn.to
