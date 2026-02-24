@@ -1,41 +1,51 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Syne, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-syne",
+  display: "swap",
+});
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "500"],
   variable: "--font-inter",
   display: "swap",
 });
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "knwn.to - Your story, all of it",
-  description: "The athlete identity platform. Not just your highlights — your readiness, your composure, your growth.",
-  keywords: ["athlete", "sports", "performance", "identity", "data", "analytics"],
-  authors: [{ name: "knwn.to" }],
+  title: "knwn.to — Your athletic identity, on record.",
+  description:
+    "knwn.to is an athlete identity platform built by LaRue. Go beyond highlights. Build the record that speaks for you.",
   openGraph: {
-    title: "knwn.to - Your story, all of it",
-    description: "The athlete identity platform. Not just your highlights — your readiness, your composure, your growth.",
+    title: "knwn.to",
+    description: "Your athletic identity, on record.",
     url: "https://knwn.to",
     siteName: "knwn.to",
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "knwn.to - Your story, all of it",
-    description: "The athlete identity platform. Not just your highlights — your readiness, your composure, your growth.",
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="antialiased">{children}</body>
+    <html
+      lang="en"
+      className={`${syne.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
+      <body>{children}</body>
     </html>
   );
 }
