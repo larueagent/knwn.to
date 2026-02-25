@@ -57,13 +57,11 @@ export default function Home() {
           Early Access
         </p>
         <h1 className="font-syne font-bold text-5xl md:text-7xl text-[#1A1714] leading-tight mb-6 max-w-3xl">
-          Your athletic identity,{" "}
-          <span className="text-[#B8821A]">on record.</span>
+          Your performance readiness,{" "}
+          <span className="text-[#B8821A]">captured.</span>
         </h1>
         <p className="font-inter text-lg text-[#8A8178] max-w-xl mb-12 leading-relaxed">
-          knwn.to builds the profile that speaks for you &#8212; beyond highlights.
-          Mental performance, coachability, preparation, character. A record
-          coaches and programs can actually read.
+          knwn.to &#8212; not just your highlights. Your coachability, your preparation, your character.
         </p>
 
         {!submitted ? (
