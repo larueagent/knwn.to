@@ -12,7 +12,9 @@ export const metadata: Metadata = {
 
 const athlete = {
   name: "Jaime",
-  sport: "Competitive Sport",
+  age: 16,
+  sport: "Soccer",
+  level: "Club/Travel",
   classYear: "Class of 2026",
   lastUpdated: "January 10, 2024",
   sessionNumber: 4,
@@ -34,12 +36,12 @@ const intention = {
 const profileType = {
   label: "Foundation Builder",
   description:
-    "Strong mental skills in development. Building the base before pressure-testing it.",
+    "Strong performance skills in development. Building the base before pressure-testing it.",
   explanation:
     "You have real coachability and confidence — those are your edge. Right now the work is building consistent access to those skills under pressure. That's what the stress management focus is for.",
-  bars: [\
-    { label: "Foundation", value: 4, max: 6 },\
-    { label: "Access", value: 3, max: 6 },\
+  bars: [
+    { label: "Foundation", value: 4, max: 6 },
+    { label: "Access", value: 3, max: 6 },
   ],
 };
 
@@ -47,50 +49,50 @@ const readiness = {
   score: 6,
   max: 10,
   stateSentence:
-    "Carrying elevated load this week. Physically present, mentally a bit scattered.",
+    "Carrying elevated load this week. Physically present, a bit scattered.",
   session: 4,
   date: "January 10, 2024",
 };
 
-const keyIndicators = [\
-  {\
-    label: "Coachability",\
-    value: 10,\
-    max: 12,\
-    tier: "Strength tier. Highest-leverage asset.",\
-    status: "strength" as const,\
-  },\
-  {\
-    label: "Confidence",\
-    value: 9,\
-    max: 12,\
-    tier: "Strength tier. Process-anchored.",\
-    status: "strength" as const,\
-  },\
-  {\
-    label: "Stress Management",\
-    value: 4,\
-    max: 12,\
-    tier: "Priority area. Active focus. When this moves, everything compounds.",\
-    status: "priority" as const,\
-  },\
+const keyIndicators = [
+  {
+    label: "Coachability",
+    value: 10,
+    max: 12,
+    tier: "Strength tier. Highest-leverage asset.",
+    status: "strength" as const,
+  },
+  {
+    label: "Confidence",
+    value: 9,
+    max: 12,
+    tier: "Strength tier. Process-anchored.",
+    status: "strength" as const,
+  },
+  {
+    label: "Stress Management",
+    value: 4,
+    max: 12,
+    tier: "Priority area. Active focus. When this moves, everything compounds.",
+    status: "priority" as const,
+  },
 ];
 
 const buildingFocus = {
-  title: "Pre-competition mental preparation protocol",
+  title: "Pre-competition preparation protocol",
   target: "Consistent access to my skills under pressure",
   progress: "Early stage — building routine consistency before competition exposure.",
   note: "LaRue is tracking the arc.",
 };
 
-const acsiProfile = [\
-  { label: "Coachability", value: 10, max: 12, status: "strength" as const },\
-  { label: "Confidence", value: 9, max: 12, status: "strength" as const },\
-  { label: "Resilience", value: 7, max: 12, status: "developing" as const },\
-  { label: "Focus", value: 7, max: 12, status: "developing" as const },\
-  { label: "Mental Preparation", value: 6, max: 12, status: "developing" as const },\
-  { label: "Performing Under Pressure", value: 5, max: 12, status: "developing" as const },\
-  { label: "Stress Management", value: 4, max: 12, status: "priority" as const },\
+const acsiProfile = [
+  { label: "Coachability", value: 10, max: 12, status: "strength" as const },
+  { label: "Confidence", value: 9, max: 12, status: "strength" as const },
+  { label: "Resilience", value: 7, max: 12, status: "developing" as const },
+  { label: "Focus", value: 7, max: 12, status: "developing" as const },
+  { label: "Preparation", value: 6, max: 12, status: "developing" as const },
+  { label: "Performing Under Pressure", value: 5, max: 12, status: "developing" as const },
+  { label: "Stress Management", value: 4, max: 12, status: "priority" as const },
 ];
 
 // SessionEntry type — ready to accept real data in v3
@@ -101,11 +103,11 @@ export type SessionEntry = {
   label?: string;
 };
 
-const sessionHistory: SessionEntry[] = [\
-  { session: 1, date: "Nov 2023", readiness: 4 },\
-  { session: 2, date: "Dec 2023", readiness: 5 },\
-  { session: 3, date: "Jan 2024", readiness: 7 },\
-  { session: 4, date: "Jan 2024", readiness: 6, label: "current" },\
+const sessionHistory: SessionEntry[] = [
+  { session: 1, date: "Nov 2023", readiness: 4 },
+  { session: 2, date: "Dec 2023", readiness: 5 },
+  { session: 3, date: "Jan 2024", readiness: 7 },
+  { session: 4, date: "Jan 2024", readiness: 6, label: "current" },
 ];
 
 // ─── STATUS BADGE ─────────────────────────────────────────────────────────────
@@ -145,6 +147,28 @@ export default function JaimePage() {
         </span>
       </nav>
 
+      {/* INTRO BLOCK */}
+      <div className="bg-[#1A1714] px-6 py-10">
+        <div className="max-w-2xl mx-auto">
+          <p className="font-mono text-[10px] text-[#8A8178] tracking-widest uppercase mb-4">
+            About This Report
+          </p>
+          <p className="font-inter text-[#E0D9CE] leading-relaxed mb-4">
+            This is a performance profile — built session by session, in Jaime&apos;s own words.
+            It is not a scouting report. It is not an evaluation. It is a record of where he is,
+            what he&apos;s working on, and how he wants to be coached.
+          </p>
+          <p className="font-inter text-[#E0D9CE] leading-relaxed mb-4">
+            Everything here comes directly from Jaime&apos;s conversations with LaRue, his AI
+            performance coach. His voice, his intention, and his goals — contextualized through
+            our proprietary performance framework to surface what matters most.
+          </p>
+          <p className="font-inter text-[#8A8178] leading-relaxed text-sm">
+            This is a snapshot within a known arc. Not a verdict — a direction. Still being written.
+          </p>
+        </div>
+      </div>
+
       <div className="max-w-2xl mx-auto px-6 py-12 space-y-10">
 
         {/* ZONE 1 — ATHLETE IDENTITY */}
@@ -156,16 +180,16 @@ export default function JaimePage() {
             {athlete.name}
           </h1>
           <p className="font-inter text-sm text-[#8A8178]">
-            {athlete.sport} · {athlete.classYear}
+            {athlete.sport} · {athlete.level} · Age {athlete.age} · {athlete.classYear}
           </p>
 
           {/* Athlete Voice Card */}
           <div className="mt-6 bg-white border border-[#E0D9CE] rounded-lg p-6 border-l-4 border-l-[#B8821A]">
             <p className="font-mono text-[10px] text-[#B8821A] tracking-widest uppercase mb-3">
-              Here's what I told LaRue about how to work with me
+              Here&apos;s what I told LaRue about how to work with me
             </p>
             <p className="font-inter text-[#1A1714] leading-relaxed italic">
-              "{voiceCard.quote}"
+              &ldquo;{voiceCard.quote}&rdquo;
             </p>
             <p className="font-mono text-[10px] text-[#8A8178] tracking-widest mt-4">
               — {voiceCard.author}, {voiceCard.date}
@@ -177,10 +201,10 @@ export default function JaimePage() {
         <section>
           <div className="bg-white border border-[#E0D9CE] rounded-lg p-6">
             <p className="font-mono text-[10px] text-[#8A8178] tracking-widest uppercase mb-3">
-              What I'm Proving
+              What I&apos;m Proving
             </p>
             <p className="font-inter text-[#1A1714] leading-relaxed">
-              "{intention.statement}"
+              &ldquo;{intention.statement}&rdquo;
             </p>
             <p className="font-mono text-[10px] text-[#8A8178] tracking-widest mt-4">
               — {intention.author}
@@ -293,7 +317,7 @@ export default function JaimePage() {
         <section>
           <div className="bg-white border border-[#E0D9CE] rounded-lg p-6">
             <p className="font-mono text-[10px] text-[#8A8178] tracking-widest uppercase mb-3">
-              What I'm Building
+              What I&apos;m Building
             </p>
             <p className="font-inter font-medium text-[#1A1714] mb-1">
               {buildingFocus.title}
@@ -310,14 +334,14 @@ export default function JaimePage() {
           </div>
         </section>
 
-        {/* ZONE 7 — FULL ACSI PROFILE */}
+        {/* ZONE 7 — FULL PERFORMANCE PROFILE */}
         <section>
           <div className="bg-white border border-[#E0D9CE] rounded-lg p-6">
             <div className="flex items-center justify-between mb-1">
               <p className="font-mono text-[10px] text-[#8A8178] tracking-widest uppercase">
-                Mental Performance Profile
+                Performance Profile
               </p>
-              <span className="font-mono text-[10px] text-[#8A8178]">ACSI · January 2024</span>
+              <span className="font-mono text-[10px] text-[#8A8178]">January 2024</span>
             </div>
             <p className="font-inter text-xs text-[#8A8178] mb-6">
               A snapshot within a known arc — not a verdict.
@@ -334,7 +358,7 @@ export default function JaimePage() {
               ))}
             </div>
             <p className="font-mono text-[10px] text-[#8A8178] tracking-widest mt-6">
-              Generated by LaRue · ACSI framework
+              Generated by LaRue · Proprietary performance framework
             </p>
           </div>
         </section>
