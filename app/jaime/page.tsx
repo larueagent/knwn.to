@@ -215,7 +215,6 @@ export default function JaimePage() {
                     <span className="font-mono text-[10px] tracking-widest uppercase text-[#8A8178]">
                       Building
                     </span>
- rest
                   </div>
                   <div className="h-1.5 bg-[#E0D9CE] rounded-full overflow-hidden">
                     <div
