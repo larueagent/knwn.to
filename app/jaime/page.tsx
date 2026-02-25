@@ -12,7 +12,9 @@ export const metadata: Metadata = {
 
 const athlete = {
   name: "Jaime",
-  sport: "Competitive Sport",
+  age: 16,
+  sport: "Soccer",
+  level: "Club/Travel",
   classYear: "Class of 2026",
   lastUpdated: "January 10, 2024",
   sessionNumber: 4,
@@ -145,6 +147,27 @@ export default function JaimePage() {
         </span>
       </nav>
 
+      {/* INTRO BLOCK */}
+      <div className="bg-[#1A1714] text-parchment px-6 py-10">
+        <div className="max-w-2xl mx-auto">
+          <p className="font-mono text-[10px] text-[#B8821A] tracking-widest uppercase mb-3">
+            What this report is
+          </p>
+          <h2 className="font-syne font-bold text-2xl text-parchment mb-4 leading-snug">
+            A real-time window into how Jaime is showing up — mentally and emotionally.
+          </h2>
+          <p className="font-inter text-sm text-[#C8BFB4] leading-relaxed mb-3">
+            This isn't a scouting report. It's not a grade. It's a working document — built session by session through direct conversation between Jaime and LaRue, his AI mental performance coach.
+          </p>
+          <p className="font-inter text-sm text-[#C8BFB4] leading-relaxed mb-3">
+            Everything here comes from Jaime. His words, his intention, his self-assessment — contextualized by the ACSI framework and tracked over time. LaRue doesn't evaluate him from the outside. It works with him from the inside.
+          </p>
+          <p className="font-inter text-sm text-[#C8BFB4] leading-relaxed">
+            What you're reading is his current state — not a ceiling, not a verdict. A snapshot inside a longer arc that's still being written.
+          </p>
+        </div>
+      </div>
+
       <div className="max-w-2xl mx-auto px-6 py-12 space-y-10">
 
         {/* ZONE 1 — ATHLETE IDENTITY */}
@@ -156,7 +179,7 @@ export default function JaimePage() {
             {athlete.name}
           </h1>
           <p className="font-inter text-sm text-[#8A8178]">
-            {athlete.sport} · {athlete.classYear}
+            {athlete.sport} · {athlete.level} · Age {athlete.age} · {athlete.classYear}
           </p>
 
           {/* Athlete Voice Card */}
