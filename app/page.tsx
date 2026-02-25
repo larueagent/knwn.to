@@ -131,26 +131,16 @@ export default function Home() {
       {/* Footer */}
       <footer className="px-6 py-5 border-t border-[#E0D9CE] flex items-center justify-between">
         <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
-          &copy; 2025 LaRue
+          &copy; 2026 knwn.to
         </span>
-        <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
-          knwn.to
-        </span>
-      </footer>
-
-      {/* $STATE Footer */}
-      <footer className="w-full border-t border-[#E8E0D5] py-6 mt-12">
-        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between text-sm text-[#8B7355]">
-          <span>© 2026 knwn.to</span>
-          <a
-            href="https://dexscreener.com/base/0x6cda1d74c964f2660336b74a7f93436656324da7473c5008a7a2696c8ac3a85b"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#1A1714] transition-colors"
-          >
-            $STATE · Powered by Bankr
-          </a>
-        </div>
+        <a
+          href="https://dexscreener.com/base/0x6cda1d74c964f2660336b74a7f93436656324da7473c5008a7a2696c8ac3a85b"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-mono text-xs text-[#8A8178] tracking-widest uppercase hover:text-[#1A1714] transition-colors"
+        >
+          $STATE &middot; Powered by Bankr
+        </a>
       </footer>
     </main>
   );
