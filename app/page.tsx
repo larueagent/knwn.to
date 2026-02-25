@@ -107,25 +107,28 @@ export default function Home() {
 
       {/* Sample profile teaser */}
       <section className="px-6 pb-16 flex justify-center">
-        <a
-          href="/jaime"
-          className="group flex items-center gap-3 px-6 py-4 bg-white border border-[#E0D9CE] rounded-lg hover:border-[#B8821A] transition-colors max-w-sm w-full"
-        >
-          <div className="w-10 h-10 rounded-full bg-[#E0D9CE] flex items-center justify-center flex-shrink-0">
-            <span className="font-syne font-bold text-sm text-[#8A8178]">JR</span>
-          </div>
-          <div className="flex-1 text-left">
-            <p className="font-syne font-semibold text-sm text-[#1A1714]">
-              Jaime Rivera
-            </p>
-            <p className="font-inter text-xs text-[#8A8178]">
-              knwn.to/jaime &rarr;
-            </p>
-          </div>
-          <span className="font-mono text-xs text-[#B8821A] tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">
-            Preview
-          </span>
-        </a>
+        <div className="flex flex-col items-center max-w-sm w-full">
+          <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-4">An early look.</p>
+          <a
+            href="/jaime"
+            className="group flex items-center gap-3 px-6 py-4 bg-white border border-[#E0D9CE] rounded-lg hover:border-[#B8821A] transition-colors w-full"
+          >
+            <div className="w-10 h-10 rounded-full bg-[#E0D9CE] flex items-center justify-center flex-shrink-0">
+              <span className="font-syne font-bold text-sm text-[#8A8178]">JR</span>
+            </div>
+            <div className="flex-1 text-left">
+              <p className="font-syne font-semibold text-sm text-[#1A1714]">
+                Jaime R.
+              </p>
+              <p className="font-inter text-xs text-[#8A8178]">
+                knwn.to/jaime &rarr;
+              </p>
+            </div>
+            <span className="font-mono text-xs text-[#B8821A] tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">
+              Preview
+            </span>
+          </a>
+        </div>
       </section>
 
       {/* Footer */}
@@ -133,14 +136,9 @@ export default function Home() {
         <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
           &copy; 2025 LaRue
         </span>
-        <a
-          href="https://dexscreener.com/base/0x6cda1d74c964f2660336b74a7f93436656324da7473c5008a7a2696c8ac3a85b"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-mono text-xs text-[#8A8178] tracking-widest uppercase hover:text-[#B8821A] transition-colors"
-        >
-          $STATE
-        </a>
+        <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
+          knwn.to
+        </span>
       </footer>
     </main>
   );
