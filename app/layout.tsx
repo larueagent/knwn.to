@@ -27,14 +27,15 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "knwn.to — Your athletic identity, on record.",
   description:
-    "knwn.to is an athlete identity platform built by LaRue. Go beyond highlights. Build the record that speaks for you.",
+    "knwn.to is an AI-powered athlete identity platform. Go beyond highlight reels — build a verifiable record of your performance, character, and growth that speaks for you.",
   icons: {
     icon: "/favicon.png",
     apple: "/favicon.png",
   },
   openGraph: {
     title: "knwn.to — Your athletic identity, on record.",
-    description: "Go beyond highlights. Build the record that speaks for you.",
+    description:
+      "Go beyond highlight reels. knwn.to builds a verifiable record of your performance, character, and growth — powered by AI, owned by you.",
     url: "https://knwn.to",
     siteName: "knwn.to",
     images: [
@@ -50,7 +51,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "knwn.to — Your athletic identity, on record.",
-    description: "Go beyond highlights. Build the record that speaks for you.",
+    description:
+      "Go beyond highlight reels. knwn.to builds a verifiable record of your performance, character, and growth — powered by AI, owned by you.",
     images: ["/OG Image.png"],
   },
 };
