@@ -28,11 +28,30 @@ export const metadata: Metadata = {
   title: "knwn.to — Your athletic identity, on record.",
   description:
     "knwn.to is an athlete identity platform built by LaRue. Go beyond highlights. Build the record that speaks for you.",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
   openGraph: {
-    title: "knwn.to",
-    description: "Your athletic identity, on record.",
+    title: "knwn.to — Your athletic identity, on record.",
+    description: "Go beyond highlights. Build the record that speaks for you.",
     url: "https://knwn.to",
     siteName: "knwn.to",
+    images: [
+      {
+        url: "/OG Image.png",
+        width: 1200,
+        height: 630,
+        alt: "knwn.to — Your athletic identity, on record.",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "knwn.to — Your athletic identity, on record.",
+    description: "Go beyond highlights. Build the record that speaks for you.",
+    images: ["/OG Image.png"],
   },
 };
 
