@@ -12,9 +12,7 @@ export const metadata: Metadata = {
 
 const athlete = {
   name: "Jaime",
-  age: 16,
-  sport: "Soccer",
-  level: "Club/Travel",
+  sport: "Competitive Sport",
   classYear: "Class of 2026",
   lastUpdated: "January 10, 2024",
   sessionNumber: 4,
@@ -39,9 +37,9 @@ const profileType = {
     "Strong mental skills in development. Building the base before pressure-testing it.",
   explanation:
     "You have real coachability and confidence — those are your edge. Right now the work is building consistent access to those skills under pressure. That's what the stress management focus is for.",
-  bars: [
-    { label: "Foundation", value: 4, max: 6 },
-    { label: "Access", value: 3, max: 6 },
+  bars: [\
+    { label: "Foundation", value: 4, max: 6 },\
+    { label: "Access", value: 3, max: 6 },\
   ],
 };
 
@@ -54,28 +52,28 @@ const readiness = {
   date: "January 10, 2024",
 };
 
-const keyIndicators = [
-  {
-    label: "Coachability",
-    value: 10,
-    max: 12,
-    tier: "Strength tier. Highest-leverage asset.",
-    status: "strength" as const,
-  },
-  {
-    label: "Confidence",
-    value: 9,
-    max: 12,
-    tier: "Strength tier. Process-anchored.",
-    status: "strength" as const,
-  },
-  {
-    label: "Stress Management",
-    value: 4,
-    max: 12,
-    tier: "Priority area. Active focus. When this moves, everything compounds.",
-    status: "priority" as const,
-  },
+const keyIndicators = [\
+  {\
+    label: "Coachability",\
+    value: 10,\
+    max: 12,\
+    tier: "Strength tier. Highest-leverage asset.",\
+    status: "strength" as const,\
+  },\
+  {\
+    label: "Confidence",\
+    value: 9,\
+    max: 12,\
+    tier: "Strength tier. Process-anchored.",\
+    status: "strength" as const,\
+  },\
+  {\
+    label: "Stress Management",\
+    value: 4,\
+    max: 12,\
+    tier: "Priority area. Active focus. When this moves, everything compounds.",\
+    status: "priority" as const,\
+  },\
 ];
 
 const buildingFocus = {
@@ -85,14 +83,14 @@ const buildingFocus = {
   note: "LaRue is tracking the arc.",
 };
 
-const acsiProfile = [
-  { label: "Coachability", value: 10, max: 12, status: "strength" as const },
-  { label: "Confidence", value: 9, max: 12, status: "strength" as const },
-  { label: "Resilience", value: 7, max: 12, status: "developing" as const },
-  { label: "Focus", value: 7, max: 12, status: "developing" as const },
-  { label: "Mental Preparation", value: 6, max: 12, status: "developing" as const },
-  { label: "Performing Under Pressure", value: 5, max: 12, status: "developing" as const },
-  { label: "Stress Management", value: 4, max: 12, status: "priority" as const },
+const acsiProfile = [\
+  { label: "Coachability", value: 10, max: 12, status: "strength" as const },\
+  { label: "Confidence", value: 9, max: 12, status: "strength" as const },\
+  { label: "Resilience", value: 7, max: 12, status: "developing" as const },\
+  { label: "Focus", value: 7, max: 12, status: "developing" as const },\
+  { label: "Mental Preparation", value: 6, max: 12, status: "developing" as const },\
+  { label: "Performing Under Pressure", value: 5, max: 12, status: "developing" as const },\
+  { label: "Stress Management", value: 4, max: 12, status: "priority" as const },\
 ];
 
 // SessionEntry type — ready to accept real data in v3
@@ -103,11 +101,11 @@ export type SessionEntry = {
   label?: string;
 };
 
-const sessionHistory: SessionEntry[] = [
-  { session: 1, date: "Nov 2023", readiness: 4 },
-  { session: 2, date: "Dec 2023", readiness: 5 },
-  { session: 3, date: "Jan 2024", readiness: 7 },
-  { session: 4, date: "Jan 2024", readiness: 6, label: "current" },
+const sessionHistory: SessionEntry[] = [\
+  { session: 1, date: "Nov 2023", readiness: 4 },\
+  { session: 2, date: "Dec 2023", readiness: 5 },\
+  { session: 3, date: "Jan 2024", readiness: 7 },\
+  { session: 4, date: "Jan 2024", readiness: 6, label: "current" },\
 ];
 
 // ─── STATUS BADGE ─────────────────────────────────────────────────────────────
@@ -147,27 +145,6 @@ export default function JaimePage() {
         </span>
       </nav>
 
-      {/* INTRO BLOCK */}
-      <div className="bg-[#1A1714] text-parchment px-6 py-10">
-        <div className="max-w-2xl mx-auto">
-          <p className="font-mono text-[10px] text-[#B8821A] tracking-widest uppercase mb-3">
-            What this report is
-          </p>
-          <h2 className="font-syne font-bold text-2xl text-parchment mb-4 leading-snug">
-            A real-time window into how Jaime is showing up — mentally and emotionally.
-          </h2>
-          <p className="font-inter text-sm text-[#C8BFB4] leading-relaxed mb-3">
-            This isn't a scouting report. It's not a grade. It's a working document — built session by session through direct conversation between Jaime and LaRue, his AI mental performance coach.
-          </p>
-          <p className="font-inter text-sm text-[#C8BFB4] leading-relaxed mb-3">
-            Everything here comes from Jaime. His words, his intention, his self-assessment — contextualized by the ACSI framework and tracked over time. LaRue doesn't evaluate him from the outside. It works with him from the inside.
-          </p>
-          <p className="font-inter text-sm text-[#C8BFB4] leading-relaxed">
-            What you're reading is his current state — not a ceiling, not a verdict. A snapshot inside a longer arc that's still being written.
-          </p>
-        </div>
-      </div>
-
       <div className="max-w-2xl mx-auto px-6 py-12 space-y-10">
 
         {/* ZONE 1 — ATHLETE IDENTITY */}
@@ -179,7 +156,7 @@ export default function JaimePage() {
             {athlete.name}
           </h1>
           <p className="font-inter text-sm text-[#8A8178]">
-            {athlete.sport} · {athlete.level} · Age {athlete.age} · {athlete.classYear}
+            {athlete.sport} · {athlete.classYear}
           </p>
 
           {/* Athlete Voice Card */}
@@ -357,7 +334,7 @@ export default function JaimePage() {
               ))}
             </div>
             <p className="font-mono text-[10px] text-[#8A8178] tracking-widest mt-6">
-              Generated by LaRue · ACSI framework
+              Generated by LaRue · Proprietary performance framework
             </p>
           </div>
         </section>
