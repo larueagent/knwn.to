@@ -57,11 +57,13 @@ export default function Home() {
           Early Access
         </p>
         <h1 className="font-syne font-bold text-5xl md:text-7xl text-[#1A1714] leading-tight mb-6 max-w-3xl">
-          Your performance readiness,{" "}
-          <span className="text-[#B8821A]">captured.</span>
+          Your athletic identity,{" "}
+          <span className="text-[#B8821A]">on record.</span>
         </h1>
         <p className="font-inter text-lg text-[#8A8178] max-w-xl mb-12 leading-relaxed">
-          knwn.to &#8212; not just your highlights. Your coachability, your preparation, your character.
+          knwn.to builds the profile that speaks for you &#8212; beyond highlights.
+          Mental performance, coachability, preparation, character. A record
+          coaches and programs can actually read.
         </p>
 
         {!submitted ? (
@@ -134,6 +136,21 @@ export default function Home() {
         <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
           knwn.to
         </span>
+      </footer>
+
+      {/* $STATE Footer */}
+      <footer className="w-full border-t border-[#E8E0D5] py-6 mt-12">
+        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between text-sm text-[#8B7355]">
+          <span>© 2026 knwn.to</span>
+          <a
+            href="https://dexscreener.com/base/0x6cda1d74c964f2660336b74a7f93436656324da7473c5008a7a2696c8ac3a85b"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[#1A1714] transition-colors"
+          >
+            $STATE · Powered by Bankr
+          </a>
+        </div>
       </footer>
     </main>
   );
