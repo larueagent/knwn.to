@@ -12,7 +12,9 @@ export const metadata: Metadata = {
 
 const athlete = {
   name: "Jaime",
-  sport: "Competitive Sport",
+  age: 16,
+  sport: "Soccer",
+  level: "Club/Travel",
   classYear: "Class of 2026",
   lastUpdated: "January 10, 2024",
   sessionNumber: 4,
@@ -145,6 +147,27 @@ export default function JaimePage() {
         </span>
       </nav>
 
+      {/* INTRO BLOCK */}
+      <section className="bg-[#1A1714] px-6 py-12">
+        <div className="max-w-2xl mx-auto space-y-5">
+          <p className="font-mono text-[10px] text-[#8A8178] tracking-widest uppercase">
+            About This Report
+          </p>
+          <h2 className="font-syne font-bold text-2xl text-[#F5F0E8]">
+            This is a live performance record, built session by session.
+          </h2>
+          <p className="font-inter text-sm text-[#8A8178] leading-relaxed">
+            It's not a scouting report. It's not a grade. It's a working picture of how Jaime approaches competition — his mental readiness, the skills he's building, and the context behind the numbers.
+          </p>
+          <p className="font-inter text-sm text-[#8A8178] leading-relaxed">
+            Every data point here came from Jaime directly. His words. His stated intention. His self-reported state. That data is then contextualized through our proprietary performance framework — a validated instrument used across sport at every level.
+          </p>
+          <p className="font-inter text-sm text-[#8A8178] leading-relaxed">
+            What you're reading is a snapshot within a known arc. Jaime is 16, playing Club/Travel soccer, and this story is still being written.
+          </p>
+        </div>
+      </section>
+
       <div className="max-w-2xl mx-auto px-6 py-12 space-y-10">
 
         {/* ZONE 1 — ATHLETE IDENTITY */}
@@ -156,7 +179,7 @@ export default function JaimePage() {
             {athlete.name}
           </h1>
           <p className="font-inter text-sm text-[#8A8178]">
-            {athlete.sport} · {athlete.classYear}
+            {athlete.sport} · {athlete.level} · Age {athlete.age} · {athlete.classYear}
           </p>
 
           {/* Athlete Voice Card */}
