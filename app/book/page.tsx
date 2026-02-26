@@ -116,7 +116,7 @@ export default function BookPage() {
         <h1 className="font-syne font-bold text-5xl md:text-7xl text-[#1A1714] leading-tight mb-4 max-w-3xl">
           Your Story, All of It
         </h1>
-        <p className="font-inter text-xl text-[#8A8178] max-w-lg mb-4 leading-relaxed">
+        <p className="font-inter text-xl text-[#8A8178] max-w-xl mb-4 leading-relaxed">
           The Athlete&apos;s Guide to Personalizing AI for Your Game
         </p>
         <p className="font-inter text-base text-[#8A8178] max-w-xl mb-4 leading-relaxed">
@@ -475,7 +475,7 @@ Updated: [date]
         <h2 className="font-syne font-bold text-3xl text-[#1A1714] mb-4 max-w-xl leading-snug">
           We&apos;re building this book the same way you&apos;ll use it.
         </h2>
-        <p className="font-inter text-sm text-[#8A8178] max-w-md mb-3">
+        <p className="font-inter text-sm text-[#8A8178] max-w-sm mb-3">
           By being honest about where we are and what we don&apos;t know yet.
         </p>
         <p className="font-inter text-sm text-[#8A8178] max-w-sm mb-10">
