@@ -119,13 +119,13 @@ export default function BookPage() {
         <p className="font-inter text-xl text-[#8A8178] max-w-xl mb-4 leading-relaxed">
           The Athlete&apos;s Guide to Personalizing AI for Your Game
         </p>
-        <p className="font-inter text-base text-[#8A8178] max-w-xl mb-4 leading-relaxed">
+        <p className="font-inter text-base text-[#8A8178] max-w-lg mb-4 leading-relaxed">
           AI doesn&apos;t know you. knwn.to fixes that. Build your athlete
           profile, personalize your AI, and carry your full story wherever your
           game takes you.
         </p>
         <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-4">
-          by Rob Yang with LaRue
+          written by Rob Yang with LaRue
         </p>
         <p className="font-inter text-sm text-[#8A8178] mb-10">
           We&apos;re writing this book in public. Follow along as we build it.
@@ -178,7 +178,8 @@ export default function BookPage() {
           {[
             {
               num: "Chapter 1",
-              title: "You've Talked to AI. It Didn't Really Talk to You.",
+              title:
+                "You've Talked to AI. It Didn't Really Talk to You.",
               body: "84% of people have never typed a prompt. You're in the 16% who already crossed that line — and still felt underwhelmed. That's not a failure. That's a context problem. This chapter names the gap you already feel.",
             },
             {
@@ -188,11 +189,15 @@ export default function BookPage() {
             },
             {
               num: "Chapter 3",
-              title: "The Athlete Who Gave It Nothing vs. The Athlete Who Gave It Everything",
+              title:
+                "The Athlete Who Gave It Nothing vs. The Athlete Who Gave It Everything",
               body: "Two athletes. Same sport. Same question. Completely different answers — because one gave context and one didn't. This chapter shows the gap side by side, in real conversations. This is what you're building toward.",
             },
           ].map(({ num, title, body }) => (
-            <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
+            <div
+              key={num}
+              className="border-l-2 border-[#E0D9CE] pl-6"
+            >
               <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
                 {num}
               </p>
@@ -228,7 +233,7 @@ export default function BookPage() {
             {
               num: "Chapter 4",
               title: "Who You Are as an Athlete",
-              body: "Sport, position, level, years competing, what the sport means to you beyond the scoreboard. Without this, AI advises a generic competitor. With it, AI knows your role, your stakes, and what actually matters to you. This is the foundation everything else builds on.",
+              body: "Sport, position, level, what the sport means to you beyond the scoreboard. Without this, AI advises a generic competitor. With it, AI knows your role, your stakes, and what actually matters to you. This is the foundation everything else builds on.",
             },
             {
               num: "Chapter 5",
@@ -262,11 +267,15 @@ export default function BookPage() {
             },
             {
               num: "Chapter 11",
-              title: "What You Want AI to Know That Doesn't Fit Anywhere Else",
+              title:
+                "What You Want AI to Know That Doesn't Fit Anywhere Else",
               body: "Superstitions. Rituals. The thing that always helps and you don't know why. Anything true about you that doesn't have a label. No rules. Just true things. This chapter gives you permission to be specific in a way no category captures.",
             },
           ].map(({ num, title, body }) => (
-            <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
+            <div
+              key={num}
+              className="border-l-2 border-[#E0D9CE] pl-6"
+            >
               <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
                 {num}
               </p>
@@ -307,7 +316,10 @@ export default function BookPage() {
               body: "The honesty chapter. Your values, your identity work, your relationships, the moment itself — those belong to you, not AI. Understanding exactly what LaRue can't do makes everything she can do more useful. This chapter draws the line clearly so you never have to wonder where it is.",
             },
           ].map(({ num, title, body }) => (
-            <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
+            <div
+              key={num}
+              className="border-l-2 border-[#E0D9CE] pl-6"
+            >
               <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
                 {num}
               </p>
@@ -475,7 +487,7 @@ Updated: [date]
         <h2 className="font-syne font-bold text-3xl text-[#1A1714] mb-4 max-w-xl leading-snug">
           We&apos;re building this book the same way you&apos;ll use it.
         </h2>
-        <p className="font-inter text-sm text-[#8A8178] max-w-sm mb-3">
+        <p className="font-inter text-sm text-[#8A8178] max-w-md mb-3">
           By being honest about where we are and what we don&apos;t know yet.
         </p>
         <p className="font-inter text-sm text-[#8A8178] max-w-sm mb-10">
@@ -487,14 +499,21 @@ Updated: [date]
       {/* Footer */}
       <footer className="px-6 py-5 border-t border-[#E0D9CE] flex items-center justify-between">
         <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
-          &copy; {new Date().getFullYear()} knwn.to
+          &copy; 2026 knwn.to
         </span>
-        <Link
-          href="/"
-          className="font-mono text-xs text-[#8A8178] tracking-widest uppercase hover:text-[#1A1714] transition-colors"
-        >
-          &larr; Home
-        </Link>
+        <div className="flex items-center gap-4">
+          <a
+            href="https://dexscreener.com/base/0x6cda1d74c964f2660336b74a7f93436656324da7473c5008a7a2696c8ac3a85b"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase"
+          >
+            $STATE
+          </a>
+          <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
+            knwn.to
+          </span>
+        </div>
       </footer>
     </main>
   );
