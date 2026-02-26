@@ -47,9 +47,14 @@ export default function Home() {
           height={40}
           priority
         />
-        <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
-          by LaRue
-        </span>
+        <div className="flex items-center gap-6">
+          <Link href="/book" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
+            The Book
+          </Link>
+          <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
+            by LaRue
+          </span>
+        </div>
       </nav>
 
       {/* Hero */}
@@ -90,15 +95,6 @@ export default function Home() {
             {error && (
               <p className="font-inter text-sm text-red-500 mt-3">{error}</p>
             )}
-            <p className="font-inter text-sm text-[#8A8178] mt-5">
-              Already curious?{" "}
-              <Link
-                href="/book"
-                className="text-[#B8821A] hover:underline"
-              >
-                Learn about the book &rarr;
-              </Link>
-            </p>
           </>
         ) : (
           <div className="bg-white border border-[#E0D9CE] rounded px-8 py-5 text-center">
@@ -107,12 +103,6 @@ export default function Home() {
             </p>
             <p className="font-inter text-sm text-[#8A8178]">
               We&apos;ll be in touch when knwn is ready for previews.
-            </p>
-            <p className="font-inter text-sm text-[#8A8178] mt-3">
-              In the meantime,{" "}
-              <Link href="/book" className="text-[#B8821A] hover:underline">
-                learn about the book &rarr;
-              </Link>
             </p>
           </div>
         )}
