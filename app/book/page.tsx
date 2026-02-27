@@ -119,7 +119,7 @@ export default function BookPage() {
         <p className="font-inter text-xl text-[#8A8178] max-w-xl mb-4 leading-relaxed">
           The Athlete&apos;s Guide to Personalizing AI for Your Game
         </p>
-        <p className="font-inter text-base text-[#8A8178] max-w-lg mb-4 leading-relaxed">
+        <p className="font-inter text-base text-[#8A8178] max-w-2xl mb-4 leading-relaxed">
           AI doesn&apos;t know you. knwn.to fixes that. Build your athlete
           profile, personalize your AI, and carry your full story wherever your
           game takes you.
@@ -175,22 +175,22 @@ export default function BookPage() {
           doesn&apos;t quite fit.
         </p>
         <div className="space-y-8">
-          {[\
-            {\
-              num: "Chapter 1",\
-              title: "You've Talked to AI. It Didn't Really Talk to You.",\
-              body: "84% of people have never typed a prompt. You're in the 16% who already crossed that line — and still felt underwhelmed. That's not a failure. That's a context problem. This chapter names the gap you already feel.",\
-            },\
-            {\
-              num: "Chapter 2",\
-              title: "What AI Actually Is",\
-              body: "Not a technical explanation — a useful one. AI is a brilliant thinking partner with no memory of yesterday and no idea who you are. Every conversation starts from zero. Your job is to solve that problem. This chapter explains how.",\
-            },\
-            {\
-              num: "Chapter 3",\
-              title: "The Athlete Who Gave It Nothing vs. The Athlete Who Gave It Everything",\
-              body: "Two athletes. Same sport. Same question. Completely different answers — because one gave context and one didn't. This chapter shows the gap side by side, in real conversations. This is what you're building toward.",\
-            },\
+          {[
+            {
+              num: "Chapter 1",
+              title: "You've Talked to AI. It Didn't Really Talk to You.",
+              body: "84% of people have never typed a prompt. You're in the 16% who already crossed that line — and still felt underwhelmed. That's not a failure. That's a context problem. This chapter names the gap you already feel.",
+            },
+            {
+              num: "Chapter 2",
+              title: "What AI Actually Is",
+              body: "Not a technical explanation — a useful one. AI is a brilliant thinking partner with no memory of yesterday and no idea who you are. Every conversation starts from zero. Your job is to solve that problem. This chapter explains how.",
+            },
+            {
+              num: "Chapter 3",
+              title: "The Athlete Who Gave It Nothing vs. The Athlete Who Gave It Everything",
+              body: "Two athletes. Same sport. Same question. Completely different answers — because one gave context and one didn't. This chapter shows the gap side by side, in real conversations. This is what you're building toward.",
+            },
           ].map(({ num, title, body }) => (
             <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
               <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
@@ -224,47 +224,47 @@ export default function BookPage() {
           your file. When Part Two is done, your athlete.md is done.
         </p>
         <div className="space-y-8">
-          {[\
-            {\
-              num: "Chapter 4",\
-              title: "Who You Are as an Athlete",\
-              body: "Sport, position, level, years competing, what the sport means to you beyond the scoreboard. Without this, AI advises a generic competitor. With it, AI knows your role, your stakes, and what actually matters to you. This is the foundation everything else builds on.",\
-            },\
-            {\
-              num: "Chapter 5",\
-              title: "How You Actually Perform",\
-              body: "Start in the body. What does locked in feel like? What does tight feel like — the specific physical signal before your game slips? Results are what happened. Readiness is what you brought. AI can help you track one of those. This chapter is about the signals your stats never capture.",\
-            },\
-            {\
-              num: "Chapter 6",\
-              title: "Your Mental Game — The Honest Version",\
-              body: "You've been trained to project confidence your whole career. This chapter asks for the actual inner experience — how you handle failure, where confidence comes from, where it leaks. The hardest chapter to write. The most useful one in the file.",\
-            },\
-            {\
-              num: "Chapter 7",\
-              title: "What You're Working Toward",\
-              body: "Short-term goals, long-term goals — and why they matter to you personally. AI can make a plan for any goal. But without knowing the why, the plan feels hollow. This chapter captures the why underneath everything else.",\
-            },\
-            {\
-              num: "Chapter 8",\
-              title: "How You Like to Be Coached",\
-              body: "Most athletes have never been explicitly asked this. They've adapted to however their coaches communicate. AI has no ego and no preferred style — it will be exactly what you tell it to be. This chapter is the first time you get to design the communication style that actually works for you.",\
-            },\
-            {\
-              num: "Chapter 9",\
-              title: "Your History",\
-              body: "Injuries, transitions, setbacks, formative moments. Without history, AI treats you as a current-state athlete with no past. But a lot of what drives performance lives in history. This chapter asks you to name what's relevant — not to process it, just to name it.",\
-            },\
-            {\
-              num: "Chapter 10",\
-              title: "Right Now",\
-              body: "Every other section is relatively stable. This one changes. This is the section you update before competitions, after hard losses, when something shifts in your season. Five minutes the night before. What you write in those five minutes shapes every exchange that follows.",\
-            },\
-            {\
-              num: "Chapter 11",\
-              title: "What You Want AI to Know That Doesn't Fit Anywhere Else",\
-              body: "Superstitions. Rituals. The thing that always helps and you don't know why. Anything true about you that doesn't have a label. No rules. Just true things. This chapter gives you permission to be specific in a way no category captures.",\
-            },\
+          {[
+            {
+              num: "Chapter 4",
+              title: "Who You Are as an Athlete",
+              body: "Sport, position, level, years competing, what the sport means to you beyond the scoreboard. Without this, AI advises a generic competitor. With it, AI knows your role, your stakes, and what actually matters to you. This is the foundation everything else builds on.",
+            },
+            {
+              num: "Chapter 5",
+              title: "How You Actually Perform",
+              body: "Start in the body. What does locked in feel like? What does tight feel like — the specific physical signal before your game slips? Results are what happened. Readiness is what you brought. AI can help you track one of those. This chapter is about the signals your stats never capture.",
+            },
+            {
+              num: "Chapter 6",
+              title: "Your Mental Game — The Honest Version",
+              body: "You've been trained to project confidence your whole career. This chapter asks for the actual inner experience — how you handle failure, where confidence comes from, where it leaks. The hardest chapter to write. The most useful one in the file.",
+            },
+            {
+              num: "Chapter 7",
+              title: "What You're Working Toward",
+              body: "Short-term goals, long-term goals — and why they matter to you personally. AI can make a plan for any goal. But without knowing the why, the plan feels hollow. This chapter captures the why underneath everything else.",
+            },
+            {
+              num: "Chapter 8",
+              title: "How You Like to Be Coached",
+              body: "Most athletes have never been explicitly asked this. They've adapted to however their coaches communicate. AI has no ego and no preferred style — it will be exactly what you tell it to be. This chapter is the first time you get to design the communication style that actually works for you.",
+            },
+            {
+              num: "Chapter 9",
+              title: "Your History",
+              body: "Injuries, transitions, setbacks, formative moments. Without history, AI treats you as a current-state athlete with no past. But a lot of what drives performance lives in history. This chapter asks you to name what's relevant — not to process it, just to name it.",
+            },
+            {
+              num: "Chapter 10",
+              title: "Right Now",
+              body: "Every other section is relatively stable. This one changes. This is the section you update before competitions, after hard losses, when something shifts in your season. Five minutes the night before. What you write in those five minutes shapes every exchange that follows.",
+            },
+            {
+              num: "Chapter 11",
+              title: "What You Want AI to Know That Doesn't Fit Anywhere Else",
+              body: "Superstitions. Rituals. The thing that always helps and you don't know why. Anything true about you that doesn't have a label. No rules. Just true things. This chapter gives you permission to be specific in a way no category captures.",
+            },
           ].map(({ num, title, body }) => (
             <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
               <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
@@ -295,17 +295,17 @@ export default function BookPage() {
           The file is built. Here&apos;s what happens when you use it.
         </p>
         <div className="space-y-8">
-          {[\
-            {\
-              num: "Chapter 12",\
-              title: "Your First Real Conversation",\
-              body: "You've built the file. Now you bring it to LaRue. She reads it, reflects back what she sees, and asks what's missing. This chapter walks you through that first session — and explains why it will feel different from every AI conversation you've had before.",\
-            },\
-            {\
-              num: "Chapter 13",\
-              title: "What AI Cannot Do",\
-              body: "The honesty chapter. Your values, your identity work, your relationships, the moment itself — those belong to you, not AI. Understanding exactly what LaRue can't do makes everything she can do more useful. This chapter draws the line clearly so you never have to wonder where it is.",\
-            },\
+          {[
+            {
+              num: "Chapter 12",
+              title: "Your First Real Conversation",
+              body: "You've built the file. Now you bring it to LaRue. She reads it, reflects back what she sees, and asks what's missing. This chapter walks you through that first session — and explains why it will feel different from every AI conversation you've had before.",
+            },
+            {
+              num: "Chapter 13",
+              title: "What AI Cannot Do",
+              body: "The honesty chapter. Your values, your identity work, your relationships, the moment itself — those belong to you, not AI. Understanding exactly what LaRue can't do makes everything she can do more useful. This chapter draws the line clearly so you never have to wonder where it is.",
+            },
           ].map(({ num, title, body }) => (
             <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
               <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
@@ -330,10 +330,10 @@ export default function BookPage() {
           What you close the book with
         </p>
         <div className="space-y-4">
-          {[\
-            "A completed athlete.md",\
-            "A first AI conversation that felt different from any you've had before",\
-            "A file that travels with you when you change coaches, change programs, or change sports",\
+          {[
+            "A completed athlete.md",
+            "A first AI conversation that felt different from any you've had before",
+            "A file that travels with you when you change coaches, change programs, or change sports",
           ].map((item, i) => (
             <div key={i} className="flex items-start gap-4">
               <span className="font-mono text-xs text-[#B8821A] tracking-widest pt-1 flex-shrink-0">
@@ -365,8 +365,8 @@ Last updated: [date]
 [Sport, position, level, years competing, what the sport means to you]
 
 ## Performance Profile
-[What locked in feels like in your body. What tight feels like.\\
-Your warning signs before performance dips. What tends to derail you.\\
+[What locked in feels like in your body. What tight feels like.
+Your warning signs before performance dips. What tends to derail you.
 What you do well under pressure.]
 
 ## Mental Performance Patterns
