@@ -119,7 +119,7 @@ export default function BookPage() {
         <p className="font-inter text-xl text-[#8A8178] max-w-xl mb-4 leading-relaxed">
           The Athlete&apos;s Guide to Personalizing AI for Your Game
         </p>
-        <p className="font-inter text-base text-[#8A8178] max-w-lg mb-4 leading-relaxed">
+        <p className="font-inter text-base text-[#8A8178] max-w-2xl mb-4 leading-relaxed">
           AI doesn&apos;t know you. knwn.to fixes that. Build your athlete
           profile, personalize your AI, and carry your full story wherever your
           game takes you.
@@ -365,8 +365,8 @@ Last updated: [date]
 [Sport, position, level, years competing, what the sport means to you]
 
 ## Performance Profile
-[What locked in feels like in your body. What tight feels like.\
-Your warning signs before performance dips. What tends to derail you.\
+[What locked in feels like in your body. What tight feels like.
+Your warning signs before performance dips. What tends to derail you.
 What you do well under pressure.]
 
 ## Mental Performance Patterns
