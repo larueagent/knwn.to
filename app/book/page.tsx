@@ -377,8 +377,8 @@ Last updated: [date]
 [Sport, position, level, years competing, what the sport means to you]
 
 ## Performance Profile
-[What locked in feels like in your body. What tight feels like.
-Your warning signs before performance dips. What tends to derail you.
+[What locked in feels like in your body. What tight feels like.\
+Your warning signs before performance dips. What tends to derail you.\
 What you do well under pressure.]
 
 ## Mental Performance Patterns
@@ -453,31 +453,6 @@ Updated: [date]
           </p>
         </div>
       </section>
-
-      {/* Chapter 1 preview teaser */}
-      <div className="px-6 max-w-2xl mx-auto w-full pb-8">
-        <Link
-          href="/read"
-          className="group block bg-white border border-[#E0D9CE] rounded-lg p-8 hover:border-[#B8821A] transition-colors"
-        >
-          <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-3">
-            Read a preview
-          </p>
-          <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-4 leading-snug">
-            Chapter 1 &mdash; You&apos;ve Talked to AI.
-            <br />
-            It Didn&apos;t Really Talk to You.
-          </h2>
-          <p className="font-inter text-sm text-[#8A8178] leading-relaxed mb-6">
-            Every conversation with an AI starts from zero. It doesn&apos;t
-            remember what you told it last week. It doesn&apos;t know your
-            sport, your position, your team, your history&hellip;
-          </p>
-          <span className="font-mono text-xs text-[#B8821A] tracking-widest uppercase group-hover:underline">
-            Read Chapter 1 &rarr;
-          </span>
-        </Link>
-      </div>
 
       {/* Bottom CTA */}
       <section className="px-6 py-16 flex flex-col items-center text-center bg-white border-t border-[#E0D9CE]">
