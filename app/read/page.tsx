@@ -70,7 +70,7 @@ export default function ReadPage() {
         </h1>
 
         {/* Body */}
-        <div style={{ fontSize: '18px', lineHeight: '1.75', color: 'rgba(255,255,255,0.78)' }} className="chapter-body">
+        <div style={{ fontSize: '18px', lineHeight: '1.75', color: 'rgba(255,255,255,0.78)', display: 'flex', flexDirection: 'column', gap: '28px' }} className="chapter-body">
 
           <p>You&apos;ve already used ChatGPT.</p>
 
