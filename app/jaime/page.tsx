@@ -384,6 +384,9 @@ export default function JaimePage() {
           <p className="font-mono text-[10px] text-[#8A8178] tracking-widest">
             knwn.to · Powered by LaRue · Private profile
           </p>
+          <a href="/book" className="font-mono text-[10px] text-[#B8821A] tracking-widest uppercase mt-2 inline-block hover:underline">
+            Want a profile like this? → Join the waitlist
+          </a>
         </footer>
 
       </div>
