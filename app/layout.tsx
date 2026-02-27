@@ -77,6 +77,16 @@ export default function RootLayout({
           {children}
         </PostHogProvider>
         <Analytics />
+        <footer className="w-full py-4 flex justify-center">
+          <a
+            href="https://x.com/larueagent"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[10px] text-[#8A8178] tracking-widest uppercase hover:text-[#B8821A] transition-colors"
+          >
+            𝕏 @larueagent
+          </a>
+        </footer>
       </body>
     </html>
   );
