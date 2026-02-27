@@ -25,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "knwn.to — Your athletic identity, on record.",
+  title: "knwn.to \u2014 Your athletic identity, on record.",
   description:
     "AI doesn't know you. knwn.to fixes that. Build your athlete profile, personalize your AI, and carry your full story wherever your game takes you.",
   icons: {
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     apple: "/favicon.png",
   },
   openGraph: {
-    title: "knwn.to — Your athletic identity, on record.",
+    title: "knwn.to \u2014 Your athletic identity, on record.",
     description:
       "AI doesn't know you. knwn.to fixes that. Build your athlete profile, personalize your AI, and carry your full story wherever your game takes you.",
     url: "https://knwn.to",
@@ -43,17 +43,17 @@ export const metadata: Metadata = {
         url: "/OG Image.png",
         width: 1200,
         height: 630,
-        alt: "knwn.to — Your athletic identity, on record.",
+        alt: "knwn.to \u2014 Your athletic identity, on record.",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "knwn.to — Your athletic identity, on record.",
+    title: "knwn.to \u2014 Your athletic identity, on record.",
     description:
       "AI doesn't know you. knwn.to fixes that. Build your athlete profile, personalize your AI, and carry your full story wherever your game takes you.",
-    images: ["/OG Image.png"],
+    images: ["https://knwn.to/OG-image-1200.png"],
   },
 };
 
