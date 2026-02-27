@@ -55,6 +55,10 @@ export const metadata: Metadata = {
       "AI doesn't know you. knwn.to fixes that. Build your athlete profile, personalize your AI, and carry your full story wherever your game takes you.",
     images: ["https://knwn.to/OG-image-1200.png"],
   },
+  other: {
+    "twitter:card": "summary_large_image",
+    "twitter:image": "https://knwn.to/OG-image-1200.png",
+  },
 };
 
 export default function RootLayout({
