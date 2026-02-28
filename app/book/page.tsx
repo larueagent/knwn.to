@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import posthog from 'posthog-js'
 
 function EmailForm({
   submitted,
@@ -16,6 +17,7 @@ function EmailForm({
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
+    posthog.capture('waitlist_cta_clicked');
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -30,6 +32,7 @@ function EmailForm({
         setError(data.error || "Something went wrong. Please try again.");
       } else {
         setSubmitted(true);
+        posthog.capture('waitlist_signup_completed');
       }
     } catch {
       setError("Something went wrong. Please try again.");
@@ -377,8 +380,8 @@ Last updated: [date]
 [Sport, position, level, years competing, what the sport means to you]
 
 ## Performance Profile
-[What locked in feels like in your body. What tight feels like.\
-Your warning signs before performance dips. What tends to derail you.\
+[What locked in feels like in your body. What tight feels like.\\
+Your warning signs before performance dips. What tends to derail you.\\
 What you do well under pressure.]
 
 ## Mental Performance Patterns
