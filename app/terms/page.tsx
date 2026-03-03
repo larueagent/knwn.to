@@ -5,6 +5,25 @@ export const metadata = {
   description: "The terms governing your use of knwn.to and the First Read, operated by Mettle Performance, Inc.",
 };
 
+const sections = [
+  "Agreement to These Terms",
+  "Who Can Use knwn.to",
+  "The First Read",
+  "Minor Users (Ages 13–17)",
+  "Your Content",
+  "Intellectual Property",
+  "Paid Services",
+  "Prohibited Conduct",
+  "Disclaimers",
+  "Limitation of Liability",
+  "Indemnification",
+  "Governing Law and Disputes",
+  "Changes to These Terms",
+  "Termination",
+  "Entire Agreement",
+  "Contact",
+];
+
 export default function TermsPage() {
   return (
     <main className="min-h-screen bg-[#F5F0E8] px-6 py-20">
@@ -31,17 +50,36 @@ export default function TermsPage() {
           </p>
         </div>
 
+        {/* Table of Contents */}
+        <nav className="mb-12 p-6 bg-[#EDE8DF] rounded-lg">
+          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">Contents</p>
+          <ol className="space-y-2">
+            {sections.map((title, i) => (
+              <li key={i}>
+                <a
+                  href={`#section-${i + 1}`}
+                  className="font-body text-sm text-[#3D3935] hover:text-[#B8821A] transition-colors"
+                >
+                  <span className="font-mono text-xs text-[#9E9189] mr-2">{String(i + 1).padStart(2, "0")}</span>
+                  {title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
         {/* Body */}
         <div className="prose prose-stone max-w-none
           prose-headings:font-display prose-headings:text-[#1A1A1A]
-          prose-h2:text-xl prose-h2:mt-12 prose-h2:mb-4
+          prose-h2:text-xl prose-h2:mt-14 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-[#D4C9B8]
+          prose-h3:text-base prose-h3:font-semibold prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-[#3D3935]
           prose-p:text-[#3D3935] prose-p:leading-relaxed prose-p:font-body
-          prose-li:text-[#3D3935] prose-li:font-body
+          prose-li:text-[#3D3935] prose-li:font-body prose-li:leading-relaxed
           prose-strong:text-[#1A1A1A]
           prose-a:text-[#B8821A] prose-a:no-underline hover:prose-a:underline
-          prose-hr:border-[#D4C9B8]">
+          prose-hr:hidden">
 
-          <h2>1. Agreement to These Terms</h2>
+          <h2 id="section-1">Agreement to These Terms</h2>
           <p>
             By accessing or using knwn.to (the &ldquo;Site&rdquo;) or any related services (the &ldquo;Services&rdquo;), you agree to be bound by these Terms of Service (&ldquo;Terms&rdquo;). If you do not agree, do not use the Site or Services.
           </p>
@@ -52,9 +90,7 @@ export default function TermsPage() {
             If you are under 18, a parent or guardian must review and agree to these Terms on your behalf before you access any paid Services. Use of the free First Read intake by users ages 13&ndash;17 is permitted as described in Section 4.
           </p>
 
-          <hr />
-
-          <h2>2. Who Can Use knwn.to</h2>
+          <h2 id="section-2">Who Can Use knwn.to</h2>
           <p>To use knwn.to you must:</p>
           <ul>
             <li>Be at least 13 years old</li>
@@ -68,9 +104,7 @@ export default function TermsPage() {
             Users ages 13&ndash;17 may complete the First Read intake and receive their athlete profile. Access to paid features requires verified parental or guardian consent before any transaction is processed.
           </p>
 
-          <hr />
-
-          <h2>3. The First Read</h2>
+          <h2 id="section-3">The First Read</h2>
           <p>
             The First Read is a guided intake experience that produces a personalized athlete profile (&ldquo;athlete.md&rdquo;) based on your responses. It is provided for informational and developmental purposes only.
           </p>
@@ -81,9 +115,7 @@ export default function TermsPage() {
             We make no guarantee that the First Read will produce a specific outcome or result in improved athletic performance.
           </p>
 
-          <hr />
-
-          <h2>4. Minor Users (Ages 13&ndash;17)</h2>
+          <h2 id="section-4">Minor Users (Ages 13&ndash;17)</h2>
           <p>
             Athletes ages 13&ndash;17 may complete the First Read intake and receive their athlete profile at no charge. By completing the intake, you represent that you are at least 13 years old.
           </p>
@@ -94,9 +126,7 @@ export default function TermsPage() {
             Parents and guardians: by providing consent, you agree to these Terms on behalf of your minor child and take responsibility for their use of paid Services.
           </p>
 
-          <hr />
-
-          <h2>5. Your Content</h2>
+          <h2 id="section-5">Your Content</h2>
           <p>
             When you complete the First Read intake, you provide responses to a series of questions (&ldquo;Your Content&rdquo;). You retain ownership of Your Content.
           </p>
@@ -107,9 +137,7 @@ export default function TermsPage() {
             We may use aggregated, anonymized data derived from intake responses to improve the quality of the First Read. This data cannot be used to identify you.
           </p>
 
-          <hr />
-
-          <h2>6. Intellectual Property</h2>
+          <h2 id="section-6">Intellectual Property</h2>
           <p>
             All content on knwn.to &mdash; including the First Read questions, athlete profile format, design, copy, and methodology &mdash; is the property of Mettle Performance, Inc. and is protected by copyright and other intellectual property laws.
           </p>
@@ -120,9 +148,7 @@ export default function TermsPage() {
             Your athlete profile (athlete.md) is yours. You may use it, share it, or keep it private as you choose.
           </p>
 
-          <hr />
-
-          <h2>7. Paid Services</h2>
+          <h2 id="section-7">Paid Services</h2>
           <p>Certain features of knwn.to may require payment. When you purchase a paid service, you agree to:</p>
           <ul>
             <li>Provide accurate billing information</li>
@@ -137,9 +163,7 @@ export default function TermsPage() {
           </p>
           <p>Users under 18 may not purchase paid services without verified parental or guardian consent.</p>
 
-          <hr />
-
-          <h2>8. Prohibited Conduct</h2>
+          <h2 id="section-8">Prohibited Conduct</h2>
           <p>You agree not to:</p>
           <ul>
             <li>Use the Site for any unlawful purpose</li>
@@ -149,36 +173,32 @@ export default function TermsPage() {
             <li>Use the Services in any way that could harm Mettle Performance or other users</li>
           </ul>
 
-          <hr />
+          <h2 id="section-9">Disclaimers</h2>
+          <div className="bg-[#EDE8DF] rounded-lg p-5 text-sm text-[#3D3935] font-body leading-relaxed space-y-3 not-prose mt-4 mb-4">
+            <p>
+              The services are provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo; without warranty of any kind, express or implied. Mettle Performance does not warrant that the services will be uninterrupted, error-free, or free of harmful components.
+            </p>
+            <p>
+              The First Read is for informational and developmental purposes only. It is not a substitute for professional coaching, psychological counseling, or medical advice.
+            </p>
+          </div>
 
-          <h2>9. Disclaimers</h2>
-          <p className="uppercase text-sm">
-            The services are provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo; without warranty of any kind, express or implied. Mettle Performance does not warrant that the services will be uninterrupted, error-free, or free of harmful components.
-          </p>
-          <p className="uppercase text-sm">
-            The First Read is for informational and developmental purposes only. It is not a substitute for professional coaching, psychological counseling, or medical advice.
-          </p>
+          <h2 id="section-10">Limitation of Liability</h2>
+          <div className="bg-[#EDE8DF] rounded-lg p-5 text-sm text-[#3D3935] font-body leading-relaxed space-y-3 not-prose mt-4 mb-4">
+            <p>
+              To the fullest extent permitted by law, Mettle Performance, Inc. shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of the services, even if we have been advised of the possibility of such damages.
+            </p>
+            <p>
+              Our total liability to you for any claim arising out of these terms or the services shall not exceed the amount you paid us in the 12 months preceding the claim, or $100, whichever is greater.
+            </p>
+          </div>
 
-          <hr />
-
-          <h2>10. Limitation of Liability</h2>
-          <p className="uppercase text-sm">
-            To the fullest extent permitted by law, Mettle Performance, Inc. shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of the services, even if we have been advised of the possibility of such damages.
-          </p>
-          <p className="uppercase text-sm">
-            Our total liability to you for any claim arising out of these terms or the services shall not exceed the amount you paid us in the 12 months preceding the claim, or $100, whichever is greater.
-          </p>
-
-          <hr />
-
-          <h2>11. Indemnification</h2>
+          <h2 id="section-11">Indemnification</h2>
           <p>
             You agree to indemnify and hold harmless Mettle Performance, Inc. and its officers, directors, employees, and agents from any claims, damages, losses, or expenses (including reasonable attorneys&rsquo; fees) arising out of your use of the Services, your violation of these Terms, or your violation of any third-party rights.
           </p>
 
-          <hr />
-
-          <h2>12. Governing Law and Disputes</h2>
+          <h2 id="section-12">Governing Law and Disputes</h2>
           <p>
             These Terms are governed by the laws of the State of California, without regard to its conflict of law principles.
           </p>
@@ -189,16 +209,12 @@ export default function TermsPage() {
             Nothing in this section prevents either party from seeking injunctive or other equitable relief in a court of competent jurisdiction.
           </p>
 
-          <hr />
-
-          <h2>13. Changes to These Terms</h2>
+          <h2 id="section-13">Changes to These Terms</h2>
           <p>
             We may update these Terms from time to time. We will notify you of material changes by posting the updated Terms on this page with a new effective date. Continued use of the Services after changes take effect constitutes acceptance of the revised Terms.
           </p>
 
-          <hr />
-
-          <h2>14. Termination</h2>
+          <h2 id="section-14">Termination</h2>
           <p>
             We reserve the right to suspend or terminate your access to the Services at any time, for any reason, with or without notice &mdash; including if we believe you have violated these Terms.
           </p>
@@ -206,16 +222,12 @@ export default function TermsPage() {
             You may stop using the Services at any time. To request deletion of your account or data, contact <a href="mailto:privacy@knwn.to">privacy@knwn.to</a>.
           </p>
 
-          <hr />
-
-          <h2>15. Entire Agreement</h2>
+          <h2 id="section-15">Entire Agreement</h2>
           <p>
             These Terms, together with our Privacy Policy, constitute the entire agreement between you and Mettle Performance, Inc. regarding your use of the Services and supersede any prior agreements.
           </p>
 
-          <hr />
-
-          <h2>16. Contact</h2>
+          <h2 id="section-16">Contact</h2>
           <p>For questions about these Terms, contact us at:</p>
           <p>
             <a href="mailto:privacy@knwn.to">privacy@knwn.to</a><br />
