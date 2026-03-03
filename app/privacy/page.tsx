@@ -5,22 +5,6 @@ export const metadata = {
   description: "How Mettle Performance, Inc. collects, uses, and protects your information on knwn.to.",
 };
 
-const sections = [
-  "Who We Are",
-  "Information We Collect",
-  "How We Use Your Information",
-  "Children's Privacy — Users Under 13 (COPPA)",
-  "Users Ages 13–17",
-  "Data Sharing",
-  "Data Retention",
-  "Security",
-  "Your Rights",
-  "Cookies",
-  "Third-Party Links",
-  "Changes to This Policy",
-  "Contact",
-];
-
 export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-[#F5F0E8] px-6 py-20">
@@ -47,36 +31,19 @@ export default function PrivacyPage() {
           </p>
         </div>
 
-        {/* Table of Contents */}
-        <nav className="mb-12 p-6 bg-[#EDE8DF] rounded-lg">
-          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">Contents</p>
-          <ol className="space-y-2">
-            {sections.map((title, i) => (
-              <li key={i}>
-                <a
-                  href={`#section-${i + 1}`}
-                  className="font-body text-sm text-[#3D3935] hover:text-[#B8821A] transition-colors"
-                >
-                  <span className="font-mono text-xs text-[#9E9189] mr-2">{String(i + 1).padStart(2, "0")}</span>
-                  {title}
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-
         {/* Body */}
         <div className="prose prose-stone max-w-none
           prose-headings:font-display prose-headings:text-[#1A1A1A]
-          prose-h2:text-xl prose-h2:mt-14 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-[#D4C9B8]
-          prose-h3:text-base prose-h3:font-semibold prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-[#3D3935]
-          prose-p:text-[#3D3935] prose-p:leading-relaxed prose-p:font-body
-          prose-li:text-[#3D3935] prose-li:font-body prose-li:leading-relaxed
+          prose-h2:text-xl prose-h2:mt-14 prose-h2:mb-5 prose-h2:pb-3 prose-h2:border-b prose-h2:border-[#D4C9B8]
+          prose-h3:text-base prose-h3:font-bold prose-h3:mt-8 prose-h3:mb-3
+          prose-p:text-[#3D3935] prose-p:leading-relaxed prose-p:font-body prose-p:mb-4
+          prose-li:text-[#3D3935] prose-li:font-body prose-li:mb-1
+          prose-ul:mb-6 prose-ul:mt-2
           prose-strong:text-[#1A1A1A]
           prose-a:text-[#B8821A] prose-a:no-underline hover:prose-a:underline
-          prose-hr:hidden">
+          prose-hr:border-0 prose-hr:hidden">
 
-          <h2 id="section-1">Who We Are</h2>
+          <h2>1. Who We Are</h2>
           <p>
             knwn.to is a product of Mettle Performance, Inc. (&ldquo;Mettle Performance,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;), a company dedicated to helping athletes develop self-knowledge and perform at their highest level. This Privacy Policy explains how we collect, use, and protect information when you use knwn.to (the &ldquo;Site&rdquo;) and its related services (the &ldquo;Services&rdquo;).
           </p>
@@ -85,7 +52,8 @@ export default function PrivacyPage() {
             <a href="mailto:privacy@knwn.to">privacy@knwn.to</a>.
           </p>
 
-          <h2 id="section-2">Information We Collect</h2>
+          <h2>2. Information We Collect</h2>
+
           <h3>Information you provide directly</h3>
           <p>When you complete the First Read intake, we collect:</p>
           <ul>
@@ -100,12 +68,13 @@ export default function PrivacyPage() {
             <li>Parent or guardian email address</li>
             <li>Relationship to the athlete</li>
           </ul>
+
           <h3>Information collected automatically</h3>
           <p>
             We collect standard technical data when you visit the Site, including IP address, browser type, device type, pages visited, and time spent. We use this data to operate and improve the Site. We do not sell this data.
           </p>
 
-          <h2 id="section-3">How We Use Your Information</h2>
+          <h2>3. How We Use Your Information</h2>
           <p>We use the information we collect to:</p>
           <ul>
             <li>Deliver your First Read and athlete profile (athlete.md)</li>
@@ -119,7 +88,7 @@ export default function PrivacyPage() {
             We do not use your intake responses for advertising. We do not sell, rent, or share your personal information with third parties for their own marketing purposes.
           </p>
 
-          <h2 id="section-4">Children&rsquo;s Privacy &mdash; Users Under 13 (COPPA)</h2>
+          <h2>4. Children&rsquo;s Privacy &mdash; Users Under 13 (COPPA)</h2>
           <p>
             knwn.to is not directed to children under the age of 13. We do not knowingly collect personal information from anyone under 13.
           </p>
@@ -131,7 +100,7 @@ export default function PrivacyPage() {
             <a href="mailto:privacy@knwn.to">privacy@knwn.to</a>. We will verify the request and delete the information within a reasonable time.
           </p>
 
-          <h2 id="section-5">Users Ages 13&ndash;17</h2>
+          <h2>5. Users Ages 13&ndash;17</h2>
           <p>
             Athletes between the ages of 13 and 17 may complete the First Read intake and receive their athlete profile. We collect only the information described in Section 2 and use it only to deliver the Services.
           </p>
@@ -146,7 +115,7 @@ export default function PrivacyPage() {
           </ul>
           <p>We will respond to verified parental requests within 30 days.</p>
 
-          <h2 id="section-6">Data Sharing</h2>
+          <h2>6. Data Sharing</h2>
           <p>We share personal information only in the following limited circumstances:</p>
           <p>
             <strong>Service providers.</strong> We use trusted third-party services to operate knwn.to, including email delivery (SendGrid) and subscriber management (Kit). These providers process data on our behalf under confidentiality obligations and are not permitted to use your data for their own purposes.
@@ -159,7 +128,7 @@ export default function PrivacyPage() {
           </p>
           <p><strong>We do not sell personal information. Ever.</strong></p>
 
-          <h2 id="section-7">Data Retention</h2>
+          <h2>7. Data Retention</h2>
           <p>
             We retain your information for as long as your account is active or as needed to provide Services. If you request deletion of your account or data, we will remove your personal information within 30 days, except where we are required to retain it for legal or compliance purposes.
           </p>
@@ -167,12 +136,12 @@ export default function PrivacyPage() {
             Intake responses are retained to deliver and improve the First Read. You may request deletion of your responses at any time by contacting <a href="mailto:privacy@knwn.to">privacy@knwn.to</a>.
           </p>
 
-          <h2 id="section-8">Security</h2>
+          <h2>8. Security</h2>
           <p>
             We use reasonable technical and organizational measures to protect your information from unauthorized access, disclosure, alteration, or destruction. No method of transmission over the internet is completely secure, but we take reasonable precautions and are committed to responsible data handling.
           </p>
 
-          <h2 id="section-9">Your Rights</h2>
+          <h2>9. Your Rights</h2>
           <p>Depending on where you live, you may have the right to:</p>
           <ul>
             <li>Access the personal information we hold about you</li>
@@ -184,22 +153,22 @@ export default function PrivacyPage() {
             To exercise any of these rights, contact us at <a href="mailto:privacy@knwn.to">privacy@knwn.to</a>. We will respond within 30 days.
           </p>
 
-          <h2 id="section-10">Cookies</h2>
+          <h2>10. Cookies</h2>
           <p>
             We use minimal cookies necessary to operate the Site (session management, security). We do not use advertising or tracking cookies. You can control cookie settings through your browser.
           </p>
 
-          <h2 id="section-11">Third-Party Links</h2>
+          <h2>11. Third-Party Links</h2>
           <p>
             The Site may contain links to third-party websites. We are not responsible for the privacy practices of those sites and encourage you to review their policies.
           </p>
 
-          <h2 id="section-12">Changes to This Policy</h2>
+          <h2>12. Changes to This Policy</h2>
           <p>
             We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy on this page with a new effective date. For significant changes, we will send an email notification to registered users.
           </p>
 
-          <h2 id="section-13">Contact</h2>
+          <h2>13. Contact</h2>
           <p>
             For any privacy-related questions, data requests, or concerns &mdash; including COPPA requests from parents or guardians &mdash; contact us at:
           </p>
