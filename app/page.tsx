@@ -133,7 +133,7 @@ export default function Home() {
             Terms
           </Link>
           <a
-            href="https://x.com/larue"
+            href="https://x.com/larueagent"
             target="_blank"
             rel="noopener noreferrer"
             className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase"
