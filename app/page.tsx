@@ -63,7 +63,7 @@ export default function Home() {
           Early Access
         </p>
         <h1 className="font-syne font-bold text-5xl md:text-7xl text-[#1A1714] leading-tight mb-6 max-w-3xl">
-          Your performance readiness, captured.
+          Your performance readiness, <span className="text-[#B8821A]">captured.</span>
         </h1>
         <p className="font-inter text-lg text-[#8A8178] max-w-xl mb-12 leading-relaxed">
           knwn.to &#8212; not just your highlights. Your coachability, your preparation, your character.
@@ -93,21 +93,15 @@ export default function Home() {
               </button>
             </form>
             {error && (
-              <p className="font-inter text-sm text-red-500 mt-3">{error}</p>
+              <p className="mt-3 font-inter text-sm text-red-600">{error}</p>
             )}
-            <p className="font-inter text-sm text-[#8A8178] mt-5">
-              Already curious?{" "}
-              <Link href="/book" className="text-[#B8821A] hover:underline">
-                Learn about the book &rarr;
-              </Link>
-            </p>
           </>
         ) : (
-          <div className="bg-white border border-[#E0D9CE] rounded px-8 py-5 text-center">
-            <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
-              You&apos;re on the list
+          <div className="text-center">
+            <p className="font-syne font-bold text-2xl text-[#1A1714] mb-2">
+              You&apos;re on the list.
             </p>
-            <p className="font-inter text-[#8A8178] text-sm">
+            <p className="font-inter text-[#8A8178]">
               We&apos;ll be in touch when early access opens.
             </p>
           </div>
@@ -115,31 +109,17 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="px-6 py-8 border-t border-[#E0D9CE] flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
-          knwn.to &mdash; by LaRue
-        </p>
-        <div className="flex items-center gap-6">
-          <Link
-            href="/privacy"
-            className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase"
-          >
+      <footer className="px-6 py-5 border-t border-[#E0D9CE] flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
+          knwn.to &copy; 2025
+        </span>
+        <div className="flex items-center gap-4">
+          <Link href="/privacy" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
             Privacy
           </Link>
-          <Link
-            href="/terms"
-            className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase"
-          >
+          <Link href="/terms" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
             Terms
           </Link>
-          <a
-            href="https://x.com/larueagent"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase"
-          >
-            X / Twitter
-          </a>
         </div>
       </footer>
     </main>
