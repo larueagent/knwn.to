@@ -3,36 +3,23 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import posthog from 'posthog-js'
+import posthog from "posthog-js";
 
-function EmailForm({
-  submitted,
-  setSubmitted,
-}: {
-  submitted: boolean;
-  setSubmitted: (v: boolean) => void;
-}) {
-  const [email, setEmail] = useState("");
+function BuyButton() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    posthog.capture('waitlist_cta_clicked');
-    e.preventDefault();
-    setError("");
+  const handleBuy = async () => {
+    posthog.capture("buy_button_clicked");
     setLoading(true);
+    setError("");
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, tag: "book-waitlist" }),
-      });
+      const res = await fetch("/api/checkout", { method: "POST" });
       const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Something went wrong. Please try again.");
+      if (!res.ok || !data.url) {
+        setError("Something went wrong. Please try again.");
       } else {
-        setSubmitted(true);
-        posthog.capture('waitlist_signup_completed');
+        window.location.href = data.url;
       }
     } catch {
       setError("Something went wrong. Please try again.");
@@ -41,46 +28,17 @@ function EmailForm({
     }
   };
 
-  if (submitted) {
-    return (
-      <div className="bg-white border border-[#E0D9CE] rounded px-8 py-5 text-center">
-        <p className="font-syne font-semibold text-[#1A1714] mb-1">
-          You&apos;re on the list.
-        </p>
-        <p className="font-inter text-sm text-[#8A8178]">
-          We&apos;ll reach out as soon as the book is ready.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col sm:flex-row gap-3 w-full max-w-md"
+    <div className="flex flex-col items-center gap-3">
+      <button
+        onClick={handleBuy}
+        disabled={loading}
+        className="px-8 py-4 bg-[#B8821A] text-white font-syne font-semibold text-base rounded hover:bg-[#a07115] transition-colors disabled:opacity-60"
       >
-        <input
-          type="email"
-          required
-          placeholder="your@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={loading}
-          className="flex-1 px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors disabled:opacity-60"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-6 py-3 bg-[#B8821A] text-white font-syne font-semibold text-sm rounded hover:bg-[#a07115] transition-colors whitespace-nowrap disabled:opacity-60"
-        >
-          {loading ? "Joining..." : "Notify Me"}
-        </button>
-      </form>
-      {error && (
-        <p className="font-inter text-sm text-red-500 mt-3">{error}</p>
-      )}
-    </>
+        {loading ? "Loading..." : "Buy Now — $29"}
+      </button>
+      {error && <p className="font-inter text-sm text-red-500">{error}</p>}
+    </div>
   );
 }
 
@@ -91,8 +49,6 @@ const Divider = () => (
 );
 
 export default function BookPage() {
-  const [submitted, setSubmitted] = useState(false);
-
   return (
     <main className="min-h-screen bg-parchment flex flex-col">
       {/* Nav */}
@@ -114,7 +70,7 @@ export default function BookPage() {
       {/* Hero */}
       <section className="flex flex-col items-center text-center px-6 pt-20 pb-16">
         <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">
-          Coming 2026 &mdash; $29 at launch
+          Available now &mdash; $29
         </p>
         <h1 className="font-syne font-bold text-5xl md:text-7xl text-[#1A1714] leading-tight mb-4 max-w-3xl">
           Your Story, All of It
@@ -127,19 +83,11 @@ export default function BookPage() {
           profile, personalize your AI, and carry your full story wherever your
           game takes you.
         </p>
-        <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-4">
+        <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-10">
           written by Rob Yang with LaRue
         </p>
-        <p className="font-inter text-sm text-[#8A8178] mb-10">
-          We&apos;re writing this book in public. Follow along as we build it.
-        </p>
 
-        <EmailForm submitted={submitted} setSubmitted={setSubmitted} />
-        {!submitted && (
-          <p className="font-inter text-xs text-[#8A8178] mt-3">
-            Get notified when it&apos;s ready.
-          </p>
-        )}
+        <BuyButton />
       </section>
 
       <Divider />
@@ -181,8 +129,7 @@ export default function BookPage() {
           {[
             {
               num: "Chapter 1",
-              title:
-                "You've Talked to AI. It Didn't Really Talk to You.",
+              title: "You've Talked to AI. It Didn't Really Talk to You.",
               body: "84% of people have never typed a prompt. You're in the 16% who already crossed that line — and still felt underwhelmed. That's not a failure. That's a context problem. This chapter names the gap you already feel.",
             },
             {
@@ -192,15 +139,11 @@ export default function BookPage() {
             },
             {
               num: "Chapter 3",
-              title:
-                "The Athlete Who Gave It Nothing vs. The Athlete Who Gave It Everything",
+              title: "The Athlete Who Gave It Nothing vs. The Athlete Who Gave It Everything",
               body: "Two athletes. Same sport. Same question. Completely different answers — because one gave context and one didn't. This chapter shows the gap side by side, in real conversations. This is what you're building toward.",
             },
           ].map(({ num, title, body }) => (
-            <div
-              key={num}
-              className="border-l-2 border-[#E0D9CE] pl-6"
-            >
+            <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
               <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
                 {num}
               </p>
@@ -236,7 +179,7 @@ export default function BookPage() {
             {
               num: "Chapter 4",
               title: "Who You Are as an Athlete",
-              body: "Sport, position, level, what the sport means to you beyond the scoreboard. Without this, AI advises a generic competitor. With it, AI knows your role, your stakes, and what actually matters to you. This is the foundation everything else builds on.",
+              body: "Sport, position, level, years competing, what the sport means to you beyond the scoreboard. Without this, AI advises a generic competitor. With it, AI knows your role, your stakes, and what actually matters to you. This is the foundation everything else builds on.",
             },
             {
               num: "Chapter 5",
@@ -270,15 +213,11 @@ export default function BookPage() {
             },
             {
               num: "Chapter 11",
-              title:
-                "What You Want AI to Know That Doesn't Fit Anywhere Else",
+              title: "What You Want AI to Know That Doesn't Fit Anywhere Else",
               body: "Superstitions. Rituals. The thing that always helps and you don't know why. Anything true about you that doesn't have a label. No rules. Just true things. This chapter gives you permission to be specific in a way no category captures.",
             },
           ].map(({ num, title, body }) => (
-            <div
-              key={num}
-              className="border-l-2 border-[#E0D9CE] pl-6"
-            >
+            <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
               <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
                 {num}
               </p>
@@ -319,10 +258,7 @@ export default function BookPage() {
               body: "The honesty chapter. Your values, your identity work, your relationships, the moment itself — those belong to you, not AI. Understanding exactly what LaRue can't do makes everything she can do more useful. This chapter draws the line clearly so you never have to wonder where it is.",
             },
           ].map(({ num, title, body }) => (
-            <div
-              key={num}
-              className="border-l-2 border-[#E0D9CE] pl-6"
-            >
+            <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
               <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
                 {num}
               </p>
@@ -380,8 +316,8 @@ Last updated: [date]
 [Sport, position, level, years competing, what the sport means to you]
 
 ## Performance Profile
-[What locked in feels like in your body. What tight feels like.\\
-Your warning signs before performance dips. What tends to derail you.\\
+[What locked in feels like in your body. What tight feels like.
+Your warning signs before performance dips. What tends to derail you.
 What you do well under pressure.]
 
 ## Mental Performance Patterns
@@ -457,21 +393,43 @@ Updated: [date]
         </div>
       </section>
 
+      {/* Chapter 1 preview teaser */}
+      <div className="px-6 max-w-2xl mx-auto w-full pb-8">
+        <Link
+          href="/read"
+          className="group block bg-white border border-[#E0D9CE] rounded-lg p-8 hover:border-[#B8821A] transition-colors"
+        >
+          <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-3">
+            Read a preview
+          </p>
+          <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-4 leading-snug">
+            Chapter 1 &mdash; You&apos;ve Talked to AI.
+            <br />
+            It Didn&apos;t Really Talk to You.
+          </h2>
+          <p className="font-inter text-sm text-[#8A8178] leading-relaxed mb-6">
+            Every conversation with an AI starts from zero. It doesn&apos;t
+            remember what you told it last week. It doesn&apos;t know your
+            sport, your position, your team, your history&hellip;
+          </p>
+          <span className="font-mono text-xs text-[#B8821A] tracking-widest uppercase group-hover:underline">
+            Read Chapter 1 &rarr;
+          </span>
+        </Link>
+      </div>
+
       {/* Bottom CTA */}
       <section className="px-6 py-16 flex flex-col items-center text-center bg-white border-t border-[#E0D9CE]">
         <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-4">
-          This is a work in progress. So is your athlete.md.
+          Ready to build your athlete.md?
         </p>
         <h2 className="font-syne font-bold text-3xl text-[#1A1714] mb-4 max-w-xl leading-snug">
-          We&apos;re building this book the same way you&apos;ll use it.
+          Your Story, All of It
         </h2>
-        <p className="font-inter text-sm text-[#8A8178] max-w-md mb-3">
-          By being honest about where we are and what we don&apos;t know yet.
-        </p>
         <p className="font-inter text-sm text-[#8A8178] max-w-md mb-10">
-          $29 at launch. Get notified the moment it&apos;s available.
+          $29. Instant access. Lifetime updates as the book grows.
         </p>
-        <EmailForm submitted={submitted} setSubmitted={setSubmitted} />
+        <BuyButton />
       </section>
 
       {/* Footer */}
