@@ -17,9 +17,36 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const note = getFieldNoteBySlug(params.slug);
   if (!note) return {};
+
+  const title = `${note.title} — Field Notes — knwn.to`;
+  const description = note.excerpt;
+  const ogImage = `https://knwn.to/OG Image.png`;
+
   return {
-    title: `${note.title} — Field Notes — knwn.to`,
-    description: note.excerpt,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://knwn.to/field-notes/${params.slug}`,
+      siteName: 'knwn.to',
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: note.title,
+        },
+      ],
+      type: 'article',
+      publishedTime: note.date,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImage],
+    },
   };
 }
 
@@ -28,7 +55,8 @@ export default async function FieldNotePage({ params }: Props) {
   if (!note) notFound();
 
   const processed = await remark().use(remarkHtml).process(note.content);
-  const contentHtml = processed.toString();
+  // Strip the leading h1 from rendered markdown to avoid duplicating the title
+  const contentHtml = processed.toString().replace(/^<h1[^>]*>.*?<\/h1>\s*/i, '');
 
   return (
     <div className="min-h-screen bg-[#0D0C0B] text-[#E8E0D5]">
