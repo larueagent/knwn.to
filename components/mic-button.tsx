@@ -22,6 +22,7 @@ export function MicButton({ onTranscript, disabled }: MicButtonProps) {
     const data = new Uint8Array(analyser.frequencyBinCount);
     const tick = () => {
       analyser.getByteFrequencyData(data);
+      // Sample 7 evenly-spaced frequency bins for the waveform
       const newBars = Array.from({ length: 7 }, (_, i) => {
         const idx = Math.floor((i / 7) * data.length * 0.5);
         return Math.max(0.15, data[idx] / 255);
@@ -45,6 +46,7 @@ export function MicButton({ onTranscript, disabled }: MicButtonProps) {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
+      // Set up analyser for waveform visualisation
       const ctx = new AudioContext();
       const source = ctx.createMediaStreamSource(stream);
       const analyser = ctx.createAnalyser();
@@ -140,15 +142,18 @@ export function MicButton({ onTranscript, disabled }: MicButtonProps) {
         ].join(" ")}
       >
         {isBusy ? (
+          /* Spinner */
           <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
           </svg>
         ) : isActive ? (
+          /* Stop icon */
           <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
             <rect x="2" y="2" width="10" height="10" rx="1" />
           </svg>
         ) : (
+          /* Mic icon */
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
             <rect x="5" y="1" width="6" height="9" rx="3" />
             <path d="M2 7.5A6 6 0 0014 7.5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
@@ -156,11 +161,14 @@ export function MicButton({ onTranscript, disabled }: MicButtonProps) {
             <line x1="5.5" y1="14.5" x2="10.5" y2="14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
         )}
+
+        {/* Pulse ring when recording */}
         {isActive && (
           <span className="absolute inset-0 rounded-full animate-ping bg-[#1A1A1A] opacity-20" />
         )}
       </button>
 
+      {/* Waveform bars — only visible while recording */}
       {isActive && (
         <div className="flex items-center gap-[3px] h-7" aria-hidden>
           {bars.map((h, i) => (
