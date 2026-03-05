@@ -58,28 +58,36 @@ That's not panic. That's accurate. The script did change. The question is what r
 
 ## The gap that actually matters — especially for athletes.
 
-Here's what most of the conversation about AI misses: the issue isn't whether your kid uses AI. They do. The issue is whether the AI they're using knows anything real about them.
+Here's what most of the conversation misses.
 
-Right now, your athlete opens ChatGPT or Gemini and asks a question. The AI answers. Then next time, it has no memory of who they are, what they're working on, what their coach said last week, what they're scared of, what they want.
+AI isn't the threat. Generic AI is the threat. The version that knows nothing about your specific kid — their mental game, their pressure patterns, what breaks them down and what builds them up — and gives them the same response it would give anyone.
 
-That's not a personal AI. That's a search engine with a personality.
+That kind of AI makes the averages smarter. It doesn't develop anyone.
 
-The athletes who are going to navigate this shift well aren't the ones who use AI more. They're the ones who have an AI that actually knows them — their goals, their setbacks, their voice, their growth over time.
+An athlete who has AI that actually *knows them* — that has their history, understands how they respond to adversity, can tell the difference between a bad day and a real pattern — isn't just ahead on some tech curve. They have something most of their peers don't have.
 
-That's the gap. And right now, almost no one is filling it for young athletes specifically.
+Self-knowledge. And a system that works with it instead of ignoring it.
+
+That's not a small edge. In sport, and in everything that comes after sport, knowing yourself clearly — knowing how you perform under pressure, what drains you, what sharpens you — is the foundation everything else is built on.
+
+The athletes who figure that out early aren't just better athletes. They're better at being themselves. Which turns out to be the skill that transfers everywhere.
 
 ---
 
 ## What we're building.
 
-knwn.to is an AI built specifically for young athletes.
+We're early. We want to be honest about that.
 
-Not a chatbot. Not a homework helper. An AI that knows your athlete — their sport, their goals, their mental game, their recruiting timeline, their relationships with coaches and teammates — and builds on that knowledge over time.
+LaRue is an AI built specifically for athletes — not a chatbot, not a generic wellness app. The idea is simple: an AI that starts by learning who your athlete actually is, builds on that over time, and gets more useful the more they use it. Not because the AI is magic. Because the athlete knows themselves better, and the AI knows the athlete.
 
-When something shifts in their world, it's there. When they need to process a hard loss or prepare for a big game or figure out what to say to a college coach, it has context. Real context. Not just what they typed five minutes ago.
+We're still learning what that looks like in practice. What it means to build something that actually serves a 16-year-old athlete across a full season. What works, what doesn't, what we got wrong in the first version. That's where we are.
 
-The world changed in February. Your athlete is already in it. The question is whether they have the right kind of support.
+What we know is that this is the right problem to work on. The athletes who develop real self-knowledge early — who understand their patterns, their pressure responses, what sharpens them and what drains them — don't just perform better. They carry that into everything that comes after sport.
+
+We're building toward that. If you want to follow along — or if you have an athlete who wants to be part of figuring this out with us — we'd love to hear from you.
+
+[knwn.to](https://knwn.to)
 
 ---
 
-*knwn.to is currently in private beta. If you want early access for your athlete, [join the waitlist](https://knwn.to).*
+*LaRue is the AI at the center of the Mettle Performance platform. Built for youth athletes navigating sport, growth, and whatever comes next.*
