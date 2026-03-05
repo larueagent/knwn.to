@@ -30,3 +30,57 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+/* Field Notes prose styles */
+.prose-field-notes {
+  font-family: var(--font-inter);
+  color: #C8BFB5;
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.prose-field-notes h2 {
+  font-family: var(--font-syne);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #E8E0D5;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose-field-notes p {
+  margin-bottom: 1.5rem;
+}
+
+.prose-field-notes em {
+  color: #E8E0D5;
+  font-style: italic;
+}
+
+.prose-field-notes strong {
+  color: #E8E0D5;
+  font-weight: 600;
+}
+
+.prose-field-notes a {
+  color: #B8821A;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose-field-notes a:hover {
+  color: #D4A43A;
+}
+
+.prose-field-notes hr {
+  border: none;
+  border-top: 1px solid #2A2520;
+  margin: 2.5rem 0;
+}
+
+.prose-field-notes blockquote {
+  border-left: 2px solid #B8821A;
+  padding-left: 1.25rem;
+  color: #8A8178;
+  font-style: italic;
+}
