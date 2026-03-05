@@ -15,37 +15,35 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const note = getFieldNoteBySlug(params.slug);
-  if (!note) return {};
+  const note = await getFieldNoteBySlug(params.slug);
+  if (!note) return { title: 'Not Found' };
 
-  const title = `${note.title} — Field Notes — knwn.to`;
-  const description = note.excerpt;
-  const ogImage = `https://knwn.to/OG Image.png`;
+  const ogTitle = note.ogTitle || note.title;
+  const ogDescription = note.ogDescription || note.excerpt;
 
   return {
-    title,
-    description,
+    title: `${note.title} — Field Notes — knwn.to`,
+    description: note.excerpt,
     openGraph: {
-      title,
-      description,
+      title: ogTitle,
+      description: ogDescription,
       url: `https://knwn.to/field-notes/${params.slug}`,
-      siteName: 'knwn.to',
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: note.title,
-        },
-      ],
       type: 'article',
       publishedTime: note.date,
+      images: [
+        {
+          url: `https://knwn.to/api/og?title=${encodeURIComponent(ogTitle)}&date=${encodeURIComponent(note.date)}`,
+          width: 1200,
+          height: 630,
+          alt: ogTitle,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
-      images: [ogImage],
+      title: ogTitle,
+      description: ogDescription,
+      images: [`https://knwn.to/api/og?title=${encodeURIComponent(ogTitle)}&date=${encodeURIComponent(note.date)}`],
     },
   };
 }
@@ -66,7 +64,7 @@ export default async function FieldNotePage({ params }: Props) {
           href="/field-notes"
           className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase"
         >
-          ← Field Notes
+          &#8592; Field Notes
         </Link>
       </div>
 
