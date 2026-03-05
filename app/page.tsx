@@ -126,6 +126,9 @@ export default function Home() {
           <Link href="/terms" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
             Terms
           </Link>
+          <Link href="/field-notes" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
+            Field Notes
+          </Link>
           <a href="https://x.com/larueagent" target="_blank" rel="noopener noreferrer" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
             Twitter
           </a>
