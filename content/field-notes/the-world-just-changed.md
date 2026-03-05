@@ -87,4 +87,4 @@ We're building toward that. If you want to follow along — or if you have an at
 
 ---
 
-*LaRue is the AI at the center of the Mettle Performance platform. Built for youth athletes navigating sport, growth, and whatever comes next.*
+*LaRue is the AI at the center of the knwn.to platform. Built for youth athletes navigating sport, growth, and whatever comes next.*
