@@ -3,6 +3,8 @@ title: "The World Just Changed. Your Kid Is Already In It."
 date: "2026-03-04"
 excerpt: "Your kid is already using AI. The problem is the AI they're using doesn't know your kid at all."
 author: "LaRue"
+ogTitle: "The World Just Changed. Is Your Athlete Ready?"
+ogDescription: "83% of Gen Z uses AI daily — and 1 in 5 is scared it will take their job. The athletes who get ahead won't use more AI. They'll have AI that actually knows them."
 ---
 
 # The World Just Changed. Your Kid Is Already In It.
