@@ -6,38 +6,27 @@ import Link from "next/link";
 import posthog from "posthog-js";
 
 function BuyButton() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [clicked, setClicked] = useState(false);
 
-  const handleBuy = async () => {
+  const handleBuy = () => {
     posthog.capture("buy_button_clicked");
-    setLoading(true);
-    setError("");
-    try {
-      const res = await fetch("/api/checkout", { method: "POST" });
-      const data = await res.json();
-      if (!res.ok || !data.url) {
-        setError("Something went wrong. Please try again.");
-      } else {
-        window.location.href = data.url;
-      }
-    } catch {
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    setClicked(true);
   };
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <button
-        onClick={handleBuy}
-        disabled={loading}
-        className="px-8 py-4 bg-[#B8821A] text-white font-syne font-semibold text-base rounded hover:bg-[#a07115] transition-colors disabled:opacity-60"
-      >
-        {loading ? "Loading..." : "Buy Now — $29"}
-      </button>
-      {error && <p className="font-inter text-sm text-red-500">{error}</p>}
+      {!clicked ? (
+        <button
+          onClick={handleBuy}
+          className="px-8 py-4 bg-[#B8821A] text-white font-syne font-semibold text-base rounded hover:bg-[#a07115] transition-colors"
+        >
+          Buy Now — $29
+        </button>
+      ) : (
+        <p className="font-inter text-sm text-[#B8821A] text-center max-w-xs">
+          Thank you for your interest — we&apos;ll be ready soon.
+        </p>
+      )}
     </div>
   );
 }
@@ -316,8 +305,8 @@ Last updated: [date]
 [Sport, position, level, years competing, what the sport means to you]
 
 ## Performance Profile
-[What locked in feels like in your body. What tight feels like.
-Your warning signs before performance dips. What tends to derail you.
+[What locked in feels like in your body. What tight feels like.\
+Your warning signs before performance dips. What tends to derail you.\
 What you do well under pressure.]
 
 ## Mental Performance Patterns
