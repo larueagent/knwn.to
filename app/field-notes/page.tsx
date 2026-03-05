@@ -13,7 +13,7 @@ export default function FieldNotesIndex() {
 
   return (
     <div className="min-h-screen bg-[#0D0C0B] text-[#E8E0D5]">
-      <Nav />
+      <Nav variant="dark" />
 
       <div className="max-w-2xl mx-auto px-6 pt-8 pb-24">
         <h1 className="font-syne text-4xl font-bold text-[#E8E0D5] mb-2">Field Notes</h1>
@@ -43,7 +43,7 @@ export default function FieldNotesIndex() {
                     {note.excerpt}
                   </p>
                   <span className="font-mono text-xs text-[#B8821A] tracking-widest uppercase">
-                    Read →
+                    Read &#x2192;
                   </span>
                 </Link>
               </article>
