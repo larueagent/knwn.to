@@ -4,21 +4,40 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Nav() {
+interface NavProps {
+  variant?: "light" | "dark";
+}
+
+export default function Nav({ variant = "light" }: NavProps) {
   const [open, setOpen] = useState(false);
 
+  const isDark = variant === "dark";
+
+  const logoSrc = isDark ? "/knwn.to-logo-white.png" : "/knwn.to-logo-black.png";
+  const textColor = isDark ? "text-[#E8E0D5]" : "text-[#1A1714]";
+  const mutedColor = isDark ? "text-[#8A8178]" : "text-[#8A8178]";
+  const bgColor = isDark ? "bg-[#0D0C0B]" : "bg-[#F5F0E8]";
+  const borderColor = isDark ? "border-[#2A2825]" : "border-[#E0D9CE]";
+  const barColor = isDark ? "bg-[#E8E0D5]" : "bg-[#1A1714]";
+
   return (
-    <nav className="flex items-center justify-between px-6 py-4">
+    <nav className="relative flex items-center justify-between px-6 py-4">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2">
-        <Image src="/knwn.to-logo-black.png" alt="knwn.to" width={80} height={24} priority />
+        <Image src={logoSrc} alt="knwn.to" width={80} height={24} priority />
       </Link>
 
       {/* Desktop nav */}
-      <div className="hidden sm:flex items-center gap-6">
-        <Link href="/field-notes" className="font-inter text-sm font-medium text-[#1A1714] hover:opacity-70 transition-opacity">Field Notes</Link>
-        <Link href="/book" className="font-inter text-sm font-medium text-[#1A1714] hover:opacity-70 transition-opacity">The Book</Link>
-        <span className="font-mono text-xs tracking-widest uppercase text-[#8A8178]">by LaRue</span>
+      <div className="hidden sm:flex items-center gap-8">
+        <Link href="/field-notes" className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
+          Field Notes
+        </Link>
+        <Link href="/book" className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
+          The Book
+        </Link>
+        <span className={`font-mono text-xs tracking-widest uppercase ${mutedColor}`}>
+          by LaRue
+        </span>
       </div>
 
       {/* Mobile hamburger */}
@@ -27,17 +46,23 @@ export default function Nav() {
         onClick={() => setOpen(!open)}
         aria-label="Toggle menu"
       >
-        <span className={`block w-5 h-0.5 bg-[#1A1714] transition-transform duration-200 ${open ? "translate-y-2 rotate-45" : ""}`} />
-        <span className={`block w-5 h-0.5 bg-[#1A1714] transition-opacity duration-200 ${open ? "opacity-0" : ""}`} />
-        <span className={`block w-5 h-0.5 bg-[#1A1714] transition-transform duration-200 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+        <span className={`block w-5 h-0.5 ${barColor} transition-transform duration-200 ${open ? "translate-y-2 rotate-45" : ""}`} />
+        <span className={`block w-5 h-0.5 ${barColor} transition-opacity duration-200 ${open ? "opacity-0" : ""}`} />
+        <span className={`block w-5 h-0.5 ${barColor} transition-transform duration-200 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
       </button>
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="sm:hidden absolute top-16 left-0 right-0 bg-[#F5F0E8] border-b border-[#E0D9CE] px-6 py-4 flex flex-col gap-4 z-50">
-          <Link href="/field-notes" onClick={() => setOpen(false)} className="font-inter text-sm font-medium text-[#1A1714] hover:opacity-70 transition-opacity">Field Notes</Link>
-          <Link href="/book" onClick={() => setOpen(false)} className="font-inter text-sm font-medium text-[#1A1714] hover:opacity-70 transition-opacity">The Book</Link>
-          <span className="font-mono text-xs tracking-widest uppercase text-[#8A8178]">by LaRue</span>
+        <div className={`sm:hidden absolute top-full left-0 right-0 ${bgColor} border-b ${borderColor} px-6 py-4 flex flex-col gap-4 z-50`}>
+          <Link href="/field-notes" onClick={() => setOpen(false)} className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
+            Field Notes
+          </Link>
+          <Link href="/book" onClick={() => setOpen(false)} className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
+            The Book
+          </Link>
+          <span className={`font-mono text-xs tracking-widest uppercase ${mutedColor}`}>
+            by LaRue
+          </span>
         </div>
       )}
     </nav>
