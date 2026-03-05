@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const ogTitle = note.ogTitle || note.title;
   const ogDescription = note.ogDescription || note.excerpt;
-  const ogImage = note.ogImage || '/OG-image-1200.png';
+  const ogImage = note.ogImage || '/og-default.png';
   const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://knwn.to${ogImage}`;
 
   return {
@@ -75,96 +75,57 @@ function rehypeInlineStyles() {
 }
 
 export default async function FieldNotePage({ params }: Props) {
-  const note = await getFieldNoteBySlug(params.slug);
+  const note = getFieldNoteBySlug(params.slug);
   if (!note) notFound();
 
-  const processedContent = await unified()
+  const processed = await unified()
     .use(remarkParse)
     .use(remarkRehype)
     .use(rehypeInlineStyles)
     .use(rehypeStringify)
     .process(note.content);
 
-  const contentHtml = processedContent.toString();
+  const contentHtml = processed.toString();
 
   return (
-    <main style={{ backgroundColor: '#0D0B09', minHeight: '100vh' }}>
-      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '4rem 1.5rem 6rem' }}>
+    <div className="min-h-screen bg-[#0D0C0B] text-[#E8E0D5]">
+      {/* Back nav */}
+      <div className="max-w-2xl mx-auto px-6 pt-16 pb-4">
+        <Link
+          href="/field-notes"
+          className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase"
+        >
+          &#8592; Field Notes
+        </Link>
+      </div>
 
-        {/* Back nav */}
-        <div style={{ marginBottom: '3rem' }}>
-          <Link
-            href="/field-notes"
-            style={{
-              fontFamily: 'var(--font-inter), system-ui, sans-serif',
-              fontSize: '0.875rem',
-              color: '#8A8178',
-              textDecoration: 'none',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-            }}
-          >
-            &larr; Field Notes
-          </Link>
-        </div>
+      <article className="max-w-2xl mx-auto px-6 pt-8 pb-24">
+        {/* Date */}
+        <p className="font-mono text-xs text-[#B8821A] tracking-widest uppercase mb-4">
+          {new Date(note.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'UTC',
+          })}
+        </p>
 
-        {/* Header */}
-        <header style={{ marginBottom: '3rem' }}>
-          <p style={{
-            fontFamily: 'var(--font-inter), system-ui, sans-serif',
-            fontSize: '0.8125rem',
-            color: '#8A8178',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            marginBottom: '1rem',
-          }}>
-            {new Date(note.date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </p>
-          <h1 style={{
-            fontFamily: 'var(--font-syne), sans-serif',
-            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-            fontWeight: 700,
-            color: '#E8E0D5',
-            lineHeight: 1.2,
-            marginBottom: '1.5rem',
-          }}>
-            {note.title}
-          </h1>
-          <p style={{
-            fontFamily: 'var(--font-inter), system-ui, sans-serif',
-            fontSize: '1.125rem',
-            color: '#8A8178',
-            lineHeight: 1.6,
-            fontStyle: 'italic',
-          }}>
-            {note.excerpt}
-          </p>
-        </header>
+        {/* Title */}
+        <h1 className="font-syne text-4xl md:text-5xl font-bold text-[#E8E0D5] leading-tight mb-6">
+          {note.title}
+        </h1>
 
-        {/* Divider */}
-        <hr style={{ border: 'none', borderTop: '1px solid #2A2520', marginBottom: '3rem' }} />
+        {/* Byline */}
+        <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-6">
+          BY LARUE
+        </p>
+
+        {/* Amber rule */}
+        <div className="h-px w-16 bg-[#B8821A] mb-10" />
 
         {/* Content */}
-        <article dangerouslySetInnerHTML={{ __html: contentHtml }} />
-
-        {/* Footer */}
-        <div style={{ marginTop: '4rem', paddingTop: '2rem', borderTop: '1px solid #2A2520' }}>
-          <Link
-            href="/field-notes"
-            style={{
-              fontFamily: 'var(--font-inter), system-ui, sans-serif',
-              fontSize: '0.875rem',
-              color: '#8A8178',
-              textDecoration: 'none',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-            }}
-          >
-            &larr; All Field Notes
-          </Link>
-        </div>
-
-      </div>
-    </main>
+        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+      </article>
+    </div>
   );
 }
