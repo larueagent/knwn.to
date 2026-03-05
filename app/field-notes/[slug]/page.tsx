@@ -20,6 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const ogTitle = note.ogTitle || note.title;
   const ogDescription = note.ogDescription || note.excerpt;
+  const ogImage = note.ogImage || '/og-default.png';
+  const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://knwn.to${ogImage}`;
 
   return {
     title: `${note.title} — Field Notes — knwn.to`,
@@ -32,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: note.date,
       images: [
         {
-          url: `https://knwn.to/api/og?title=${encodeURIComponent(ogTitle)}&date=${encodeURIComponent(note.date)}`,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: ogTitle,
@@ -43,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image',
       title: ogTitle,
       description: ogDescription,
-      images: [`https://knwn.to/api/og?title=${encodeURIComponent(ogTitle)}&date=${encodeURIComponent(note.date)}`],
+      images: [ogImageUrl],
     },
   };
 }
@@ -53,7 +55,6 @@ export default async function FieldNotePage({ params }: Props) {
   if (!note) notFound();
 
   const processed = await remark().use(remarkHtml).process(note.content);
-  // Strip the leading h1 from rendered markdown to avoid duplicating the title
   const contentHtml = processed.toString().replace(/^<h1[^>]*>.*?<\/h1>\s*/i, '');
 
   return (
@@ -90,11 +91,18 @@ export default async function FieldNotePage({ params }: Props) {
         </p>
 
         {/* Divider */}
-        <div className="w-12 h-px bg-[#B8821A] mb-12" />
+        <div className="border-t border-[#2A2520] mb-12" />
 
         {/* Content */}
         <div
-          className="prose-field-notes"
+          className="prose prose-invert prose-sm max-w-none
+            prose-headings:font-syne prose-headings:text-[#E8E0D5]
+            prose-p:text-[#C8BFB5] prose-p:leading-relaxed
+            prose-a:text-[#B8821A] prose-a:no-underline hover:prose-a:underline
+            prose-strong:text-[#E8E0D5]
+            prose-blockquote:border-[#B8821A] prose-blockquote:text-[#8A8178]
+            prose-code:text-[#B8821A] prose-code:bg-[#1A1814]
+            prose-pre:bg-[#1A1814] prose-pre:border prose-pre:border-[#2A2520]"
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
       </article>
