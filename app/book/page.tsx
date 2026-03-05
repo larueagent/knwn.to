@@ -3,31 +3,82 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import posthog from "posthog-js";
+import Nav from "@/components/Nav";
 
-function BuyButton() {
-  const [clicked, setClicked] = useState(false);
+function EmailForm({
+  submitted,
+  setSubmitted,
+}: {
+  submitted: boolean;
+  setSubmitted: (v: boolean) => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleBuy = () => {
-    posthog.capture("buy_button_clicked");
-    setClicked(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, tag: "book-waitlist" }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Something went wrong. Please try again.");
+      } else {
+        setSubmitted(true);
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return (
-    <div className="flex flex-col items-center gap-3">
-      {!clicked ? (
-        <button
-          onClick={handleBuy}
-          className="px-8 py-4 bg-[#B8821A] text-white font-syne font-semibold text-base rounded hover:bg-[#a07115] transition-colors"
-        >
-          Buy Now — $29
-        </button>
-      ) : (
-        <p className="font-inter text-sm text-[#B8821A] text-center max-w-xs">
-          Thank you for your interest — we&apos;ll be ready soon.
+  if (submitted) {
+    return (
+      <div className="bg-white border border-[#E0D9CE] rounded px-8 py-5 text-center">
+        <p className="font-syne font-semibold text-[#1A1714] mb-1">
+          You&apos;re on the list.
         </p>
+        <p className="font-inter text-sm text-[#8A8178]">
+          We&apos;ll reach out as soon as the book is ready.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col sm:flex-row gap-3 w-full max-w-md"
+      >
+        <input
+          type="email"
+          required
+          placeholder="your@email.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={loading}
+          className="flex-1 px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors disabled:opacity-60"
+        />
+        <button
+          type="submit"
+          disabled={loading}
+          className="px-6 py-3 bg-[#B8821A] text-white font-syne font-semibold text-sm rounded hover:bg-[#a07115] transition-colors whitespace-nowrap disabled:opacity-60"
+        >
+          {loading ? "Joining..." : "Notify Me"}
+        </button>
+      </form>
+      {error && (
+        <p className="font-inter text-sm text-red-500 mt-3">{error}</p>
       )}
-    </div>
+    </>
   );
 }
 
@@ -38,45 +89,41 @@ const Divider = () => (
 );
 
 export default function BookPage() {
+  const [submitted, setSubmitted] = useState(false);
+
   return (
     <main className="min-h-screen bg-parchment flex flex-col">
-      {/* Nav */}
-      <nav className="px-6 py-5 flex items-center justify-between border-b border-[#E0D9CE]">
-        <Link href="/">
-          <Image
-            src="/knwn.to%20logo%20black.png"
-            alt="knwn.to"
-            width={120}
-            height={40}
-            priority
-          />
-        </Link>
-        <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
-          by LaRue
-        </span>
-      </nav>
+      <Nav />
 
       {/* Hero */}
       <section className="flex flex-col items-center text-center px-6 pt-20 pb-16">
         <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">
-          Available now &mdash; $29
+          Coming 2026 &mdash; $29 at launch
         </p>
         <h1 className="font-syne font-bold text-5xl md:text-7xl text-[#1A1714] leading-tight mb-4 max-w-3xl">
           Your Story, All of It
         </h1>
-        <p className="font-inter text-xl text-[#8A8178] max-w-2xl mb-4 leading-relaxed">
+        <p className="font-inter text-xl text-[#8A8178] max-w-xl mb-4 leading-relaxed">
           The Athlete&apos;s Guide to Personalizing AI for Your Game
         </p>
-        <p className="font-inter text-base text-[#8A8178] max-w-lg mb-4 leading-relaxed">
+        <p className="font-inter text-base text-[#8A8178] max-w-xl mb-4 leading-relaxed">
           AI doesn&apos;t know you. knwn.to fixes that. Build your athlete
           profile, personalize your AI, and carry your full story wherever your
           game takes you.
         </p>
-        <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-10">
-          written by Rob Yang with LaRue
+        <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-4">
+          by Robert Yang
+        </p>
+        <p className="font-inter text-sm text-[#8A8178] mb-10">
+          We&apos;re writing this book in public. Follow along as we build it.
         </p>
 
-        <BuyButton />
+        <EmailForm submitted={submitted} setSubmitted={setSubmitted} />
+        {!submitted && (
+          <p className="font-inter text-xs text-[#8A8178] mt-3">
+            Get notified when it&apos;s ready.
+          </p>
+        )}
       </section>
 
       <Divider />
@@ -305,8 +352,8 @@ Last updated: [date]
 [Sport, position, level, years competing, what the sport means to you]
 
 ## Performance Profile
-[What locked in feels like in your body. What tight feels like.\
-Your warning signs before performance dips. What tends to derail you.\
+[What locked in feels like in your body. What tight feels like.
+Your warning signs before performance dips. What tends to derail you.
 What you do well under pressure.]
 
 ## Mental Performance Patterns
@@ -410,35 +457,31 @@ Updated: [date]
       {/* Bottom CTA */}
       <section className="px-6 py-16 flex flex-col items-center text-center bg-white border-t border-[#E0D9CE]">
         <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-4">
-          Ready to build your athlete.md?
+          This is a work in progress. So is your athlete.md.
         </p>
         <h2 className="font-syne font-bold text-3xl text-[#1A1714] mb-4 max-w-xl leading-snug">
-          Your Story, All of It
+          We&apos;re building this book the same way you&apos;ll use it.
         </h2>
-        <p className="font-inter text-sm text-[#8A8178] max-w-md mb-10">
-          $29. Instant access. Lifetime updates as the book grows.
+        <p className="font-inter text-sm text-[#8A8178] max-w-sm mb-3">
+          By being honest about where we are and what we don&apos;t know yet.
         </p>
-        <BuyButton />
+        <p className="font-inter text-sm text-[#8A8178] max-w-sm mb-10">
+          $29 at launch. Get notified the moment it&apos;s available.
+        </p>
+        <EmailForm submitted={submitted} setSubmitted={setSubmitted} />
       </section>
 
       {/* Footer */}
       <footer className="px-6 py-5 border-t border-[#E0D9CE] flex items-center justify-between">
         <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
-          &copy; 2026 knwn.to
+          &copy; {new Date().getFullYear()} knwn.to
         </span>
-        <div className="flex items-center gap-4">
-          <a
-            href="https://dexscreener.com/base/0x6cda1d74c964f2660336b74a7f93436656324da7473c5008a7a2696c8ac3a85b"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase"
-          >
-            $STATE
-          </a>
-          <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
-            knwn.to
-          </span>
-        </div>
+        <Link
+          href="/"
+          className="font-mono text-xs text-[#8A8178] tracking-widest uppercase hover:text-[#1A1714] transition-colors"
+        >
+          &larr; Home
+        </Link>
       </footer>
     </main>
   );
