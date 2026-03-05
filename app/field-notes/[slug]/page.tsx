@@ -101,7 +101,7 @@ export default async function FieldNotePage({ params }: Props) {
 
       <article className="max-w-2xl mx-auto px-6 pt-8 pb-24">
         {/* Date */}
-        <p className="font-mono text-xs text-[#B8821A] tracking-widest uppercase mb-4">
+        <p style={{fontFamily:'var(--font-mono)',fontSize:'0.75rem',color:'#B8821A',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:'1rem'}}>
           {new Date(note.date).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -111,17 +111,17 @@ export default async function FieldNotePage({ params }: Props) {
         </p>
 
         {/* Title */}
-        <h1 className="font-syne text-4xl md:text-5xl font-bold text-[#E8E0D5] leading-tight mb-6">
+        <h1 style={{fontFamily:'var(--font-syne),sans-serif',fontSize:'2.2rem',fontWeight:700,color:'#E8E0D5',lineHeight:1.2,marginBottom:'1.5rem'}}>
           {note.title}
         </h1>
 
-        {/* Byline */}
-        <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-6">
-          BY LARUE
+        {/* Author */}
+        <p style={{fontFamily:'var(--font-mono)',fontSize:'0.75rem',color:'#8A8178',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:'3rem'}}>
+          By {note.author}
         </p>
 
-        {/* Amber rule */}
-        <div className="h-px w-16 bg-[#B8821A] mb-10" />
+        {/* Divider */}
+        <div style={{borderTop:'1px solid #2A2520',marginBottom:'3rem'}} />
 
         {/* Content */}
         <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
