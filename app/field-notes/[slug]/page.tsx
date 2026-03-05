@@ -59,6 +59,79 @@ export default async function FieldNotePage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#0D0C0B] text-[#E8E0D5]">
+      <style>{`
+        .prose-field-notes {
+          font-family: var(--font-inter), system-ui, sans-serif;
+          color: #C8BFB5;
+          font-size: 1.0625rem;
+          line-height: 1.8;
+        }
+        .prose-field-notes h2 {
+          font-family: var(--font-syne), sans-serif;
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #E8E0D5;
+          margin-top: 2.5rem;
+          margin-bottom: 1rem;
+          line-height: 1.3;
+        }
+        .prose-field-notes h3 {
+          font-family: var(--font-syne), sans-serif;
+          font-size: 1.2rem;
+          font-weight: 600;
+          color: #E8E0D5;
+          margin-top: 2rem;
+          margin-bottom: 0.75rem;
+          line-height: 1.4;
+        }
+        .prose-field-notes p {
+          margin-bottom: 1.5rem;
+        }
+        .prose-field-notes em {
+          color: #E8E0D5;
+          font-style: italic;
+        }
+        .prose-field-notes strong {
+          color: #E8E0D5;
+          font-weight: 600;
+        }
+        .prose-field-notes a {
+          color: #B8821A;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+        }
+        .prose-field-notes a:hover {
+          color: #D4A43A;
+        }
+        .prose-field-notes hr {
+          border: none;
+          border-top: 1px solid #2A2520;
+          margin: 2.5rem 0;
+        }
+        .prose-field-notes blockquote {
+          border-left: 2px solid #B8821A;
+          padding-left: 1.25rem;
+          color: #8A8178;
+          font-style: italic;
+          margin-bottom: 1.5rem;
+        }
+        .prose-field-notes ul {
+          list-style: disc;
+          padding-left: 1.5rem;
+          margin-bottom: 1.5rem;
+          color: #C8BFB5;
+        }
+        .prose-field-notes ol {
+          list-style: decimal;
+          padding-left: 1.5rem;
+          margin-bottom: 1.5rem;
+          color: #C8BFB5;
+        }
+        .prose-field-notes li {
+          margin-bottom: 0.5rem;
+        }
+      `}</style>
+
       {/* Back nav */}
       <div className="max-w-2xl mx-auto px-6 pt-16 pb-4">
         <Link
@@ -95,14 +168,7 @@ export default async function FieldNotePage({ params }: Props) {
 
         {/* Content */}
         <div
-          className="prose prose-invert prose-sm max-w-none
-            prose-headings:font-syne prose-headings:text-[#E8E0D5]
-            prose-p:text-[#C8BFB5] prose-p:leading-relaxed
-            prose-a:text-[#B8821A] prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-[#E8E0D5]
-            prose-blockquote:border-[#B8821A] prose-blockquote:text-[#8A8178]
-            prose-code:text-[#B8821A] prose-code:bg-[#1A1814]
-            prose-pre:bg-[#1A1814] prose-pre:border prose-pre:border-[#2A2520]"
+          className="prose-field-notes"
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
       </article>
