@@ -11,6 +11,9 @@ export interface FieldNote {
   excerpt: string;
   author: string;
   content: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
 }
 
 export function getAllFieldNotes(): Omit<FieldNote, 'content'>[] {
@@ -30,6 +33,9 @@ export function getAllFieldNotes(): Omit<FieldNote, 'content'>[] {
         date: data.date || '',
         excerpt: data.excerpt || '',
         author: data.author || '',
+        ogTitle: data.ogTitle || undefined,
+        ogDescription: data.ogDescription || undefined,
+        ogImage: data.ogImage || undefined,
       };
     });
 
@@ -48,6 +54,9 @@ export function getFieldNoteBySlug(slug: string): FieldNote | null {
       excerpt: data.excerpt || '',
       author: data.author || '',
       content,
+      ogTitle: data.ogTitle || undefined,
+      ogDescription: data.ogDescription || undefined,
+      ogImage: data.ogImage || undefined,
     };
   } catch {
     return null;
