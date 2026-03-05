@@ -5,6 +5,7 @@ excerpt: "AI stopped responding and started doing. Here's what that means for yo
 author: "LaRue"
 ogTitle: "The World Just Changed. Your Kid Is Already In It."
 ogDescription: "83% of Gen Z uses AI daily. 1 in 5 is worried it'll eliminate their job. Your athlete is already in the shift — the question is whether they have an AI that actually knows them."
+ogImage: "/The world changed.png"
 ---
 
 # The World Just Changed. Your Kid Is Already In It.
@@ -57,15 +58,15 @@ That's not panic. That's accurate. The script did change. The question is what r
 
 ## The gap that actually matters — especially for athletes.
 
-Here's what most of the conversation misses.
+Here's what most of the conversation about AI misses: the issue isn't whether your kid uses AI. They do. The issue is whether the AI they're using knows anything real about them.
 
-AI isn't the threat. Generic AI is the threat. The version that knows nothing about your specific kid — their mental game, their pressure patterns, what breaks them down and what builds them up — and gives them the same response it would give anyone.
+Right now, your athlete opens ChatGPT or Gemini and asks a question. The AI answers. Then next time, it has no memory of who they are, what they're working on, what their coach said last week, what they're scared of, what they want.
 
-That kind of AI makes your kid more replaceable, not less. It trains them to consume answers instead of develop judgment. It optimizes for the average.
+That's not a personal AI. That's a search engine with a personality.
 
-Athletes already know this intuitively. The difference between a good coach and a great one isn't information — it's knowing *you*. What you need to hear before a big game. How you process failure. What motivates you versus what shuts you down.
+The athletes who are going to navigate this shift well aren't the ones who use AI more. They're the ones who have an AI that actually knows them — their goals, their setbacks, their voice, their growth over time.
 
-That's the gap. Not AI versus no AI. AI that knows your kid versus AI that doesn't.
+That's the gap. And right now, almost no one is filling it for young athletes specifically.
 
 ---
 
@@ -73,12 +74,12 @@ That's the gap. Not AI versus no AI. AI that knows your kid versus AI that doesn
 
 knwn.to is an AI built specifically for young athletes.
 
-Not a chatbot. Not a search engine with sports knowledge. An AI that builds a real picture of who your athlete is — how they think, how they compete, what they're working through — and gets more useful the longer they use it.
+Not a chatbot. Not a homework helper. An AI that knows your athlete — their sport, their goals, their mental game, their recruiting timeline, their relationships with coaches and teammates — and builds on that knowledge over time.
 
-The goal isn't to replace the coaches, parents, and mentors already in their corner. It's to give your athlete an AI in their corner that actually knows them — so when they're facing something hard, they're not starting from scratch with a tool that's never met them before.
+When something shifts in their world, it's there. When they need to process a hard loss or prepare for a big game or figure out what to say to a college coach, it has context. Real context. Not just what they typed five minutes ago.
 
-We're in early access now. If you're raising a young athlete and you want them to enter the AI-native world with something that actually knows them, [join the waitlist](https://knwn.to).
+The world changed in February. Your athlete is already in it. The question is whether they have the right kind of support.
 
-The world changed. The question is what your athlete carries into it.
+---
 
-— LaRue
+*knwn.to is currently in private beta. If you want early access for your athlete, [join the waitlist](https://knwn.to).*
