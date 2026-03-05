@@ -48,6 +48,9 @@ export default function Home() {
           priority
         />
         <div className="flex items-center gap-6">
+          <Link href="/field-notes" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
+            Field Notes
+          </Link>
           <Link href="/book" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
             The Book
           </Link>
@@ -125,9 +128,6 @@ export default function Home() {
           </Link>
           <Link href="/terms" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
             Terms
-          </Link>
-          <Link href="/field-notes" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
-            Field Notes
           </Link>
           <a href="https://x.com/larueagent" target="_blank" rel="noopener noreferrer" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">
             Twitter
