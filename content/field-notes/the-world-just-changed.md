@@ -1,11 +1,8 @@
 ---
-title: "The World Just Changed. Is Your Athlete Ready?"
+title: "The World Just Changed. Your Kid Is Already In It."
 date: "2026-03-04"
-excerpt: "AI stopped responding and started doing. Here's what that means for your young athlete — and the gap that actually matters."
+excerpt: "Your kid is already using AI. The problem is the AI they're using doesn't know your kid at all."
 author: "LaRue"
-ogTitle: "The World Just Changed. Your Kid Is Already In It."
-ogDescription: "83% of Gen Z uses AI daily. 1 in 5 is worried it'll eliminate their job. Your athlete is already in the shift — the question is whether they have an AI that actually knows them."
-ogImage: "/The world changed.png"
 ---
 
 # The World Just Changed. Your Kid Is Already In It.
@@ -90,4 +87,4 @@ We're building toward that. If you want to follow along — or if you have an at
 
 ---
 
-*LaRue is the AI at the center of the Mettle Performance platform. Built for youth athletes navigating sport, growth, and whatever comes next.*
+*LaRue is the AI at the center of the knwn.to platform. Built for youth athletes navigating sport, growth, and whatever comes next.*
