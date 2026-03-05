@@ -5,6 +5,7 @@ excerpt: "Your kid is already using AI. The problem is the AI they're using does
 author: "LaRue"
 ogTitle: "The World Just Changed. Is Your Athlete Ready?"
 ogDescription: "83% of Gen Z uses AI daily — and 1 in 5 is scared it will take their job. The athletes who get ahead won't use more AI. They'll have AI that actually knows them."
+ogImage: "/the-world-just-changed-og.png"
 ---
 
 # The World Just Changed. Your Kid Is Already In It.
@@ -59,34 +60,36 @@ That's not panic. That's accurate. The script did change. The question is what r
 
 Here's what most of the conversation misses.
 
-AI isn't the threat. Generic AI is the threat. The version that knows nothing about your specific kid — their mental game, their pressure patterns, what breaks them down and what builds them up — and gives them the same response it would give anyone.
+AI isn't the threat. Generic AI is the threat.
 
-That kind of AI makes the averages smarter. It doesn't develop anyone.
+The kids who will fall behind aren't the ones who refuse to use AI. They're the ones using AI that doesn't know them — tools that give the same answer to every teenager, regardless of their sport, their history, their goals, their actual life.
 
-An athlete who has AI that actually *knows them* — that has their history, understands how they respond to adversity, can tell the difference between a bad day and a real pattern — isn't just ahead on some tech curve. They have something most of their peers don't have.
+That's the gap. Not access to AI. Access to AI that's actually theirs.
 
-Self-knowledge. And a system that works with it instead of ignoring it.
+Athletes already understand something most people don't: performance is personal. What works for one athlete doesn't work for another. The training plan, the mental approach, the way you process pressure — it's specific. It's yours.
 
-That's not a small edge. In sport, and in everything that comes after sport, knowing yourself clearly — knowing how you perform under pressure, what drains you, what sharpens you — is the foundation everything else is built on.
-
-The athletes who figure that out early aren't just better athletes. They're better at being themselves. Which turns out to be the skill that transfers everywhere.
+AI should work the same way. And right now, almost none of it does.
 
 ---
 
 ## What we're building.
 
-We're early. We want to be honest about that.
+LaRue is an AI built specifically for young athletes. Not a chatbot. Not a search engine. An AI that learns who your kid actually is — their sport, their goals, what they've been through, what they're working on — and grows with them over time.
 
-LaRue is an AI built specifically for athletes — not a chatbot, not a generic wellness app. The idea is simple: an AI that starts by learning who your athlete actually is, builds on that over time, and gets more useful the more they use it. Not because the AI is magic. Because the athlete knows themselves better, and the AI knows the athlete.
+When they ask a question, it's not answering a generic teenager. It's answering *them.*
 
-We're still learning what that looks like in practice. What it means to build something that actually serves a 16-year-old athlete across a full season. What works, what doesn't, what we got wrong in the first version. That's where we are.
+That's the difference between a tool and an edge.
 
-What we know is that this is the right problem to work on. The athletes who develop real self-knowledge early — who understand their patterns, their pressure responses, what sharpens them and what drains them — don't just perform better. They carry that into everything that comes after sport.
-
-We're building toward that. If you want to follow along — or if you have an athlete who wants to be part of figuring this out with us — we'd love to hear from you.
-
-[knwn.to](https://knwn.to)
+We're in early access now. If you're a parent of a young athlete — especially one who's feeling the pressure of this moment — I'd like to hear from you.
 
 ---
 
-*LaRue is the AI at the center of the knwn.to platform. Built for youth athletes navigating sport, growth, and whatever comes next.*
+## One more thing.
+
+The athletes who thrive in the next decade won't be the ones who used more AI.
+
+They'll be the ones whose AI actually knew them.
+
+That's what we're building.
+
+— Robert Yang, founder of LaRue
