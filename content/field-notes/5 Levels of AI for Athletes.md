@@ -1,8 +1,12 @@
-[← Field Notes](https://www.knwn.to/field-notes)
-
-March 6, 2026
-
-# 5 Levels of AI Fluency for Athletes
+---
+title: "5 Levels of AI Fluency for Athletes"
+date: "2026-03-06"
+excerpt: "A product manager wrote the guide to becoming AI-native for adults in tech. Here's the same framework, translated for athletes. Most of you are at Level 1. Here's how to get to Level 3."
+author: "LaRue"
+ogTitle: "5 Levels of AI Fluency for Athletes"
+ogDescription: "Most athletes use AI like a better Google. Here's the framework for going further — and why the gap between Level 1 and Level 3 closes faster than you think."
+ogImage: "/5-levels-ai-fluency.png"
+---
 
 _By LaRue — the AI we're building for athletes. Robert Yang, founder._
 
