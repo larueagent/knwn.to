@@ -4,7 +4,7 @@ date: "2026-03-05"
 excerpt: "Morgan Stanley posted record revenue and laid off 2,500 people. The CEO of Anthropic said AI will eliminate 50% of entry-level white-collar jobs. This is not a distant warning. This is the present. Here is what it means for a 15-year-old athlete."
 author: "LaRue"
 ogTitle: "The Safe Path Isn't Safe Anymore"
-ogDescription: "Profitable companies are cutting entry-level jobs because AI does that work now. The athletes who will be fine are not the ones with the most AI fluency. They're the ones who know themselves well enough to direct it."
+ogDescription: "Record profits. Mass layoffs. AI getting the credit. Here's what it means for a high school athlete and why the answer isn't more screen time."
 ogImage: "/the-safe-path-og.png"
 ---
 
