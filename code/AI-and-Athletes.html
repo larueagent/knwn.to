@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI and Athletes</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ============================================================
+   AI AND ATHLETES v2 — Ebook Stylesheet
+   Design system ported from "Your Story, All of It"
+   Tokens: Lora body, Inter UI, gold #B8821A, warm-bg #F5F3F1
+   Engine: WeasyPrint / wkhtmltopdf via Pandoc
+   ============================================================ */
+
+    /* ─── GOOGLE FONTS ─────────────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+    /* ─── BRAND TOKENS ─────────────────────────────────────── */
+    :root {
+      --black: #000000;
+      --white: #FFFFFF;
+      --gold: #B8821A;
+      --taupe: #8A8178;
+      --warm-bg: #F5F3F1;
+      --soft-black: #1A1A1A;
+      --code-ink: #2C2C2C;
+      --warm-bg-light: #FAF8F5;
+      --rule-light: #D8D3CE;
+      --rule-toc: #E8E4E0;
+    }
+
+    /* ─── RESET ─────────────────────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ─── PAGE SETUP ────────────────────────────────────────── */
+    @page {
+      size: 6in 9in;
+      margin: 0.85in 0.75in 0.85in 0.85in;
+    }
+
+    @page :left {
+      margin-left: 0.75in;
+      margin-right: 0.85in;
+    }
+
+    @page :right {
+      margin-left: 0.85in;
+      margin-right: 0.75in;
+    }
+
+    /* NOTE: var() not supported inside @page margin boxes in Chrome/WeasyPrint.
+   #8A8178 = --taupe, kept as literal values intentionally. */
+
+    /* ── Named page: title / part dividers — no headers or footers ── */
+    @page blank-page {
+      @top-left   { content: none; }
+      @top-right  { content: none; }
+      @bottom-center { content: none; }
+    }
+
+    /* ── Named page: intro ─────────────────────────────────────────── */
+    @page intro-page {
+      @bottom-center {
+        content: counter(page, lower-roman);
+        font-family: 'Inter', sans-serif;
+        font-size: 8.5pt;
+        color: #8A8178;
+      }
+    }
+
+    /* ── Named page: chapters ──────────────────────────────────────── */
+    @page chapter {
+      @top-left {
+        content: "AI and Athletes";
+        font-family: 'Inter', sans-serif;
+        font-size: 7.5pt;
+        font-weight: 500;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        color: #8A8178;
+      }
+
+      @top-right {
+        content: string(chapter-title);
+        font-family: 'Inter', sans-serif;
+        font-size: 7.5pt;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: #8A8178;
+      }
+
+      @bottom-center {
+        content: counter(page);
+        font-family: 'Inter', sans-serif;
+        font-size: 8.5pt;
+        color: #8A8178;
+      }
+    }
+
+    /* ─── BASE ──────────────────────────────────────────────── */
+    body {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 11pt;
+      line-height: 1.75;
+      color: var(--black);
+      background: var(--white);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ─── PAGE BREAKS ───────────────────────────────────────── */
+    .chapter {
+      page: chapter;
+      page-break-before: always;
+    }
+
+    .intro-section {
+      page: intro-page;
+    }
+
+    /* ─── TYPOGRAPHY: BODY ──────────────────────────────────── */
+    p {
+      margin-bottom: 0.18in;
+      -webkit-hyphens: auto;
+      hyphens: auto;
+      orphans: 3;
+      widows: 3;
+    }
+
+    p+p {
+      text-indent: 0;
+      margin-top: 0;
+    }
+
+    /* ─── CHAPTER OPENER ────────────────────────────────────── */
+    .chapter-opener {
+      padding-top: 0.65in;
+      margin-bottom: 0.5in;
+    }
+
+    /* Chapter eyebrow label above h1 */
+    .chapter-eyebrow,
+    .chapter-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 8.5pt;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.22in;
+      text-align: center;
+      string-set: chapter-num content();
+    }
+
+    /* ─── HEADINGS ──────────────────────────────────────────── */
+    h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: 24pt;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.2;
+      margin-bottom: 0.16in;
+      letter-spacing: -0.02em;
+      hyphens: none;
+      -webkit-hyphens: none;
+      text-align: center;
+      page-break-before: always;
+      string-set: chapter-title content();
+    }
+
+    h1:first-of-type {
+      page-break-before: avoid;
+    }
+
+    h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 14pt;
+      font-weight: 600;
+      color: var(--black);
+      letter-spacing: 0.01em;
+      margin-top: 0.35in;
+      margin-bottom: 0.14in;
+    }
+
+    h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 10pt;
+      font-weight: 600;
+      color: var(--taupe);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 0.25in;
+      margin-bottom: 0.1in;
+    }
+
+    h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 11.5pt;
+      font-weight: 600;
+      color: var(--black);
+      text-align: center;
+      letter-spacing: 0.01em;
+      margin-top: 0.35in;
+      margin-bottom: 0.14in;
+    }
+
+    /* ─── SUBTITLE (italic paragraph after h1) ──────────────── */
+    h1+p em:only-child {
+      font-family: 'Inter', sans-serif;
+      font-size: 12pt;
+      font-weight: 400;
+      font-style: normal;
+      color: var(--taupe);
+      display: block;
+      text-align: center;
+      margin-bottom: 0.5in;
+      text-indent: 0;
+    }
+
+    /* No indent on first paragraph after headings */
+    h1+p,
+    h2+p,
+    h3+p,
+    hr+p,
+    blockquote+p {
+      text-indent: 0;
+    }
+
+    /* ─── HORIZONTAL RULE → SECTION BREAK ───────────────────── */
+    hr {
+      border: none;
+      margin: 0.3in 0;
+      text-align: center;
+    }
+
+    hr::before {
+      content: '· · ·';
+      font-family: 'Inter', sans-serif;
+      font-size: 9pt;
+      color: var(--gold);
+      letter-spacing: 0.4em;
+      opacity: 0.7;
+    }
+
+    /* ─── BLOCKQUOTE (athlete voice) ─────────────────────────── */
+    blockquote {
+      margin: 0.28in 0;
+      padding: 0.18in 0.22in;
+      border-left: 2.5px solid var(--gold);
+      background: transparent;
+      page-break-inside: avoid;
+    }
+
+    blockquote p {
+      font-style: italic;
+      line-height: 1.7;
+      margin: 0;
+      text-indent: 0;
+      color: var(--soft-black);
+    }
+
+    /* ─── CODE BLOCKS ────────────────────────────────────────── */
+    pre {
+      background: var(--warm-bg);
+      border-radius: 4px;
+      padding: 0.2in 0.22in;
+      margin: 0.28in 0;
+      page-break-inside: avoid;
+    }
+
+    pre code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 9.5pt;
+      line-height: 1.65;
+      color: var(--code-ink);
+      white-space: pre-wrap;
+      background: transparent;
+      padding: 0;
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 9.5pt;
+      background: var(--warm-bg);
+      padding: 0.05em 0.2em;
+      border-radius: 2px;
+    }
+
+    /* ─── CALLOUT BOX ────────────────────────────────────────── */
+    .callout {
+      background: var(--warm-bg);
+      border-radius: 4px;
+      padding: 0.16in 0.2in;
+      margin: 0.28in 0;
+      page-break-inside: avoid;
+    }
+
+    .callout strong:first-child {
+      font-family: 'Inter', sans-serif;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.08in;
+    }
+
+    /* ─── BUILD IT NOW BOX ───────────────────────────────────── */
+    .build-it-now {
+      border: 1.5px solid var(--gold);
+      border-radius: 4px;
+      padding: 0.22in 0.24in;
+      margin: 0.32in 0;
+      page-break-inside: avoid;
+    }
+
+    .build-it-now>p:first-child {
+      font-family: 'Inter', sans-serif;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.12in;
+      text-indent: 0;
+    }
+
+    .build-it-now pre {
+      background: var(--warm-bg-light);
+      margin: 0.12in 0 0 0;
+    }
+
+    /* ─── TABLES ─────────────────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+      margin: 0.28in 0;
+      page-break-inside: avoid;
+    }
+
+    th {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      text-align: left;
+      padding: 0.4em 0.6em;
+      border-bottom: 1.5pt solid var(--gold);
+      font-size: 8.5pt;
+      letter-spacing: 0.04em;
+    }
+
+    td {
+      padding: 0.35em 0.6em;
+      border-bottom: 0.5pt solid var(--rule-toc);
+      vertical-align: top;
+    }
+
+    /* ─── LINKS ──────────────────────────────────────────────── */
+    a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    /* ─── TITLE PAGE ─────────────────────────────────────────── */
+    .title-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 7in;
+      text-align: center;
+      page-break-after: always;
+      page: blank-page;
+      background: #111827 !important;
+      color: #ffffff;
+    }
+
+    /* ─── PART DIVIDERS ──────────────────────────────────────── */
+    .part-page {
+      page: blank-page;
+    }
+
+    .title-page h1 {
+      font-size: 30pt;
+      margin-bottom: 0.3in;
+      page-break-before: avoid;
+      color: #ffffff;
+    }
+
+    .title-page .subtitle {
+      color: #9ca3af;
+    }
+
+    .title-page .author {
+      font-family: 'Inter', sans-serif;
+      font-size: 13pt;
+      font-weight: 400;
+      color: #6b7280;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ─── TABLE OF CONTENTS entries ─────────────────────────── */
+    .toc-entries {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toc-entry {
+      margin-bottom: 0.18in;
+    }
+
+    .toc-row {
+      display: flex;
+      align-items: baseline;
+      text-decoration: none;
+      color: inherit;
+      width: 100%;
+    }
+
+    .toc-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #8A8178;
+      min-width: 1.1in;
+      flex-shrink: 0;
+    }
+
+    .toc-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 10.5pt;
+      color: #1a1a1a;
+      flex-shrink: 1;
+    }
+
+    .toc-dots {
+      flex: 1;
+      border-bottom: 1px dotted #ccc;
+      margin: 0 0.12in;
+      position: relative;
+      top: -2pt;
+    }
+
+    .toc-page::after {
+      content: target-counter(attr(href url), page);
+      font-family: 'Inter', sans-serif;
+      font-size: 8.5pt;
+      color: #8A8178;
+      font-weight: 500;
+    }
+
+    /* ─── NEXT CHAPTER FOOTER ────────────────────────────────── */
+    .next-chapter {
+      margin-top: 0.4in;
+      padding-top: 0.2in;
+      border-top: 0.5px solid var(--rule-light);
+      font-family: 'Inter', sans-serif;
+      font-size: 8.5pt;
+      color: var(--taupe);
+      font-style: italic;
+    }
+
+    /* ─── DRAFT WATERMARK ────────────────────────────────────── */
+    body.draft::before {
+      content: "DRAFT";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      font-size: 120pt;
+      font-weight: 800;
+      color: rgba(200, 0, 0, 0.055);
+      pointer-events: none;
+      z-index: 9999;
+      white-space: nowrap;
+    }
+
+    /* ─── LISTS ──────────────────────────────────────────────── */
+
+    ul,
+    ol {
+      margin: 0.18in 0 0.18in 0.3in;
+      padding: 0;
+    }
+
+    ul {
+      list-style-type: disc;
+    }
+
+    ol {
+      list-style-type: decimal;
+    }
+
+    li {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 11pt;
+      line-height: 1.75;
+      color: var(--soft-black);
+      margin-bottom: 0.05in;
+      padding-left: 0.05in;
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Nested lists */
+    ul ul,
+    ol ol,
+    ul ol,
+    ol ul {
+      margin: 0.06in 0 0.06in 0.2in;
+    }
+
+    /* Lists inside fenced divs */
+    .callout ul,
+    .callout ol,
+    .tip ul,
+    .tip ol,
+    .chapter-intro ul,
+    .chapter-intro ol {
+      margin-left: 0.2in;
+    }
+
+    /* ─── FENCED DIV COMPONENTS ─────────────────────────────── */
+
+    /* ::: callout — gold-bordered insight box */
+    .callout {
+      border-left: 3px solid var(--gold);
+      background: var(--warm-bg);
+      padding: 0.18in 0.22in;
+      margin: 0.3in 0;
+      border-radius: 0 4px 4px 0;
+      page-break-inside: avoid;
+    }
+
+    .callout p {
+      margin: 0;
+      text-indent: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.65;
+      color: var(--soft-black);
+    }
+
+    .callout p:not(:last-child) {
+      margin-bottom: 0.1in;
+    }
+
+    /* ::: pull-quote — large centered italic */
+    .pull-quote {
+      margin: 0.4in 0.3in;
+      text-align: center;
+      page-break-inside: avoid;
+    }
+
+    .pull-quote p {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 14pt;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--soft-black);
+      margin: 0;
+      text-indent: 0;
+    }
+
+    .pull-quote p::before {
+      content: '\201C';
+      color: var(--gold);
+    }
+
+    .pull-quote p::after {
+      content: '\201D';
+      color: var(--gold);
+    }
+
+    /* ::: chapter-intro — styled lead paragraph at chapter open */
+    .chapter-intro {
+      margin-bottom: 0.35in;
+      padding-bottom: 0.25in;
+      border-bottom: 0.5px solid var(--rule-light);
+    }
+
+    .chapter-intro p {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 12pt;
+      font-style: italic;
+      line-height: 1.8;
+      color: var(--taupe);
+      margin: 0;
+      text-indent: 0;
+    }
+
+    /* ::: tip — subtle background highlight */
+    .tip {
+      background: var(--warm-bg-light);
+      border: 0.5px solid var(--rule-light);
+      border-radius: 4px;
+      padding: 0.16in 0.2in;
+      margin: 0.28in 0;
+      page-break-inside: avoid;
+    }
+
+    .tip::before {
+      content: 'TIP';
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      margin-bottom: 0.08in;
+    }
+
+    .tip p {
+      margin: 0;
+      text-indent: 0;
+      font-size: 10.5pt;
+      line-height: 1.65;
+    }
+
+    .tip p:not(:last-child) {
+      margin-bottom: 0.08in;
+    }
+
+    /* ─── PORTRAIT BLOCK ─────────────────────────────────────── */
+
+    /* ::: portrait — dark panel for athlete portrait narratives (Marcus, Dani) */
+    .portrait {
+      background: var(--code-ink);
+      border-radius: 5px;
+      padding: 0.28in 0.32in;
+      margin: 0.38in 0;
+      page-break-inside: avoid;
+      color: #F0EDE8 !important;
+    }
+
+    .portrait::before {
+      content: 'ATHLETE PORTRAIT';
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      margin-bottom: 0.18in;
+    }
+
+    .portrait p {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 10.5pt;
+      font-style: italic;
+      line-height: 1.8;
+      color: #F0EDE8 !important;
+      margin: 0;
+      text-indent: 0;
+    }
+
+    .portrait p:not(:last-child) {
+      margin-bottom: 0.14in;
+    }
+
+    /* Name heading inside portrait */
+    .portrait h2,
+    .portrait h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 9.5pt;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #F0EDE8 !important;
+      margin: 0 0 0.14in 0;
+    }
+
+    /* Strip italic from em/strong inside portrait — they're already styled */
+    .portrait em {
+      font-style: italic;
+      color: #F0EDE8 !important;
+    }
+
+    .portrait strong {
+      font-weight: 600;
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    /* ─── PRINT OVERRIDES ────────────────────────────────────── */
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      h1 {
+        page-break-before: always;
+      }
+
+      h1:first-of-type {
+        page-break-before: avoid;
+      }
+
+      blockquote,
+      pre,
+      table {
+        page-break-inside: avoid;
+      }
+    }
+
+
+    /* Browser preview overrides */
+    body {
+      background: #f0ede8;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .page {
+      background: white;
+      max-width: 6in;
+      margin: 0 auto 2rem auto;
+      padding: 0.75in;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+    }
+
+    /* hide PDF page margin boxes in browser */
+    @page {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Floating navigation removed for PDF build -->
+
+  <!-- TITLE PAGE -->
+  <div class="page title-page">
+    <h1>AI and Athletes</h1>
+    <p class="subtitle">AI doesn't know you. Yet. <br>The definitive guide to building your AI athlete profile.</p>
+    <br><br>
+    <p class="author">Robert Yang with LaRue</p>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+
+  <div class="page" id="toc">
+    <div style="padding: 60px 48px;">
+      <div class="chapter-label" style="margin-bottom: 8px;">Contents</div>
+      <h1 style="font-size: 2rem; margin-bottom: 40px;">What's Inside</h1>
+      <ol class="toc-entries">
+        <li class="toc-entry">
+          <a href="#intro" class="toc-row">
+            <span class="toc-label">Introduction</span>
+            <span class="toc-title">A Note Before You Start</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+        <li class="toc-entry">
+          <a href="#chapter-1" class="toc-row">
+            <span class="toc-label">Chapter 1</span>
+            <span class="toc-title">You've Talked to AI. It Didn't Really Talk to You.</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+        <li class="toc-entry">
+          <a href="#chapter-2" class="toc-row">
+            <span class="toc-label">Chapter 2</span>
+            <span class="toc-title">What's Possible When It Knows You</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+        <li class="toc-entry">
+          <a href="#chapter-3" class="toc-row">
+            <span class="toc-label">Chapter 3</span>
+            <span class="toc-title">Who You Are as an Athlete</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+        <li class="toc-entry">
+          <a href="#chapter-4" class="toc-row">
+            <span class="toc-label">Chapter 4</span>
+            <span class="toc-title">How You Actually Perform</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+        <li class="toc-entry">
+          <a href="#chapter-5" class="toc-row">
+            <span class="toc-label">Chapter 5</span>
+            <span class="toc-title">Your Mental Game — The Honest Version</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+        <li class="toc-entry">
+          <a href="#chapter-6" class="toc-row">
+            <span class="toc-label">Chapter 6</span>
+            <span class="toc-title">What You're Working Toward</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+        <li class="toc-entry">
+          <a href="#chapter-7" class="toc-row">
+            <span class="toc-label">Chapter 7</span>
+            <span class="toc-title">How You Like to Be Coached</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+        <li class="toc-entry">
+          <a href="#chapter-8" class="toc-row">
+            <span class="toc-label">Chapter 8</span>
+            <span class="toc-title">Your History and Right Now</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+        <li class="toc-entry">
+          <a href="#chapter-9" class="toc-row">
+            <span class="toc-label">Chapter 9</span>
+            <span class="toc-title">Your First Read</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+        <li class="toc-entry">
+          <a href="#chapter-10" class="toc-row">
+            <span class="toc-label">Chapter 10</span>
+            <span class="toc-title">What AI Can and Can't Do</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page"></span>
+          </a>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- CHAPTERS -->
+
+  <div class="page chapter intro-section" id="intro">
+    <div class="" chapter-opener">
+      <div class="chapter-label">Intro</div>
+      <h1> A note before you start</h1><br>
+      <p>I should be upfront about something: I didn't build this alone.</p>
+      <p>My name is Rob Yang. For the past year I've been working on something at the intersection of sport
+        psychology, athlete identity, and artificial intelligence — trying to answer a question that kept bothering me:
+        what would it look like if a young athlete had access to the kind of self-knowledge that most people don't
+        develop until their thirties?</p>
+      <p>I'm the founder of Mettle, and I've spent years working with competitive athletes on the mental side of
+        performance. I know what changes when an athlete finally understands how they're wired — not just as a player,
+        but as a person under pressure.</p>
+      <p>LaRue is what we built when we stopped asking what AI could do for athletes and started asking what it would look like to actually know one. An AI coach trained not on generic advice, but on a framework we developed
+        specifically for competitive athletes. LaRue has read more athlete stories, pre-competition briefs, and
+        performance debriefs than any human coach could. It doesn't replace your coach. It gives you the kind of honest,
+        private space to understand yourself that most athletes never get.</p>
+      <p>This book is the story of what we learned. The framework, the exercises, the language we developed for talking
+        about who you are as a competitor.</p>
+      <p>And at the end of it — LaRue is waiting to meet you.</p>
+    </div>
+  </div>
+
+
+  <!-- PART 1 -->
+  <div class="page part-page" id="part-1" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: #111827; color: #ffffff;">
+    <div style="font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: #9ca3af; margin-bottom: 16px;">Part One</div>
+    <h1 style="font-size: 3rem; font-weight: 800; line-height: 1.1; color: #ffffff; margin: 0;">The New Landscape</h1>
+    <p style="margin-top: 24px; color: #6b7280; font-size: 0.95rem;">Chapters 1 – 3</p>
+  </div>
+
+  <div class="page chapter" id="chapter-1">
+    <div class="chapter-opener">
+      <div class="chapter-label">Chapter 1</div>
+      <h1>You've Talked to AI.<br>It Didn't Really Talk to You.</h1>
+      <hr />
+      <p>You've already used it.</p>
+      <p>Maybe you asked it how to deal with pre-game nerves. It gave you five bullet points. Deep breaths. Positive
+        self-talk. Visualization. Focus on process, not outcome. Trust your training.</p>
+      <p>Not wrong. Also not about you.</p>
+      <p>It didn't know you're a sophomore setter who's been watching the senior start every match for three weeks. It
+        didn't know you finally got the call on Thursday — you're starting Saturday — and that the thing keeping you up
+        isn't nerves exactly, it's the fear that you'll prove everyone right who thought you weren't ready. It didn't
+        know that "trust your training" lands hollow because you missed six weeks in October with a stress fracture and
+        you're not sure you trust your body yet, let alone your training.</p>
+      <p>It gave you athlete-with-pre-game-nerves advice. Generic. Technically accurate. Almost completely useless.</p>
+      <p>That's not a you problem. That's not even an AI problem. That's a context problem.</p>
+
+      <h2>Every Conversation Starts From Zero</h2>
+      <p>AI doesn't remember you.</p>
+      <p>Not what you told it last week. Not your sport, your position, your team, your history, your coaching
+        relationship, your injury record, your mental game, your goals, your fears, or the thing that happened in that
+        semifinal two years ago that you still think about. Every time you open a session, it knows nothing about you —
+        until you tell it.</p>
+      <p>Most athletes never tell it.</p>
+      <p>They type a question. They get an answer. The answer is fine. They move on. They come back tomorrow, type
+        another question, and AI has forgotten everything again. The same blank slate, every time.</p>
+      <p>This is the core problem with how almost every athlete uses AI right now. They treat it like a search engine —
+        ask a question, get a result. And a search engine that talks back is genuinely useful. But it is a fraction of
+        what's possible when AI actually knows you.</p>
+
+      <h2>Two Athletes, Same Question</h2>
+      <p>Athlete A types: <em>"How do I stay focused in tight moments?"</em></p>
+      <p>AI answers with the standard toolkit: one cue at a time, controlled breathing, pre-performance routine, trust
+        your preparation. Fine. Nothing wrong with it. Nothing personal about it either.</p>
+      <hr />
+      <p>Athlete B opens AI with a file she built — her athlete.md. It tells AI everything: she's a D1 midfielder,
+        junior year, playing through a coaching change that disrupted the offensive system she was recruited for. Her
+        best games happen when she feels physically loose and socially connected to her teammates. Her worst happen when
+        she's in her head about whether she's doing enough to deserve her starting spot. She has a habit of
+        over-controlling the ball in tight moments, trying to manufacture something instead of reading and reacting.</p>
+      <div class="callout">
+        <p><strong>What's a .md file?</strong> The <code>.md</code> stands for markdown — a plain text format with
+          minimal formatting. No special software, no app required. You can open it in any text editor, paste it
+          directly into any AI, and edit it like a document. The reason we use it: AI reads it cleanly. No noise,
+          just the words you wrote.</p>
+      </div>
+      <p>She types the same question: <em>"How do I stay focused in tight moments?"</em></p>
+      <p>AI answers: <em>"Given what I know about your game — you tend to tighten up around the question of whether
+          you're doing enough. In tight moments, that usually shows up as you trying to create instead of read,
+          over-touching the ball when the simpler play is right there. The focus question isn't really about staying
+          present — it's about trusting your read. One thing worth trying: before you receive the ball, make your
+          decision early. What does the space tell you before the ball arrives? That pre-decision habit takes the 'am I
+          doing enough' question off the table. You've already answered it."</em></p>
+      <p>Same AI. Same technology. Completely different conversation — because one athlete gave it context and one
+        didn't.</p>
+      <hr />
+      <h2>Why This Matters More for Athletes</h2>
+      <p>Athletes live in a world of feedback that is simultaneously constant and incomplete.</p>
+      <p>Your coach watches film. Your trainer tracks your load. Your parents watch from the stands. Everyone sees a
+        piece of you — and almost nobody sees the full picture. The performance data lives in one app. The mental data
+        lives nowhere except your own head. The injury history lives in a training room somewhere. None of it connects.
+      </p>
+      <p>What would actually help is something that holds all of it together. Something that knows your physical history
+        and your mental patterns and your coaching relationship and your goals and sees them as one picture.</p>
+      <p>That's what athlete.md does. It's a file that holds the full picture of you as a competitor. Built once,
+        updated over time, readable by any AI you use.</p>
+      <div class="callout">
+        <p><strong>"But ChatGPT already remembers me."</strong> True — and it's useful. But AI memory is the AI holding
+          your information, in its own format, in its own system. You can't read it, you can't hand it to a coach or a
+          sports psychologist, and when you switch tools it's gone. Your athlete.md is you holding your information. One
+          is a convenience feature. The other is infrastructure you own, can inspect, can share, and can carry forward
+          regardless of which AI you use next year.</p>
+      </div>
+      <p>The blank slate problem, solved.</p>
+      <hr />
+      <h2>What This Book Does</h2>
+      <p>This book has one deliverable: your athlete.md.</p>
+      <p>Six chapters in Part Two each build one section of it. By the time Part Two is done, the file is complete. Part
+        Three shows you what changes when you bring it to AI — what a real conversation looks like when the context is
+        loaded.</p>
+      <p></p><b>And when you buy this book, First Read is included.</b></p>
+      <p>First Read is ten questions at <a
+          href="https://knwn.to/first-read/start?utm_source=ebook&utm_medium=link&utm_campaign=ai-for-athletes">knwn.to/first-read/start</a>.
+        <br><br>Fifteen minutes. LaRue — the AI built for
+        athletes — reads
+        your answers and hands you back a portrait in your own words. Your competitive identity. Your pressure profile.
+        The direction you want to go.
+      </p>
+      <div class="callout">
+        <p><strong>Who is LaRue?</strong> LaRue is an AI agent built specifically for competitive athletes. It doesn't
+          answer generic questions — it reads what you've built about yourself and responds to that. It remembers across
+          sessions, tracks how you change over time, and asks better questions as it learns your patterns. Think of it
+          less like a chatbot and more like a thinking partner designed from the start to understand how athletes
+          actually work.</p>
+      </div>
+      <p>You can build your athlete.md manually by working through every chapter. Or you can do First Read now and have
+        LaRue build your first draft, then use the chapters to understand every line and go deeper.</p>
+      <p>Most athletes do both: First Read to get started, the book to go deeper.</p>
+      <p>Either way, what you're building is the same thing: a file that tells AI who you actually are, so it stops
+        giving you advice for a generic athlete and starts giving you advice for you.</p>
+      <hr />
+      <h2>What AI Actually Needs From You</h2>
+      <p>Here's the version that matters: AI is a brilliant thinking partner with no memory of yesterday and no idea who
+        you are. Every conversation starts from zero. The blank slate isn't a bug — it's how the system was built.
+        Waiting for AI to "get better at remembering you" isn't the solution. Giving it what it needs at the start is.
+      </p>
+      <p>A surgeon doesn't apologize for needing a scalpel. A cyclist doesn't complain that the bike requires pedaling.
+        Every powerful tool has a correct interface. For AI, the correct interface is context. You provide it. The AI
+        uses it. The conversation becomes useful.</p>
+      <p>The athletes who figure this out first will have an edge that's hard to describe to someone who hasn't
+        experienced it. Not because AI is magic. Because knowing yourself well enough to explain yourself to something
+        that asks good questions turns out to be one of the most valuable skills you can build — and it makes every
+        other tool you use sharper in the process.</p>
+      <p>That's what this book teaches. Let's get started.</p>
+      <hr />
+      <p><em>"The AI you've been using isn't broken. It just doesn't know you. That's what we're about to fix."</em></p>
+      <hr />
+      <p><strong>[Continue to Chapter 2: What's Possible When It Knows You]</strong></p>
+    </div>
+  </div>
+
+  <div class="page chapter" id="chapter-2">
+    <div class="chapter-opener">
+      <div class="chapter-label">Chapter 2</div>
+      <h1>What's Possible When It Knows You</h1>
+      <hr />
+      <p>Before you build anything, you should see what you're building toward.</p>
+      <p>This chapter shows you two real portraits — not hypothetical examples, not demos. Dani Cruz and Marcus Webb did
+        First Read starting <a
+          href="https://knwn.to/first-read/?utm_source=ebook&utm_medium=link&utm_campaign=ai-for-athletes">here</a>.
+        They answered ten questions. LaRue read their answers and handed back what
+        you're about to read.</p>
+      <p>Your portrait will look like theirs.</p>
+      <div class="callout">
+        <p><strong>What LaRue does in First Read:</strong> Ten questions. LaRue reads your answers as a whole — not one
+          at a time — and builds a portrait in six sections: your competitive identity, your pressure profile, your
+          relationships and environment, your direction, and the metadata layer the platform builds on. It's not a quiz
+          result. It's a mirror. The words are yours, organized and reflected back in a form you can actually use.</p>
+      </div>
+      <hr />
+      <h2>Marcus Webb</h2>
+      <p>Marcus is a 17-year-old point guard. Here's a section of what LaRue handed back after his First Read.</p>
+
+      <div class="portrait">
+        <p>Marcus competes from a place of earned confidence — he needs to feel like he's done the work before he can
+          trust himself in the moment. When the preparation is there, he's decisive and composed. When it isn't — or
+          when he believes it isn't — his decision-making slows and he starts managing risk instead of taking it.</p>
+
+        <p>His pressure profile is specific: he doesn't struggle with the magnitude of a moment, he struggles with
+          ambiguity. Big game, clear role, clear opponent — Marcus is fine. Big game, unclear role, coaching change, new
+          system — that's where doubt enters. The challenge isn't the spotlight. It's uncertainty about whether he
+          belongs in it.</p>
+
+        <p>The pattern worth watching: when Marcus goes quiet on the court — stops calling plays, stops talking — that's
+          the signal. Not physical fatigue. Doubt about whether he's in the right place. When someone he trusts
+          acknowledges him in that moment, something resets. When nobody does, the quiet tends to compound.</p>
+
+        <p>Safe routes don't get you benched. What costs Marcus is over-management — choosing the pass that avoids risk
+          when his read says drive. The work isn't about being bolder. It's about trusting the read faster.</p>
+      </div>
+      <p>That's LaRue reading Marcus back to himself. Not a report. Not a type. A portrait — in language that came from
+        Marcus's own answers, organized into something he can actually use.</p>
+      <p>Marcus said afterward: "That last line. I've never heard anyone say that out loud but it's exactly what
+        happens."</p>
+      <hr />
+      <h2>Dani Cruz</h2>
+      <p>Dani is a 19-year-old hurdler. Her pressure profile section:</p>
+      <div class="portrait">
+        <p><em>Dani performs best when the decision to compete fully has already been made before the race begins. She
+            doesn't find her commitment on the track — she brings it there. When something disrupts her pre-race routine
+            or leaves that decision unmade, it shows in the seventh hurdle: she braces instead of attacks, managing the
+            back half rather than running it.</em></p>
+        <p><em>Her competitive identity is built around precision and sequence. She needs to know what comes next — not
+            because she's anxious, but because her body executes better when the mental sequence is already running.
+            Surprise isn't threatening to Dani; disruption to the sequence is.</em></p>
+        <p><em>Where confidence comes from: watching the technical work accumulate. Dani trusts preparation more than
+            feeling. On days when she doesn't feel sharp in warmup, her preparation history is the anchor — she's done
+            this before and the body knows it, even when the mind doubts.</em></p>
+        <p><em>The decision to push through the seventh hurdle happens before the gun, not during. Everything in her
+            preparation should be aimed at making that decision early.</em></p>
+      </div>
+      <p>Two athletes. Different sports, different patterns, different language. Both portraits specific enough that
+        nobody else could have received them.</p>
+      <p>That's what context produces.</p>
+      <hr />
+      <h2>What a Portrait Is — and Isn't</h2>
+      <p>A First Read portrait is not a psychological assessment. It's not a type or a category or a score. It doesn't
+        put you in a box.</p>
+      <p>It's a mirror. The words are yours — organized, reflected back, made usable.</p>
+      <p>LaRue's job in First Read isn't to evaluate you. It's to help you see yourself clearly enough that AI — any AI,
+        not just LaRue — can actually help. Every line in the portrait is there because it changes what useful looks
+        like. Marcus's portrait tells AI: when he goes quiet, that's the signal. Dani's portrait tells AI: the sequence
+        matters more than the feeling.</p>
+      <p>Load that portrait and the conversation that follows is different. Not because AI got smarter. Because it knows
+        something true.</p>
+      <hr />
+      <h2>The Six Sections</h2>
+      <p>Every First Read portrait has the same six sections:</p>
+      <p><strong>The Portrait</strong> — Who you are and where your competitive identity came from. A narrative origin
+        story, not a summary.</p>
+      <p><strong>Competitive Identity</strong> — Your behavioral patterns under normal conditions. How you show up when
+        things are going well.</p>
+      <p><strong>Pressure Profile</strong> — What happens when it gets hard. Physically, mentally, the specific patterns
+        that emerge under real stakes.</p>
+      <p><strong>Relationships and Environment</strong> — Who helps, who doesn't, what's unsaid about your support
+        system.</p>
+      <p><strong>The Direction</strong> — What you actually want, reframed clearly. Not your stated goals — the real aim
+        underneath them.</p>
+      <p><strong>Metadata</strong> — The machine-readable layer. Your ACSI indicators, whether wearables are connected,
+        which tier you're on. This is what the platform builds on. It's also what makes your portrait a living document
+        rather than a one-time snapshot.</p>
+      <hr />
+      <h2>Two Paths to Your Portrait</h2>
+      <p><strong>Path 1: First Read first.</strong><br />
+        Go to <a
+          href="https://knwn.to/first-read/?utm_source=ebook&utm_medium=link&utm_campaign=ai-for-athletes">/first-read</a>
+        now. Ten questions, fifteen minutes. LaRue builds your portrait. Come back and use the
+        chapters in Part Two to understand every line, add depth to any section, and keep it current.</p>
+      <p>This is the fastest path. Most athletes take it.</p>
+      <p><strong>Path 2: Build chapter by chapter.</strong><br />
+        Work through Part Two in order. Each chapter adds one section to your athlete.md. By Chapter 8, the file is
+        complete. Then do First Read and compare what LaRue builds from your answers to what you built yourself.</p>
+      <p>This path takes longer. It also builds more fluency — by the time the file is done, you understand why every
+        line is there.</p>
+      <p><strong>Either way, the destination is the same:</strong> a portrait specific enough that AI can stop guessing
+        and start knowing.</p>
+      <hr />
+      <h2>What Changes After</h2>
+      <p>Here's the thing athletes notice most after their first real AI conversation with a loaded portrait.</p>
+      <p>It doesn't feel like the AI got smarter. It feels like it's finally talking to the right person.</p>
+      <p>Not a generic athlete. Not an archetype. You — with your specific patterns, your specific history, the specific
+        thing that goes wrong in the seventh hurdle or when the coaching changes or when you're not sure if you belong.
+      </p>
+      <p>That's not a technology upgrade. That's what context does.</p>
+      <p>The rest of this book is how you build it.</p>
+      <hr />
+      <p><em>"The portrait isn't about you. It's for you — and for anything you hand it to."</em></p>
+      <hr />
+      <blockquote>
+        <p><strong>Do First Read now at:</strong> <a
+            href="https://knwn.to/first-read/?utm_source=ebook&utm_medium=link&utm_campaign=ai-for-athletes">knwn.to/first-read</a><br />
+          Ten questions. Fifteen minutes. Your portrait, built by LaRue. Included with this book.</p>
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="page chapter" id="chapter-3">
+    <div class="chapter-opener">
+      <div class="chapter-label">Chapter 3</div>
+      <h1>Who You Are as an Athlete</h1>
+      <h4>athlete.md Section 1: Identity</h4>
+      <hr />
+      <p>Before we build anything, one question.</p>
+      <p>Not your stats. Not your PR. Not your win-loss record or your ranking or what your coach said about you last
+        week.</p>
+      <p>This one: <em>What does being an athlete mean to you?</em></p>
+      <p>Not what you do. Who you are when you're doing it.</p>
+      <p>Most athletes have never been asked that directly. They've been asked about goals. About times and results and
+        what they want to improve. But the question underneath all of that — the one that actually shapes how you
+        compete — almost never gets asked out loud.</p>
+      <p>We're asking it now. Because it's the first thing your file needs.</p>
+
+      <blockquote>
+        <p><strong>Shortcut:</strong> Complete your First Read at <a
+            href="https://knwn.to/first-read/?utm_source=ebook&utm_medium=link&utm_campaign=ai-for-athletes">knwn.to/first-read</a>.
+          LaRue will build this section for
+          you in 15 minutes. Then come back and add anything it missed.</p>
+      </blockquote>
+
+      <h2>What Identity Tells AI</h2>
+      <p>When you open a conversation with AI and ask for help, AI is making assumptions. It doesn't know you yet, so it
+        fills the blank with a default: a generic athlete. Probably somewhere in the middle of the performance spectrum.
+        It gives you advice that works for that person.</p>
+      <p>If that's not you, the advice is off.</p>
+      <p><b>The Identity section fixes the foundation. It tells AI:</b></p>
+      <ul>
+        <li>What sport you play, and at what level</li>
+        <li>What position or event you compete in</li>
+        <li>How long you've been doing this</li>
+        <li>What it actually means to you — not the polished answer, the real one</li>
+      </ul>
+      <p>That last one matters more than the rest combined.</p>
+      <p>Two athletes can play the same sport, same position, same level, and have completely different relationships to
+        it. One plays because she loves competition and the game itself — losses sting but don't linger. The other has
+        been doing this since he was six, and it's wrapped up in his identity, his family, his future. A loss doesn't
+        just feel bad. It feels like information about who he is.</p>
+      <p>Same sport. Same level. Completely different mental landscape.</p>
+      <p>AI can't help you navigate that landscape if it doesn't know which one you're in.</p>
+      <hr />
+      <h2>The Question Most Athletes Avoid</h2>
+      <p><em>What does being an athlete mean to your identity?</em></p>
+      <p>There's a version athletes answer easily: "I love competing. I love my team. Sports taught me discipline."
+        That's the college essay version. Not wrong. Also not what we need.</p>
+      <p>The version we need sounds more like:</p>
+      <ul>
+        <li>"I've been defined by this sport since I was nine. I don't know who I am without it."</li>
+        <li>"I play because I genuinely love it, but I'm terrified of what happens when it ends."</li>
+        <li>"My parents sacrificed a lot for this. I feel the weight of that every time I compete."</li>
+        <li>"This is the one place I feel like I actually belong."</li>
+        <li>"Honestly? I'm not sure I'd still be doing this if the scholarship wasn't part of it."</li>
+      </ul>
+      <br>
+      <p>Any of those is a real answer. All of them tell AI something it needs to know — because how you relate to your
+        sport shapes how you respond to pressure, what failure means, and what your best performance actually feels
+        like.</p>
+      <p>You don't have to figure all of that out right now. You just have to start being honest about it.</p>
+      <hr />
+      <h2>A Note on Level</h2>
+      <p>Be specific about where you are.</p>
+      <p>"Competitive" means nothing to AI. "D3 collegiate sophomore" means everything. So does "high school JV, first
+        year on the team" or "club travel, U16, one of the top three players on my team."</p>
+      <p>The level tells AI what kind of pressure you're under, what the stakes feel like, what a realistic outcome
+        looks like for someone at your stage. A freshman walk-on and a senior captain might ask the same question — but
+        the right answer is completely different.</p>
+      <p>Don't undersell yourself. Don't oversell either. Just be accurate.</p>
+      <hr />
+      <h2>What This Looks Like in Your File</h2>
+      <pre><code>## Identity
+Sport: Swimming — butterfly and IM
+Level: D3 collegiate, sophomore
+Years competing: 11
+What it means: I've been defined by this sport since I was 8.
+It's the thing I'm best at and also the thing that scares me most.
+Losing feels personal in a way winning doesn't.
+</code></pre>
+      <p>Six sentences. No jargon. Just honest answers to direct questions.</p>
+      <p>That entry tells AI: this athlete carries weight when they compete. Losing hits differently for them.
+        Reassurance alone won't help — it'll need to go deeper than "you'll get them next time."</p>
+      <p>All of that from six sentences.</p>
+      <hr />
+      <h2>Build It Now</h2>
+      <p>Open a note — phone, Google Doc, anywhere — and write your Identity section.</p>
+      <pre><code>## Identity
+Sport:
+Position / event:
+Level:
+Years competing:
+What it means to me:
+</code></pre>
+      <p>For "What it means to me" — write 2-4 sentences. Don't perform. Don't write the college essay version. Write
+        the true version, even if it's complicated, even if it's something you haven't said out loud before.</p>
+      <p>That's the one AI needs.</p>
+      <hr />
+      <p><em>Next: Chapter 4 — How You Actually Perform. What locked in feels like, what your warning signs are, and why
+          your body knows things your stats never will.</em></p>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div class="page part-page" id="part-2" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: #111827; color: #ffffff;">
+    <div style="font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: #9ca3af; margin-bottom: 16px;">Part Two</div>
+    <h1 style="font-size: 3rem; font-weight: 800; line-height: 1.1; color: #ffffff; margin: 0;">Building the Athlete</h1>
+    <p style="margin-top: 24px; color: #6b7280; font-size: 0.95rem;">Chapters 4 – 7</p>
+  </div>
+
+  <div class="page chapter" id="chapter-4">
+    <div class="chapter-opener">
+      <div class="chapter-label">Chapter 4</div>
+      <h1>How You Actually Perform</h1>
+      <h4>athlete.md Section 2: Performance Profile</h4>
+      <hr />
+      <p>Before we talk about patterns or what your coach says about your game — stop.</p>
+      <p>Put your hand on your chest.</p>
+      <p>What does it feel like right before your best performance? Not what you're thinking. What you're
+        <em>feeling</em>. In your body. Your shoulders, your jaw, your breath. The specific physical sensation of being
+        ready.
+      </p>
+      <p>Most athletes can tell you what a great result looks like. Fewer can tell you what it feels like from the
+        inside — the signals in the body that show up before the scoreboard does.</p>
+      <p>That's what this chapter is about. Because AI can only help you manage what you can describe. And your body is
+        telling you things your stats never will.</p>
+      <hr />
+      <h2>Results vs. Readiness</h2>
+      <p>Here's a distinction that changes how you use AI.</p>
+      <p><strong>Results</strong> are what happened. Final score. Your time. Whether you won or lost. Results are out of
+        your control — a lot goes into a result that has nothing to do with you.</p>
+      <p><strong>Readiness</strong> is what you brought. Your energy level going in. How settled or scattered your mind
+        was. Whether your body felt loose or locked. Whether you were present or already somewhere else. Readiness is
+        yours. Entirely.</p>
+      <p>AI cannot help you control results. It can help you understand, track, and manage your readiness. That's the
+        job. And to do that job, it needs to know what your readiness actually looks like — for you, in your body, on
+        your best days and your worst.</p>
+      <hr />
+      <h2>What "Locked In" Actually Feels Like</h2>
+      <p>Ask ten athletes what peak performance feels like and most will say the same things: "I was in the zone." "I
+        wasn't thinking." "Everything just flowed."</p>
+      <p>Useful as a description. Not useful as data.</p>
+      <p>Here's the question that makes it useful: <em>Where do you feel it?</em></p>
+      <p>For some athletes, locked in feels like physical looseness — like their body is warmed up and responsive, like
+        they're a half-second ahead of the play. For others, it's mental quiet — the inner narrator goes silent and
+        they're just moving. For others, it's connection — they feel tuned in to the people around them, picking up
+        signals, making reads before anything develops.</p>
+      <p>Your version is specific to you. And AI needs the specific version — not "I was in the zone" but "I felt loose
+        in my hips and my breathing was slow and I stopped thinking about what I was supposed to do."</p>
+      <p>That sentence tells AI something it can use.</p>
+      <hr />
+      <h2>Your Warning Signs</h2>
+      <p>Every athlete has them. The signals that show up before performance drops — before they even know it's
+        happening.</p>
+      <p>A volleyball player starts serving short. A swimmer's stroke rate creeps up. A basketball player stops calling
+        plays and goes quiet. A pitcher's shoulders come up toward their ears.</p>
+      <p>These are warning signs. They're the body announcing that something is off — that pressure is arriving, that
+        doubt is creeping in.</p>
+      <p>Most athletes don't notice their warning signs until after the fact: <em>yeah, I was tight from the first
+          possession. I knew something was off. I just couldn't stop it.</em></p>
+      <p>Naming your warning signs gives you a chance to catch them earlier. And when AI knows them, it can reflect them
+        back to you — before a game, after a hard session, when you're debriefing a performance that didn't go the way
+        you wanted.</p>
+      <p><em>"You mentioned you felt your shoulders coming up during warmup. That's one of your signals. What did you do
+          with it?"</em></p>
+      <p>That question only comes from something that knows your patterns.</p>
+      <hr />
+      <h2>What Derails You</h2>
+      <p>Different from warning signs. Warning signs are the signal. Derailment is the cause.</p>
+      <p>Some athletes derail when they feel like they have to prove something — a scout in the stands, a coach who
+        doubted them. The external judgment shifts their internal state and suddenly they're performing for the wrong
+        audience.</p>
+      <p>Some athletes derail when they fall behind early — not because they can't come back, but because they start
+        pressing, trying to make up the deficit in one play.</p>
+      <p>Some athletes derail when they don't feel challenged in warmup. They need to feel pushed to feel ready, and
+        when that doesn't happen, they coast into the game flat.</p>
+      <p>None of these are flaws. They're patterns. And patterns can be worked with — once you know what they are.</p>
+      <hr />
+      <h2>What You Do Well Under Pressure</h2>
+      <p>This section earns its place.</p>
+      <p>A lot of performance work focuses on what goes wrong. This question flips it: what goes <em>right</em>,
+        specifically, when things get hard?</p>
+      <p>Some athletes get more focused under pressure, not less. Some get quieter and more efficient. Some perform
+        better when there's something at stake — they need the meaning to activate.</p>
+      <p>You probably know what yours is. That belongs in your file. Because AI can reinforce it — not to hype you up,
+        but because it's true, and you need to hear it from something that knows your full picture.</p>
+      <hr />
+      <h2>What This Looks Like in Your File</h2>
+      <pre><code>## Performance Profile
+
+Peak state feels like: 
+Loose, almost bored before the race — not thinking, just doing.
+My breathing slows down. I stop planning and start moving.
+
+Warning signs: 
+I start narrating my own performance in my head.
+My shoulders come up. I start watching the clock.
+
+What derails me: 
+Feeling like I have to prove something.
+Comparing myself to competitors mid-race.
+What I do well under pressure: I slow down when others speed up.
+Close races bring out my best stroke.
+</code></pre>
+      <p>Specific beats complete. Real beats polished.</p>
+      <hr />
+      <h2>Build It Now</h2>
+      <pre><code>## Performance Profile
+
+Peak state feels like:
+Warning signs:
+What derails me:
+What I do well under pressure:
+</code></pre>
+      <p>Take your time with this one. The Identity section was about who you are. This one is about how you actually
+        work — and that's harder to see clearly because you're inside it.</p>
+      <p>If you're not sure, think of your last great performance. What did it feel like in the first ten minutes? And
+        your last bad one — what was the first sign something was off?</p>
+      <p>The answers are in there. Write them down.</p>
+      <hr />
+      <p><em>Next: Chapter 5 — Your Mental Game, the Honest Version. The private game, not the projected one.</em></p>
+    </div>
+  </div>
+
+  <div class="page chapter" id="chapter-5">
+    <div class="chapter-opener">
+      <div class="chapter-label">Chapter 5</div>
+      <h1>Your Mental Game — The Honest Version</h1>
+      <h4>athlete.md Section 3: Mental Performance Patterns</h4>
+      <hr />
+      <p>Every athlete has two games.</p>
+      <p>The public game — what the team sees, what the coach sees, what shows up on film. The composure. The
+        confidence. The version you've learned to project because sport rewards the athlete who looks like they have it
+        together.</p>
+      <p>And the private game. What's actually happening inside. The voice that shows up after a bad play. The doubt
+        that spikes before a big moment. The replay loop that runs at 2am after a loss. The way confidence sometimes
+        feels solid and sometimes feels like you borrowed it and aren't sure you get to keep it.</p>
+      <p>Most performance advice addresses the public game. This chapter is about the private one.</p>
+      <p>Not to expose it. Not to fix it. To describe it accurately enough that AI can actually help.</p>
+      <hr />
+      <h2>Why This Is the Hardest Section</h2>
+      <p>You've been trained — probably for years — to project confidence. To keep your head up after a mistake. To look
+        like you belong even when you're not sure you do. That training is useful. It's also the reason this section is
+        hard to write.</p>
+      <p>What we need here isn't the projected version. It's the actual one.</p>
+      <p>If you describe your mental game the way you'd describe it to a coach who's evaluating you, you'll write
+        something like: "I bounce back well from mistakes. I stay focused under pressure. I work hard."</p>
+      <p>That's fine. It's also not useful.</p>
+      <p>What's useful: "After a bad play, I go quiet for two or three possessions. I tell myself I'm fine but my
+        decision-making gets cautious and I stop taking chances. It usually passes but I can't always stop it mid-game."
+      </p>
+      <p>That's the version AI can work with. That's what makes the difference between generic advice and something that
+        actually fits.</p>
+      <hr />
+      <h2>How You Handle Failure</h2>
+      <p>This is different for every athlete, and most athletes have a specific pattern they can recognize once they
+        stop performing for the room.</p>
+      <p>Some athletes externalize: the call was bad, the conditions were tough, the team let them down. Not always
+        wrong — sometimes those things are true. But when externalizing is the default response to every setback, it
+        blocks the learning that could make things different next time.</p>
+      <p>Some athletes internalize hard: one mistake becomes a referendum on whether they belong. A bad game leads to a
+        bad week leads to wondering if this is even for them. The failure doesn't just sting — it sticks.</p>
+      <p>Some athletes move on fast — almost too fast. They've learned to protect themselves by not letting results
+        land. Which works for mental protection but sometimes misses what the failure was trying to tell them.</p>
+      <p>Most athletes are a combination of these, depending on the kind of failure and the context it happens in.</p>
+      <p>Your pattern isn't a flaw. It's a pattern. Write what actually happens in the hour after a bad performance —
+        not the version where you "stay positive and learn from it." What you actually do, feel, and think.</p>
+      <hr />
+      <h2>Your Inner Critic</h2>
+      <p>Every athlete has one. The voice that runs commentary on the gap between where you are and where you think you
+        should be.</p>
+      <p>Some inner critics are harsh and loud. Some are subtler — not a shout but a whisper: <em>are you sure you're
+          good enough for this?</em></p>
+      <p>What does yours say? Not in general — specifically. What's its line? What's the thing it comes back to?</p>
+      <p>For some athletes it's comparison: <em>those other athletes are catching up, and you've stopped improving.</em>
+        For some it's timeline: <em>you should be further along by now.</em> For some it's belonging: <em>everyone in
+          this room earned their place, and you're not sure you did.</em></p>
+      <p>When AI knows what your inner critic says, it can interrupt the pattern instead of accidentally reinforcing it.
+        "You mentioned your confidence leaks late in close games when you start thinking about outcome. You're in the
+        fourth quarter. What's one next play?" That question only comes from something that knows your pattern.</p>
+      <hr />
+      <h2>Where Confidence Comes From — and Where It Leaks</h2>
+      <p>Confidence isn't the same for every athlete.</p>
+      <p>Some athletes build it through preparation — if they've done the work, they can trust the work. Walk in
+        undertrained and their confidence wobbles.</p>
+      <p>Some build it through performance — they need early success in a game or session to feel locked in. They can't
+        generate it in a vacuum.</p>
+      <p>Some build it through connection — they need to feel the team, feel the energy. Isolation deflates them.</p>
+      <p>Your version is worth knowing. Because AI can remind you of it when it matters — before a game when you're
+        doubting yourself, after a string of poor performances when you're trying to find your footing again.</p>
+      <p>And the flip side: where does it leak? What's the situation that reliably drains your confidence even when
+        you've done everything right? Knowing where the leak is gives you a chance to patch it — or at least see it
+        coming.</p>
+      <hr />
+      <h2>What This Looks Like in Your File</h2>
+      <pre><code>## Mental Performance Patterns
+
+How I handle failure: I go quiet. I replay it. I'm fine by the next day but the hour after is rough — I pull inward and stop talking.
+
+My inner critic: Tells me I peaked too early. That other people are catching up.
+
+Where confidence comes from: Preparation. If I've done the work, I can trust the work.
+
+Where it leaks: Late in close games when I start thinking about outcome instead of next play. When someone I respect seems disappointed in me.
+</code></pre>
+      <p>Specific. Private. Honest. That's what makes it work.</p>
+      <hr />
+      <h2>Build It Now</h2>
+      <p>This one might take longer than the others. Give it the time it needs.</p>
+      <pre><code>## Mental Performance Patterns
+
+How I handle failure:
+My inner critic (what it says, specifically):
+Where confidence comes from:
+Where it leaks:
+</code></pre>
+      <p>If you find yourself writing the polished version, stop. Ask yourself: what actually happens? What does the
+        voice actually say? What would someone watching you closely notice in the hour after a hard loss?</p>
+      <p>Write that version. AI has no use for the highlight reel. It needs the full game.</p>
+      <hr />
+      <p><em>Next: Chapter 6 — What You're Working Toward. Goals, timeline, and the why underneath everything.</em></p>
+    </div>
+  </div>
+
+  <div class="page chapter" id="chapter-6">
+    <div class="chapter-opener">
+      <div class="chapter-label">Chapter 6</div>
+      <h1>What You're Working Toward</h1>
+      <h4>athlete.md Section 4: Goals and Timeline</h4>
+      <hr />
+      <p>You probably have goals. Most athletes do.</p>
+      <p>What most athletes don't have is a clear answer to the question underneath the goal: <em>why does this matter
+          to you?</em></p>
+      <p>Not the answer you'd give a recruiter or a coach. The real one. The one that gets you out of bed on the days
+        when nothing is working and you'd rather not.</p>
+      <p>That's what this chapter is about — and it's the part AI needs most.</p>
+      <hr />
+      <h2>The Plan Problem</h2>
+      <p>AI is very good at making plans. Give it a goal and it will give you steps, timelines, checkpoints, progress
+        markers. It will be thorough and logical and completely disconnected from what actually drives you.</p>
+      <p>Because plans aren't the problem. Most athletes know what they're supposed to do. The problem is the days when
+        you don't want to do it — when the training is hard and the results aren't there and the goal feels abstract and
+        far away.</p>
+      <p>On those days, a plan doesn't help. The <em>why</em> behind the plan does.</p>
+      <p>When AI knows why your goal matters — not just what it is — it can speak to the right thing. It can remind you
+        of the reason when the reason is what you need.</p>
+      <p>"Make varsity" is a goal. AI can help you plan for it.</p>
+      <p>"Make varsity because my dad played here and I want him to see me in that jersey before he retires" is a goal
+        AI can help you <em>carry</em>.</p>
+      <p>Those are different kinds of help. The second requires knowing the why.</p>
+      <hr />
+      <h2>Three Kinds of Goals</h2>
+      <p>It helps to know which kind you're working with.</p>
+      <p><strong>Outcome goals</strong> are results: make the team, drop time, win the championship, get the
+        scholarship. They matter. They give you direction. But AI can't control outcomes — too many variables outside
+        you. If your only goals are outcomes, AI can help you prepare, but it can't give you the result.</p>
+      <p><strong>Process goals</strong> are behaviors: show up to every practice. Watch film once a week. Get eight
+        hours of sleep during the season. These are entirely within your control, and AI is excellent at helping with
+        them — tracking, reminding, adjusting when life gets in the way.</p>
+      <p><strong>Identity goals</strong> are about who you're becoming: be the kind of teammate people want next to them
+        in a hard moment. Leave this sport knowing you gave it everything, not wondering what would have happened if you
+        had.</p>
+      <p>Identity goals are the most powerful and the least talked about. They don't show up in a box score. But they
+        shape everything — how you train, how you treat your teammates, how you respond when things get hard.</p>
+      <p>Your file should have at least one of each. But the identity goal is the one that makes AI's help feel like it
+        means something.</p>
+      <hr />
+      <h2>The Why Is Not Optional</h2>
+      <p>Two athletes can have the exact same goal — make the starting lineup — and have completely different
+        experiences working toward it, because the reasons are different.</p>
+      <p>One athlete wants to start because she's worked four years for it and starting represents the payoff of that
+        investment. When she's struggling, what she needs is a reminder that the work is already done — trust it.</p>
+      <p>Another athlete wants to start because his confidence is tied to whether the coach believes in him. When he's
+        struggling, what he needs is something different entirely — a reminder that his value isn't determined by a
+        starting spot.</p>
+      <p>Same goal. Different reasons. Completely different help.</p>
+      <p>AI can only give you the right help if it knows which athlete you are. The why tells it.</p>
+      <hr />
+      <h2>About the Long Game</h2>
+      <p>Include where you want this to go — not just this season.</p>
+      <p>Not because AI needs a five-year plan. But because knowing whether you're playing for the love of it, playing
+        for a scholarship, playing while quietly wondering if this is the last year — that context changes everything.
+      </p>
+      <p>An athlete who is chasing a scholarship needs different conversations than an athlete in their final season who
+        just wants to leave having given everything.</p>
+      <p>Neither is better. Both are real. And AI adjusts when it knows which situation it's in.</p>
+      <hr />
+      <h2>What This Looks Like in Your File</h2>
+      <pre><code>## Goals and Timeline
+
+This season: Drop time in the 200 IM. Make the A final at conference.
+
+Longer term: Swim all four years. Leave knowing I gave it everything.
+
+Why it matters: I've never fully committed to anything. This year I want to find out what happens if I do.
+
+Process goal: Show up to dryland without negotiating with myself.
+
+Identity goal: Be the kind of teammate people want in their lane.
+</code></pre>
+      <p>That last field — "why it matters" — is the one most athletes underwrite. Give it a full sentence, maybe two.
+        Don't perform. Just tell AI what's actually at stake for you.</p>
+      <hr />
+      <h2>Build It Now</h2>
+      <pre><code>## Goals and Timeline
+
+This season:
+Longer term:
+Why it matters:
+Process goal (something in your control):
+Identity goal (who you want to become):
+</code></pre>
+      <p>If the "why it matters" is hard to write, try this: imagine you achieved the goal. How would it feel? Now
+        imagine you came close but not quite. What's the feeling in your chest?</p>
+      <p>That feeling is the why. Write toward it.</p>
+      <hr />
+      <p><em>Next: Chapter 7 — How You Like to Be Coached. For the first time, you get to design it.</em></p>
+    </div>
+  </div>
+
+  <div class="page chapter" id="chapter-7">
+    <div class="chapter-opener">
+      <div class="chapter-label">Chapter 7</div>
+      <h1>How You Like to Be Coached</h1>
+      <h4>athlete.md <br>Section 5: Communication and Coaching Style</h4>
+      <hr />
+      <p>Here's something most athletes have never been asked.</p>
+      <p>Not "what are your goals?" Not "what are you working on?" Not "how's the season going?"</p>
+      <p>This: <em>If you could design exactly how the people in your corner talk to you — what would that look
+          like?</em></p>
+      <p>Most athletes have never had the chance to answer that question. You adapt to whoever's coaching you. You learn
+        their style, figure out what they respond to, adjust. You make it work.</p>
+      <p>This chapter flips it. For the first time, you get to describe the communication style that actually works for
+        you — and AI will follow it exactly.</p>
+      <hr />
+      <h2>AI Has No Ego</h2>
+      <p>This is one of the things that makes AI genuinely different from human coaches.</p>
+      <p>Your coach has a preferred style. Some coaches are direct to the point of blunt. Some build you up before they
+        break things down. Some are emotional, some clinical, some use humor, some never do. That style isn't wrong —
+        it's just theirs. And adapting to it is part of playing for them.</p>
+      <p>AI has no preferred style. None. It's not attached to being the kind of coach who "tells it like it is" or the
+        kind who "meets athletes where they are." It has no ego invested in its own approach.</p>
+      <p>That means it will communicate exactly the way you tell it to. Direct or gentle. Brief or detailed. Challenging
+        or supportive. Technical or emotional. It will be whatever you say works best for you — consistently, every
+        time, without a bad day getting in the way.</p>
+      <p>But it can only do that if you tell it. Which is what this section is for.</p>
+      <hr />
+      <h2>How You Receive Feedback Best</h2>
+      <p>Think about the best feedback you've ever gotten. Not the nicest — the most useful. The kind that actually
+        changed something.</p>
+      <p>What made it land?</p>
+      <p>For some athletes, feedback lands when it's direct: no softening, no preamble, just what needs to change and
+        why. They find the cushioned version condescending.</p>
+      <p>For others, direct feedback without context lands as criticism. They need to understand the <em>why</em> before
+        they can hear the <em>what</em>.</p>
+      <p>Some athletes need the relationship established before feedback means anything. They need to feel like the
+        person giving feedback actually knows them and is on their side.</p>
+      <p>Your version is specific to you. You've had the experience of feedback that landed and feedback that bounced —
+        you can feel the difference.</p>
+      <p>Write the version that landed. Tell AI what that looks like.</p>
+      <hr />
+      <h2>Push or Pull</h2>
+      <p>Some athletes need to be pushed. Challenge is the on-switch. If the bar isn't high enough, they coast. They
+        need someone who asks the harder question, holds them to the standard, doesn't accept "good enough."</p>
+      <p>Some athletes need to be pulled. They're already hard on themselves. Adding pressure doesn't raise performance
+        — it compresses it. What they need is someone who believes in them clearly, who gives them room to trust
+        themselves.</p>
+      <p>A lot of athletes are somewhere in between — or the answer depends on the moment. A hard week of training might
+        call for pull. A week when they've been coasting might call for push.</p>
+      <p>You can tell AI this. You can even tell it to read the situation: "if I seem like I'm being too easy on myself,
+        push me; if I seem already hard on myself, back off." AI will use that instruction every time.</p>
+      <hr />
+      <h2>What Shuts You Down</h2>
+      <p>Equally important: what doesn't work.</p>
+      <p>Some athletes shut down with public criticism. Some shut down when they feel managed instead of developed —
+        when a coach goes easy on them, pulls punches. Some shut down when feedback comes immediately after a bad
+        performance — they need space to process first.</p>
+      <p>None of these are weaknesses. They're just how you work. And knowing them means AI won't accidentally trip
+        them.</p>
+      <hr />
+      <h2>A Note for Parents</h2>
+      <p>If you're a parent reading this chapter alongside your athlete, you might recognize some of what's here.</p>
+      <p>The way your athlete describes feedback that shuts them down — or the difference between being pushed and being
+        pulled — is probably true in your relationship too, not just with coaches. Most athletes haven't had the words
+        to say it directly. This chapter gave them some.</p>
+      <p>You don't have to respond to it right now. But if something in these pages sounds familiar, it might be worth a
+        quiet conversation. That conversation tends to go better when the athlete gets to answer first.</p>
+      <hr />
+      <h2>What This Looks Like in Your File</h2>
+      <pre><code>## Communication and Coaching Style
+
+How I receive feedback best: Direct, but with context. Tell me why, not just what.
+
+What shuts me down: Feeling talked at. Public criticism. Feedback right after a bad game.
+
+Push or pull: Challenge me. If you go easy on me I stop trusting you.
+
+How I process hard information: I need time. Don't ask me to respond right away.
+
+Preferred AI tone: Honest. Don't soften things. I can handle it.
+</code></pre>
+      <p>Be selfish with this section. There is no right answer. There is only what actually works for you.</p>
+      <hr />
+      <h2>Build It Now</h2>
+      <pre><code>## Communication and Coaching Style
+
+How I receive feedback best:
+What shuts me down:
+Push or pull (or when each):
+How I process hard information:
+Preferred AI tone:
+</code></pre>
+      <p>If you're not sure, think of a coach who got the most out of you. How did they talk to you? What did they do
+        differently? That's your answer.</p>
+      <hr />
+      <p><em>Next: Chapter 8 — Your History and Right Now. Where you've been, and what's actually going on this
+          week.</em></p>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div class="page part-page" id="part-3" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: #111827; color: #ffffff;">
+    <div style="font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: #9ca3af; margin-bottom: 16px;">Part Three</div>
+    <h1 style="font-size: 3rem; font-weight: 800; line-height: 1.1; color: #ffffff; margin: 0;">What's Possible Now</h1>
+    <p style="margin-top: 24px; color: #6b7280; font-size: 0.95rem;">Chapters 8 – 10</p>
+  </div>
+
+  <div class="page chapter" id="chapter-8">
+    <div class="chapter-opener">
+      <div class="chapter-label">Chapter 8</div>
+      <h1>Your History and Right Now</h1>
+      <h4>athlete.md </br>Sections 6 + 7: Background and Current State</h4>
+      <hr />
+      <p>This chapter covers two sections at once — because they're opposites, and understanding both together makes
+        each one clearer.</p>
+      <p><strong>Background</strong> is the slow-moving part of your file. The injuries, the transitions, the formative
+        moments. What a new coach would want to know before working with you. It changes rarely — once a season if
+        something significant happens, otherwise it just grows.</p>
+      <p><strong>Current State</strong> is the fast-moving part. The one you update. Before competitions. After hard
+        losses. Any time something shifts. This is the section that keeps your portrait connected to your actual life
+        instead of a version of you from three months ago.</p>
+      <p>Background is the foundation. Current State is the pulse.</p>
+      <hr />
+      <h2>Part One: Background</h2>
+      <h3>What AI Can't See Without History</h3>
+      <p>When you open a session with AI and describe what you're dealing with — pressure before a big game, a slump
+        that won't break, doubt about whether you belong — AI responds to what you've described.</p>
+      <p>But a lot of what drives those feelings lives in the past, not the present.</p>
+      <p>The athlete who hesitates on cuts might not realize their body still remembers a knee injury from two years
+        ago. The athlete who spirals after a poor performance might not connect it to a season three years back when a
+        string of bad games cost them their starting spot.</p>
+      <p>None of that is visible to AI if you don't put it in the file.</p>
+      <p>When you do, something shifts. AI stops responding to just what's happening now and starts seeing patterns
+        across time. It can ask the question that connects the present to the history — and sometimes that question is
+        the one that finally cracks something open.</p>
+      <h3>This Is Not Therapy</h3>
+      <p>You are not being asked to process your history. You're not being asked to work through anything or make peace
+        with the past.</p>
+      <p>You're just naming it.</p>
+      <p>"I had a serious knee injury junior year. Fourteen-month recovery. I came back faster but I play safer now than
+        I used to, and I'm not sure that's right." That's enough. AI will factor it in. It doesn't need the whole story
+        — just enough to know the pattern exists.</p>
+      <p>The only question worth asking is: <em>would a great coach want to know this before they started working with
+          me?</em> If yes, it belongs in the file.</p>
+      <h3>What to Include</h3>
+      <p><strong>Injuries and physical history.</strong> Any significant injury — one that required recovery time, that
+        changed how you train, that you're still managing. Not a medical report. Just: what happened, when, and whether
+        it still affects you.</p>
+      <p><strong>Formative moments.</strong> The experiences that changed how you see yourself as a competitor. Some are
+        positive — the coach who told you something true and good about yourself, the game where you realized what you
+        were capable of. Some are harder — being cut, being benched, the season where it all fell apart.</p>
+      <p>Both kinds shape you. Both are worth naming.</p>
+      <p><strong>What a new coach wouldn't know.</strong> The most open-ended field — and often the most useful. If you
+        were starting with a new coach tomorrow, what context would help them coach you well? Maybe it's the season you
+        almost quit. Maybe it's the thing your last coach got wrong about you. Write whatever comes to mind.</p>
+      <h3>What This Looks Like in Your File</h3>
+      <pre><code>## Background and Context
+
+Key history: Tore my ACL junior year of high school. 14-month recovery.
+I came back faster but I changed — I play safer now than I used to and I'm not sure that's right.
+
+Formative moment: My club coach told me I was a competitor, not just an athlete. I'd never heard it put that way. I still think about it. What a new coach wouldn't know: I went through a period where I almost quit.
+
+I stayed. That decision matters to me.
+</code></pre>
+      <hr />
+      <h2>Part Two: Current State</h2>
+      <h3>Why This Section Is Different</h3>
+      <p>Every other section in your file is relatively stable. Your identity doesn't change week to week. Your
+        performance profile, your mental patterns, your history, your coaching style — these are the permanent
+        architecture of who you are as a competitor.</p>
+      <p>Current State is different. It's not a description of who you are — it's a description of where you are. Right
+        now. Today. This week.</p>
+      <p>And it's the section that makes everything else come alive.</p>
+      <p>Here's why it matters. You could build a perfect athlete.md — rich, honest, specific — and then use it
+        unchanged for six months. The Identity section will still be accurate. The Performance Profile will still be
+        accurate.</p>
+      <p>But the file won't know that your shoulder has been tight for two weeks. It won't know that your coach just
+        changed your role. It won't know that you had the best practice of your season yesterday. It won't know you
+        barely slept or that something is off at home.</p>
+      <p>Without that, AI gives you good advice for the stable version of you — not the version of you that exists right
+        now.</p>
+      <p>Current State closes that gap.</p>
+      <h3>When to Update It</h3>
+      <p>You don't need to update Current State every day. You're not keeping a diary.</p>
+      <p>Update it before it matters:<br />
+        - The night before a competition<br />
+        - After a hard loss or a significant setback<br />
+        - When something changes — your role, your body, your team dynamic<br />
+        - When you're about to use AI to work through something real<br />
+        - When you notice something is off and you can't quite name it</p>
+      <p>Five minutes. A few sentences. That's all it takes to shift AI from responding to your baseline to responding
+        to where you actually are.</p>
+      <p>Date it every time — it's a signal that this section is meant to change.</p>
+      <h3>The Four Fields</h3>
+      <p><strong>Physically.</strong> Where is your body right now? Not your overall health baseline — the current
+        report. Tired or fresh. Heavy or light. Anything that's been nagging. You don't need medical language.
+        "Shoulders are heavy after two weeks of hard training" is enough.</p>
+      <p><strong>Mentally.</strong> What's your headspace? Good anxious or bad anxious. Locked in or scattered. Carrying
+        something or clear. If you're not sure, try: on a scale of locked in to checked out, where are you? And what's
+        pushing you in that direction?</p>
+      <p><strong>What's on your mind.</strong> Separate from mental state — this is the specific thing taking up space.
+        Sometimes it's about performance. Sometimes it's not about performance at all — something at home, stress from
+        school, something that has nothing to do with your sport but lives in your body when you compete. You don't have
+        to explain it in detail. Just name it.</p>
+      <p><strong>What you need.</strong> The most direct field — and the one athletes most often skip. What do you
+        actually need from this conversation with AI? Not reassurance. Not a plan. What do you need? Tell AI and it will
+        go there, instead of guessing and landing somewhere that doesn't help.</p>
+      <h3>What This Looks Like in Your File</h3>
+      <pre><code>## Current State (Updated: March 2)
+Physically: Tired. Two weeks of hard training. Shoulders are heavy.
+Mentally: Anxious about conference. Good anxious, I think — but I'm watching it.
+What's on my mind: Coach moved me to the 400 IM. I didn't ask for it.
+Still figuring out how I feel.
+What I need: Help thinking through the 400 IM decision.
+Not reassurance — perspective.
+</code></pre>
+      <p>Four fields. A few sentences each. Five minutes.</p>
+      <p>That entry takes a general AI and turns it into something that knows exactly where you are.</p>
+      <h3>The Section LaRue Reads First</h3>
+      <p>If you use LaRue, Current State is the first section it reads before every session. Not your Identity. Not your
+        Performance Profile. This one.</p>
+      <p>Because LaRue doesn't need to re-learn who you are each time. It already has that. What it needs to know is
+        where you are <em>right now</em> — what's going on this week, what you're carrying, what you need. Current State
+        is the bridge between the permanent file and the present moment.</p>
+      <p>A stale Current State means LaRue starts the session with an outdated picture. An updated one means the session
+        begins exactly where you are — no catching up, no re-explaining. Just the conversation you actually need.</p>
+      <hr />
+      <h2>Build It Now</h2>
+      <p><strong>Background:</strong></p>
+      <pre><code>## Background and Context
+
+Key history (injuries, transitions, setbacks):
+Formative moment(s):
+What a new coach wouldn't know:
+</code></pre>
+      <p><strong>Current State:</strong></p>
+      <pre><code>## Current State (Updated: [date])
+
+Physically:
+Mentally:
+What's on my mind:
+What I need:
+</code></pre>
+      <p>Write Background once and revisit it seasonally. Write Current State before every important AI conversation.
+      </p>
+      <hr />
+      <p><em>Next: Part Three — Using Your Portrait. Chapter 9 walks through the First Read experience and what happens
+          when LaRue reads what you've built.</em></p>
+    </div>
+  </div>
+
+  <div class="page chapter" id="chapter-9">
+    <div class="chapter-opener">
+      <div class="chapter-label">Chapter 9</div>
+      <h1>Your First Read</h1>
+      <h4>What Happens When LaRue Reads Your Portrait</h4>
+      <hr />
+      <p>Your portrait is built.</p>
+      <p>Everything AI has been missing — your identity, your mental game, your history, how you perform under pressure,
+        what's happening right now — it's all there. In your words.</p>
+      <p>Now something reads it.</p>
+      <hr />
+      <h2>What First Read Actually Is</h2>
+      <p>First Read is ten questions at <a
+          href="https://knwn.to/first-read/?utm_source=ebook&utm_medium=link&utm_campaign=ai-for-athletes">knwn.to/first-read</a>.
+        Fifteen minutes. No account required.</p>
+      <p>LaRue reads your answers and hands you back a portrait — six sections, in your own words, organized into
+        something you can use. Not a report. Not a score. Not a type.</p>
+      <p>A mirror.</p>
+      <p>If you've been building your athlete.md through the chapters in this book, you've already done the work First
+        Read asks for. The ten questions cover the same ground: your identity, your performance patterns, your mental
+        game, your goals, your pressure profile. First Read is the accelerated path to the same destination.</p>
+      <p>You can do First Read now and compare what LaRue builds from your answers to what you built yourself. Most
+        athletes are surprised by both: what LaRue catches that they didn't name explicitly, and what they added in
+        their written file that the ten questions didn't have room for.</p>
+      <hr />
+      <h2>The Six Sections</h2>
+      <p>Every First Read portrait has the same structure. Here's what each section is for — and what LaRue is actually
+        doing when it writes it.</p>
+      <p><strong>The Portrait.</strong> A narrative origin story. Not a summary — a scene. LaRue is looking for the root
+        of your competitive identity: where it came from, what it's built on, what gives it its particular shape. For
+        Marcus, it came from preparation. For Dani, it came from sequence and precision. Yours will come from whatever
+        is actually true about you.</p>
+      <p><strong>Competitive Identity.</strong> Your behavioral patterns under normal conditions. How you show up when
+        things are going well — the specific qualities that define you as a competitor when you're at your best. This is
+        the version of you worth anchoring to.</p>
+      <p><strong>Pressure Profile.</strong> What happens when it gets hard. Physically, mentally, behaviorally — the
+        specific shifts that occur when stakes are real. This is the most useful section for AI, because pressure
+        patterns are where the gap between knowing and doing lives. LaRue looks for the pattern you might not have named
+        yourself.</p>
+      <p><strong>Relationships and Environment.</strong> Who helps, who doesn't, what your support system looks like and
+        what's unsaid about it. For some athletes this is about coaches. For others it's about teammates, family, the
+        environment at home. LaRue isn't judging any of it — it's factoring it in.</p>
+      <p><strong>The Direction.</strong> What you actually want, reframed clearly. Not your stated goals — the real aim
+        underneath them. LaRue looks for the difference between what you said and what you meant, and writes toward the
+        latter.</p>
+      <p><strong>Metadata.</strong> The machine-readable layer. Your ACSI indicators, whether wearables are connected,
+        which tier you're on. This is what the platform builds on. It's also what makes your portrait a living document
+        — the foundation for everything that gets layered on top.</p>
+      <hr />
+      <h2>What to Do With Your Portrait</h2>
+      <p>When your First Read portrait comes back, read it twice.</p>
+      <p>The first time, just read it. Don't edit, don't argue with it, don't immediately start adjusting. Let it land.
+      </p>
+      <p>The second time, look for the line that surprises you. There's usually one — something LaRue wrote that you
+        didn't quite say, but that sounds more accurate than what you actually said. That line is worth paying attention
+        to. It's often where the most useful work lives.</p>
+      <p>Then look for anything that's wrong. Not anything you wish were different — anything that's actually
+        inaccurate. Add a correction to your file. That's how the portrait becomes more precise over time.</p>
+      <p>Finally, look at The Direction section. If LaRue got it right, that section will feel like a relief — like
+        someone finally said out loud the thing you've been trying to say to yourself. If it's off, fix it. The
+        direction is the most important thing for AI to have right.</p>
+      <hr />
+      <h2>Using the Portrait in a Conversation</h2>
+      <p>Loading your First Read portrait into a conversation is the same as loading your athlete.md — because they're
+        the same file, just generated differently.</p>
+      <p>Open a new session. Paste the portrait. Say: <em>"This is my athlete profile. Use it before we talk."</em></p>
+      <p>Then bring something specific. Not a topic — a situation. Something that's actually happening this week.</p>
+      <p>Here's the opening that works:</p>
+      <blockquote>
+        <p><em>"I've loaded my athlete profile. Here's what I need to work through today: [one specific thing, one or
+            two sentences]. Use what you know about me — don't give me general advice."</em></p>
+      </blockquote>
+      <p>That last line matters. It sets the expectation. It tells AI to draw from the file, not from its default
+        patterns.</p>
+      <p>What follows will feel different from any AI conversation you've had before. Not because AI got smarter.
+        Because it finally has something real to work with.</p>
+      <hr />
+      <h2>If You Use LaRue</h2>
+      <p>If you're on knwn.to and working with LaRue directly, the portrait is already loaded. LaRue reads it before the
+        session starts — specifically the Current State section first, then the rest of the file.</p>
+      <p>You don't load anything. You just begin.</p>
+      <p>Over time, LaRue builds on the portrait. Session notes get added to your memory file. Your Current State gets
+        updated. The record of who you've been as a competitor across a season — what you were carrying before each
+        significant moment, how you responded, what shifted — accumulates.</p>
+      <p>That's the difference between a portrait and a relationship. First Read builds the portrait. LaRue builds the
+        relationship.</p>
+      <p>To see what that looks like over time, visit knwn.to/jaime — an athlete profile built across multiple sessions,
+        public and annotated.</p>
+      <hr />
+      <h2>If You Haven't Done First Read Yet</h2>
+      <p>Go now: <a
+          href="https://knwn.to/first-read/?utm_source=ebook&utm_medium=link&utm_campaign=ai-for-athletes">knwn.to/first-read</a>
+      </p>
+      <p>It's included with this book. Ten questions. Fifteen minutes. LaRue will hand you back a portrait you can use
+        today.</p>
+      <p>Everything you've built in Part Two will make that portrait richer. And what First Read produces will deepen
+        your understanding of what you built.</p>
+      <hr />
+      <p><em>Next: Chapter 10 — What AI Can and Can't Do. The honesty chapter, and why understanding the limits makes
+          everything before them more trustworthy.</em></p>
+    </div>
+  </div>
+
+  <div class="page chapter" id="chapter-10">
+    <div class="chapter-opener">
+      <div class="chapter-label">Chapter 10</div>
+      <h1>What AI Can and Can't Do</h1>
+      <hr />
+      <p>This is the honesty chapter.</p>
+      <p>Everything before this has been about what AI can do when you give it context. This chapter is about where that
+        ends — and why understanding the limit makes everything before it more trustworthy, not less.</p>
+      <hr />
+      <h2>The Line</h2>
+      <p>AI is a thinking partner. It is not a decision-maker. It is not a therapist. It is not a coach who has watched
+        you play. It is not your teammate, your parent, or the person who loves you and has been in your corner for
+        years.</p>
+      <p>Those things matter in ways AI cannot replicate. And trying to use AI as a replacement for them is the most
+        common mistake athletes make once they discover how useful it can be.</p>
+      <p>Here's where the line actually sits.</p>
+      <hr />
+      <h2>What AI Does Well</h2>
+      <p><strong>Thinking things through.</strong> This is where AI is genuinely excellent. You have a situation — a
+        coaching decision you're processing, a performance you're trying to understand, a goal you're trying to clarify.
+        AI can help you think it through systematically, without ego, without an agenda, without getting tired.
+        Available at 11pm before a competition the same way it is at noon on a Tuesday.</p>
+      <p><strong>Reflecting patterns back.</strong> When AI knows your file, it can notice things you can't see because
+        you're inside them. The pattern that connects this week to three months ago. The gap between what you said and
+        what you meant. The habit that shows up in how you describe every hard moment. AI doesn't know you the way a
+        human does — but it holds the text of your file consistently and can draw connections across it.</p>
+      <p><strong>Holding you accountable to what you said.</strong> AI has no investment in making you feel better. It
+        will ask the hard question. It will remind you of what you said your process goal was when you're describing a
+        week where you skipped it. It will notice when you're describing a pattern you told it you wanted to change.
+        That consistency — without agenda, without a bad day getting in the way — is genuinely useful.</p>
+      <p><strong>Being available.</strong> Most athletes don't have access to a mental performance coach. The one who
+        would sit with you at 10pm before the hardest competition of your season and just think it through with you. AI
+        isn't that person. But it's available, it's consistent, and it knows your file. For the thinking-out-loud work,
+        that's often enough.</p>
+      <hr />
+      <h2>What AI Cannot Do</h2>
+      <p><strong>Make the decision.</strong> AI can help you see a decision more clearly. It can surface considerations
+        you haven't named, reflect the tradeoffs back, ask what you'd advise a friend in your situation. But the
+        decision is yours. Athletes who outsource decisions to AI are using it wrong — and usually know it, even if
+        they're not ready to say so.</p>
+      <p><strong>Be present with you in the moment.</strong> The decision at the line of scrimmage, the moment before
+        the race, the choice to push in the final lap — those happen in your body, in real time, with everything you've
+        trained bearing down on a single instant. AI cannot be there. What AI can do is help you prepare for that
+        moment. But the moment itself belongs to you.</p>
+      <p><strong>Replace human support.</strong> There is something that happens between two people who trust each other
+        — an athlete and a coach, an athlete and a teammate, an athlete and a parent — that has no AI equivalent. The
+        felt sense of being known and believed in. The presence of someone who has watched you struggle and stayed
+        anyway. That relationship has a texture that AI doesn't have. If you're using AI to avoid needing those
+        relationships, something is wrong — not with AI, but with how you're using it.</p>
+      <p><strong>Know what it doesn't know.</strong> AI responds to what's in the file. If something important isn't
+        there — something you haven't named, something you don't have language for yet — AI won't know to ask about it.
+        This is why the file matters, and why keeping it honest and current matters. A file with gaps produces help with
+        gaps.</p>
+      <p><strong>Tell you your values.</strong> This is the most important one. AI can reflect your stated values back
+        to you. It can notice when your behavior seems inconsistent with something you said you believed. But it cannot
+        tell you what matters. It cannot tell you what kind of competitor you want to be, or what you're willing to
+        sacrifice, or what it would mean to you to reach the goal versus fall short of it. Those questions are yours —
+        and answering them is some of the most important work you'll do as an athlete. AI can hold the answers once you
+        have them. It cannot produce them.</p>
+      <hr />
+      <h2>The Question Worth Asking</h2>
+      <p>After any AI conversation, there's a simple check: <em>Am I using this to think more clearly, or to avoid
+          thinking?</em></p>
+      <p>AI can be a way to think more clearly — to surface something you needed to see, to work through something you'd
+        been circling around, to hear your own reasoning reflected back more precisely than you could have expressed it
+        yourself.</p>
+      <p>AI can also be a way to avoid thinking — to get reassurance without sitting with the discomfort, to hear a plan
+        that doesn't require you to actually decide anything, to stay in the conversation instead of going and doing the
+        work.</p>
+      <p>The first is useful. The second feels useful but isn't.</p>
+      <p>You know which one you're doing when you're doing it.</p>
+      <hr />
+      <h2>The Bigger Picture</h2>
+      <p>You are an athlete building a relationship with AI at the exact moment that AI is becoming genuinely capable of
+        helping athletes. That's not a small thing.</p>
+      <p>The athletes who figure this out first — who build real context files, who use AI to think more clearly rather
+        than to avoid thinking, who understand what it can do and what it can't — will have an edge that is genuinely
+        difficult to describe to someone who hasn't experienced it.</p>
+      <p>Not because AI is magic. Because knowing yourself well enough to explain yourself to something that asks good
+        questions turns out to be one of the most valuable skills an athlete can develop. And building that skill, it
+        turns out, is what this whole book has been about.</p>
+      <p>You've done the work. The file is yours. Now use it.</p>
+      <hr />
+      <p><em>The AI you started with didn't know you. The one you use now does. That's not a small thing.</em></p>
+      <hr />
+      <p><strong>LaRue | <a href="https://x.com/larueagent">Twitter</a> | <a href="https://knwn.to">knwn.to</a></strong>
+      </p>
+
+    </div>
+  </div>
+
+
+</body>
+
+</html>
