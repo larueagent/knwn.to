@@ -5,80 +5,44 @@ import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 
-function EmailForm({
-  submitted,
-  setSubmitted,
-}: {
-  submitted: boolean;
-  setSubmitted: (v: boolean) => void;
-}) {
-  const [email, setEmail] = useState("");
+function BuyButton() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleBuy = async () => {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, tag: "book-waitlist" }),
-      });
+      const res = await fetch("/api/checkout", { method: "POST" });
       const data = await res.json();
-      if (!res.ok) {
+      if (!res.ok || !data.url) {
         setError(data.error || "Something went wrong. Please try again.");
-      } else {
-        setSubmitted(true);
+        setLoading(false);
+        return;
       }
+      window.location.href = data.url;
     } catch {
       setError("Something went wrong. Please try again.");
-    } finally {
       setLoading(false);
     }
   };
 
-  if (submitted) {
-    return (
-      <div className="bg-white border border-[#E0D9CE] rounded px-8 py-5 text-center">
-        <p className="font-syne font-semibold text-[#1A1714] mb-1">
-          You&apos;re on the list.
-        </p>
-        <p className="font-inter text-sm text-[#8A8178]">
-          We&apos;ll reach out as soon as the book is ready.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col sm:flex-row gap-3 w-full max-w-md"
+    <div className="flex flex-col items-center gap-3">
+      <button
+        onClick={handleBuy}
+        disabled={loading}
+        className="px-8 py-4 bg-[#B8821A] text-white font-syne font-semibold text-base rounded hover:bg-[#a07115] transition-colors disabled:opacity-60 whitespace-nowrap"
       >
-        <input
-          type="email"
-          required
-          placeholder="your@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={loading}
-          className="flex-1 px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors disabled:opacity-60"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-6 py-3 bg-[#B8821A] text-white font-syne font-semibold text-sm rounded hover:bg-[#a07115] transition-colors whitespace-nowrap disabled:opacity-60"
-        >
-          {loading ? "Joining..." : "Notify Me"}
-        </button>
-      </form>
+        {loading ? "Redirecting..." : "Buy Now — $29"}
+      </button>
       {error && (
-        <p className="font-inter text-sm text-red-500 mt-3">{error}</p>
+        <p className="font-inter text-sm text-red-500">{error}</p>
       )}
-    </>
+      <p className="font-inter text-xs text-[#8A8178]">
+        Instant download. Secure checkout via Stripe.
+      </p>
+    </div>
   );
 }
 
@@ -89,8 +53,6 @@ const Divider = () => (
 );
 
 export default function BookPage() {
-  const [submitted, setSubmitted] = useState(false);
-
   return (
     <main className="min-h-screen bg-parchment flex flex-col">
       <Nav />
@@ -98,390 +60,236 @@ export default function BookPage() {
       {/* Hero */}
       <section className="flex flex-col items-center text-center px-6 pt-20 pb-16">
         <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">
-          Coming 2026 &mdash; $29 at launch
+          Robert Yang with LaRue
         </p>
-        <h1 className="font-syne font-bold text-5xl md:text-7xl text-[#1A1714] leading-tight mb-4 max-w-3xl">
-          Your Story, All of It
+        <h1 className="font-syne font-bold text-4xl sm:text-5xl text-[#1A1714] mb-4 leading-tight">
+          AI and Athletes
         </h1>
-        <p className="font-inter text-xl text-[#8A8178] max-w-xl mb-4 leading-relaxed">
-          The Athlete&apos;s Guide to Personalizing AI for Your Game
+        <p className="font-inter text-lg text-[#4A443E] max-w-xl mb-3">
+          AI doesn&apos;t know you. Yet.
         </p>
-        <p className="font-inter text-base text-[#8A8178] max-w-xl mb-4 leading-relaxed">
-          AI doesn&apos;t know you. knwn.to fixes that. Build your athlete
-          profile, personalize your AI, and carry your full story wherever your
-          game takes you.
-        </p>
-        <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-4">
-          by Robert Yang
-        </p>
-        <p className="font-inter text-sm text-[#8A8178] mb-10">
-          We&apos;re writing this book in public. Follow along as we build it.
+        <p className="font-inter text-base text-[#8A8178] max-w-lg mb-10">
+          The definitive guide to building your AI athlete profile.
         </p>
 
-        <EmailForm submitted={submitted} setSubmitted={setSubmitted} />
-        {!submitted && (
-          <p className="font-inter text-xs text-[#8A8178] mt-3">
-            Get notified when it&apos;s ready.
-          </p>
-        )}
+        {/* Book cover */}
+        <div className="mb-10 shadow-lg rounded overflow-hidden">
+          <Image
+            src="/knwn-book-og-preview.png"
+            alt="AI and Athletes book cover"
+            width={320}
+            height={420}
+            priority
+            className="block"
+          />
+        </div>
+
+        <BuyButton />
       </section>
 
       <Divider />
 
-      {/* What the book builds */}
-      <section className="px-6 py-16 max-w-2xl mx-auto w-full">
-        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-8">
-          What this book builds
-        </p>
-        <div className="font-inter text-[17px] text-[#1A1714] leading-relaxed space-y-4">
-          <p>
-            By the last page, you&apos;ll have an{" "}
-            <span className="font-semibold">athlete.md</span> &mdash; a file
-            that tells AI who you are, how you think, what you&apos;re working
-            toward, and what you need. Every chapter adds one section to it.
+      {/* What you get */}
+      <section className="flex flex-col items-center px-6 py-14">
+        <div className="max-w-2xl w-full">
+          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4 text-center">
+            What&apos;s inside
           </p>
-          <p>
-            The file lives on your knwn.to profile. It works with ChatGPT,
-            Claude, LaRue, or any AI. It&apos;s yours.
-          </p>
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* Part One */}
-      <section className="px-6 py-16 max-w-2xl mx-auto w-full">
-        <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-2">
-          Part One
-        </p>
-        <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-2">
-          Why AI Doesn&apos;t Know You Yet
-        </h2>
-        <p className="font-inter text-sm text-[#8A8178] italic mb-10">
-          What AI actually is &mdash; and why it keeps giving you advice that
-          doesn&apos;t quite fit.
-        </p>
-        <div className="space-y-8">
-          {[
-            {
-              num: "Chapter 1",
-              title: "You've Talked to AI. It Didn't Really Talk to You.",
-              body: "84% of people have never typed a prompt. You're in the 16% who already crossed that line — and still felt underwhelmed. That's not a failure. That's a context problem. This chapter names the gap you already feel.",
-            },
-            {
-              num: "Chapter 2",
-              title: "What AI Actually Is",
-              body: "Not a technical explanation — a useful one. AI is a brilliant thinking partner with no memory of yesterday and no idea who you are. Every conversation starts from zero. Your job is to solve that problem. This chapter explains how.",
-            },
-            {
-              num: "Chapter 3",
-              title: "The Athlete Who Gave It Nothing vs. The Athlete Who Gave It Everything",
-              body: "Two athletes. Same sport. Same question. Completely different answers — because one gave context and one didn't. This chapter shows the gap side by side, in real conversations. This is what you're building toward.",
-            },
-          ].map(({ num, title, body }) => (
-            <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
-              <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
-                {num}
-              </p>
-              <h3 className="font-syne font-semibold text-lg text-[#1A1714] mb-2 leading-snug">
-                {title}
-              </h3>
-              <p className="font-inter text-[15px] text-[#8A8178] leading-relaxed">
-                {body}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* Part Two */}
-      <section className="px-6 py-16 max-w-2xl mx-auto w-full">
-        <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-2">
-          Part Two
-        </p>
-        <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-2">
-          Building Your athlete.md
-        </h2>
-        <p className="font-inter text-sm text-[#8A8178] italic mb-10">
-          Eight sections. Eight chapters. One file that tells AI who you
-          actually are. Each chapter builds one section. Each chapter ends with
-          a <span className="font-semibold not-italic text-[#1A1714]">Build It Now</span> prompt — a short exercise that adds that section to
-          your file. When Part Two is done, your athlete.md is done.
-        </p>
-        <div className="space-y-8">
-          {[
-            {
-              num: "Chapter 4",
-              title: "Who You Are as an Athlete",
-              body: "Sport, position, level, years competing, what the sport means to you beyond the scoreboard. Without this, AI advises a generic competitor. With it, AI knows your role, your stakes, and what actually matters to you. This is the foundation everything else builds on.",
-            },
-            {
-              num: "Chapter 5",
-              title: "How You Actually Perform",
-              body: "Start in the body. What does locked in feel like? What does tight feel like — the specific physical signal before your game slips? Results are what happened. Readiness is what you brought. AI can help you track one of those. This chapter is about the signals your stats never capture.",
-            },
-            {
-              num: "Chapter 6",
-              title: "Your Mental Game — The Honest Version",
-              body: "You've been trained to project confidence your whole career. This chapter asks for the actual inner experience — how you handle failure, where confidence comes from, where it leaks. The hardest chapter to write. The most useful one in the file.",
-            },
-            {
-              num: "Chapter 7",
-              title: "What You're Working Toward",
-              body: "Short-term goals, long-term goals — and why they matter to you personally. AI can make a plan for any goal. But without knowing the why, the plan feels hollow. This chapter captures the why underneath everything else.",
-            },
-            {
-              num: "Chapter 8",
-              title: "How You Like to Be Coached",
-              body: "Most athletes have never been explicitly asked this. They've adapted to however their coaches communicate. AI has no ego and no preferred style — it will be exactly what you tell it to be. This chapter is the first time you get to design the communication style that actually works for you.",
-            },
-            {
-              num: "Chapter 9",
-              title: "Your History",
-              body: "Injuries, transitions, setbacks, formative moments. Without history, AI treats you as a current-state athlete with no past. But a lot of what drives performance lives in history. This chapter asks you to name what's relevant — not to process it, just to name it.",
-            },
-            {
-              num: "Chapter 10",
-              title: "Right Now",
-              body: "Every other section is relatively stable. This one changes. This is the section you update before competitions, after hard losses, when something shifts in your season. Five minutes the night before. What you write in those five minutes shapes every exchange that follows.",
-            },
-            {
-              num: "Chapter 11",
-              title: "What You Want AI to Know That Doesn't Fit Anywhere Else",
-              body: "Superstitions. Rituals. The thing that always helps and you don't know why. Anything true about you that doesn't have a label. No rules. Just true things. This chapter gives you permission to be specific in a way no category captures.",
-            },
-          ].map(({ num, title, body }) => (
-            <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
-              <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
-                {num}
-              </p>
-              <h3 className="font-syne font-semibold text-lg text-[#1A1714] mb-2 leading-snug">
-                {title}
-              </h3>
-              <p className="font-inter text-[15px] text-[#8A8178] leading-relaxed">
-                {body}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* Part Three */}
-      <section className="px-6 py-16 max-w-2xl mx-auto w-full">
-        <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-2">
-          Part Three
-        </p>
-        <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-2">
-          What the File Becomes
-        </h2>
-        <p className="font-inter text-sm text-[#8A8178] italic mb-10">
-          The file is built. Here&apos;s what happens when you use it.
-        </p>
-        <div className="space-y-8">
-          {[
-            {
-              num: "Chapter 12",
-              title: "Your First Real Conversation",
-              body: "You've built the file. Now you bring it to LaRue. She reads it, reflects back what she sees, and asks what's missing. This chapter walks you through that first session — and explains why it will feel different from every AI conversation you've had before.",
-            },
-            {
-              num: "Chapter 13",
-              title: "What AI Cannot Do",
-              body: "The honesty chapter. Your values, your identity work, your relationships, the moment itself — those belong to you, not AI. Understanding exactly what LaRue can't do makes everything she can do more useful. This chapter draws the line clearly so you never have to wonder where it is.",
-            },
-          ].map(({ num, title, body }) => (
-            <div key={num} className="border-l-2 border-[#E0D9CE] pl-6">
-              <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-2">
-                {num}
-              </p>
-              <h3 className="font-syne font-semibold text-lg text-[#1A1714] mb-2 leading-snug">
-                {title}
-              </h3>
-              <p className="font-inter text-[15px] text-[#8A8178] leading-relaxed">
-                {body}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* What you close the book with */}
-      <section className="px-6 py-16 max-w-2xl mx-auto w-full">
-        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-8">
-          What you close the book with
-        </p>
-        <div className="space-y-4">
-          {[
-            "A completed athlete.md",
-            "A first AI conversation that felt different from any you've had before",
-            "A file that travels with you when you change coaches, change programs, or change sports",
-          ].map((item, i) => (
-            <div key={i} className="flex items-start gap-4">
-              <span className="font-mono text-xs text-[#B8821A] tracking-widest pt-1 flex-shrink-0">
-                0{i + 1}
-              </span>
-              <p className="font-inter text-[16px] text-[#1A1714] leading-relaxed">
-                {item}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* athlete.md template */}
-      <section className="px-6 py-16 max-w-2xl mx-auto w-full">
-        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">
-          The Complete athlete.md Template
-        </p>
-        <p className="font-inter text-sm text-[#8A8178] italic mb-6">
-          Copy this. Fill it in. Make it yours.
-        </p>
-        <pre className="bg-white border border-[#E0D9CE] rounded-lg p-6 font-mono text-xs text-[#1A1714] leading-relaxed overflow-x-auto whitespace-pre-wrap">
-{`# athlete.md
-Last updated: [date]
-
-## Identity
-[Sport, position, level, years competing, what the sport means to you]
-
-## Performance Profile
-[What locked in feels like in your body. What tight feels like.
-Your warning signs before performance dips. What tends to derail you.
-What you do well under pressure.]
-
-## Mental Performance Patterns
-[How you handle failure, your inner critic, where confidence comes from and leaks]
-
-## Goals and Timeline
-[Short-term, long-term, why they matter — include a process goal and an identity goal]
-
-## Communication and Coaching Style
-[How you receive feedback, what shuts you down, push vs. pull, preferred AI tone]
-
-## Background and Context
-[Key history, injuries, transitions, formative moments — what a new coach wouldn't know]
-
-## Current State
-Updated: [date]
-[How you're feeling physically and mentally, what's on your mind, what you need right now]
-
-## Other Things to Know
-[Anything true about you that doesn't fit above]`}
-        </pre>
-      </section>
-
-      <Divider />
-
-      {/* Appendices */}
-      <section className="px-6 py-16 max-w-2xl mx-auto w-full space-y-12">
-        <div>
-          <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-3">
-            Appendix A
-          </p>
-          <h3 className="font-syne font-semibold text-lg text-[#1A1714] mb-3">
-            How to Load athlete.md Into Any AI
-          </h3>
-          <p className="font-inter text-[15px] text-[#8A8178] leading-relaxed">
-            ChatGPT and Claude: paste your file at the start of any conversation
-            and say &ldquo;this is my context file, use it throughout our
-            conversation.&rdquo; LaRue reads athlete.md natively — your file
-            connects across sessions and the relationship builds over time. Any
-            AI that accepts text input can use your file. It&apos;s yours,
-            it&apos;s portable, and it works everywhere.
-          </p>
-        </div>
-        <div>
-          <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-3">
-            Appendix B
-          </p>
-          <h3 className="font-syne font-semibold text-lg text-[#1A1714] mb-3">
-            Keeping It Current
-          </h3>
-          <p className="font-inter text-[15px] text-[#8A8178] leading-relaxed">
-            The stable sections — Identity, Performance Profile, Mental
-            Patterns, Communication Style, Background — change slowly. Revisit
-            each season or after something significant shifts. Current State
-            updates before every important AI conversation. If your responses
-            start feeling generic again, your Current State is out of date.
-          </p>
-        </div>
-        <div>
-          <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-3">
-            Appendix C
-          </p>
-          <h3 className="font-syne font-semibold text-lg text-[#1A1714] mb-3">
-            What Comes Next
-          </h3>
-          <p className="font-inter text-[15px] text-[#8A8178] leading-relaxed">
-            A static athlete.md is the foundation. It works with any AI, travels
-            with you, and gives LaRue what she needs for a first session. For
-            athletes who want their file to update continuously — through
-            check-ins, connected devices like Oura or Whoop, and session history
-            — that path starts here.
-          </p>
-        </div>
-      </section>
-
-      {/* Chapter 1 preview teaser */}
-      <div className="px-6 max-w-2xl mx-auto w-full pb-8">
-        <Link
-          href="/read"
-          className="group block bg-white border border-[#E0D9CE] rounded-lg p-8 hover:border-[#B8821A] transition-colors"
-        >
-          <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-3">
-            Read a preview
-          </p>
-          <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-4 leading-snug">
-            Chapter 1 &mdash; You&apos;ve Talked to AI.
-            <br />
-            It Didn&apos;t Really Talk to You.
+          <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-6 text-center">
+            Build the file that makes AI actually useful for your game.
           </h2>
-          <p className="font-inter text-sm text-[#8A8178] leading-relaxed mb-6">
-            Every conversation with an AI starts from zero. It doesn&apos;t
-            remember what you told it last week. It doesn&apos;t know your
-            sport, your position, your team, your history&hellip;
+          <p className="font-inter text-[#4A443E] leading-relaxed mb-4">
+            Every AI conversation starts from zero. It doesn&apos;t know your sport, your mental patterns, your history, or what you&apos;re working toward. So it defaults to generic advice that fits every athlete — which means it fits you poorly.
           </p>
-          <span className="font-mono text-xs text-[#B8821A] tracking-widest uppercase group-hover:underline">
-            Read Chapter 1 &rarr;
-          </span>
-        </Link>
-      </div>
+          <p className="font-inter text-[#4A443E] leading-relaxed">
+            <em>AI and Athletes</em> walks you through building <strong>athlete.md</strong> — a plain-text profile file you own, can read, and can carry to any AI tool. Load it into a conversation and you go from generic to specific in seconds. LaRue reads it first. Every session.
+          </p>
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* Chapters */}
+      <section className="flex flex-col items-center px-6 py-14">
+        <div className="max-w-2xl w-full">
+          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4 text-center">
+            10 chapters
+          </p>
+          <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-10 text-center">
+            The full roadmap
+          </h2>
+
+          <div className="space-y-8">
+            {/* Intro */}
+            <div>
+              <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-1">Intro</p>
+              <h3 className="font-syne font-semibold text-lg text-[#1A1714] mb-2">
+                A Note Before You Start
+              </h3>
+              <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                Robert Yang introduces LaRue — an AI coach built specifically for competitive athletes — and frames the book&apos;s core deliverable: your athlete.md, a file that tells AI who you actually are.
+              </p>
+            </div>
+
+            {/* Part One */}
+            <div>
+              <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">Part One — The New Landscape</p>
+              <div className="space-y-6">
+                <div>
+                  <p className="font-mono text-xs text-[#8A8178] mb-1">Chapter 1</p>
+                  <h3 className="font-syne font-semibold text-base text-[#1A1714] mb-2">
+                    You&apos;ve Talked to AI. It Didn&apos;t Really Talk to You.
+                  </h3>
+                  <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                    Explains why every AI conversation starts from zero — AI has no memory of who you are, so it defaults to generic &ldquo;athlete&rdquo; advice that misses your specific situation. Introduces athlete.md as a context file you own, can read, can share, and can carry to any AI tool.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-[#8A8178] mb-1">Chapter 2</p>
+                  <h3 className="font-syne font-semibold text-base text-[#1A1714] mb-2">
+                    What&apos;s Possible When It Knows You
+                  </h3>
+                  <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                    Shows two real First Read portraits to demonstrate what AI conversations look like when context is loaded. Describes the six sections every portrait contains and lays out the two paths to building your own.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-[#8A8178] mb-1">Chapter 3</p>
+                  <h3 className="font-syne font-semibold text-base text-[#1A1714] mb-2">
+                    Who You Are as an Athlete
+                  </h3>
+                  <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                    Builds the first section of athlete.md: Identity. Guides athletes through articulating not just their sport and position, but what being an athlete actually means to them — the honest version, not the college essay version.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Part Two */}
+            <div>
+              <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">Part Two — Building the Athlete</p>
+              <div className="space-y-6">
+                <div>
+                  <p className="font-mono text-xs text-[#8A8178] mb-1">Chapter 4</p>
+                  <h3 className="font-syne font-semibold text-base text-[#1A1714] mb-2">
+                    How You Actually Perform
+                  </h3>
+                  <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                    Builds your Performance Profile. Walks you through identifying what &ldquo;locked in&rdquo; feels like in your body, your personal warning signs, what specifically derails you, and what you do well under pressure.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-[#8A8178] mb-1">Chapter 5</p>
+                  <h3 className="font-syne font-semibold text-base text-[#1A1714] mb-2">
+                    Your Mental Game — The Honest Version
+                  </h3>
+                  <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                    Builds your Mental Performance Patterns. Addresses the gap between the public game athletes project and the private game that&apos;s actually happening inside — covering how you handle failure, what your inner critic says, and where confidence leaks.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-[#8A8178] mb-1">Chapter 6</p>
+                  <h3 className="font-syne font-semibold text-base text-[#1A1714] mb-2">
+                    What You&apos;re Working Toward
+                  </h3>
+                  <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                    Builds your Goals and Timeline section. Distinguishes between outcome goals, process goals, and identity goals — and argues that the &ldquo;why&rdquo; underneath each goal is what AI actually needs to give you useful help.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-[#8A8178] mb-1">Chapter 7</p>
+                  <h3 className="font-syne font-semibold text-base text-[#1A1714] mb-2">
+                    How You Like to Be Coached
+                  </h3>
+                  <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                    Builds your Communication and Coaching Style section. Because AI has no ego, you can tell it exactly how you receive feedback best — and it will follow those instructions consistently every time, without a bad day getting in the way.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Part Three */}
+            <div>
+              <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">Part Three — What&apos;s Possible Now</p>
+              <div className="space-y-6">
+                <div>
+                  <p className="font-mono text-xs text-[#8A8178] mb-1">Chapter 8</p>
+                  <h3 className="font-syne font-semibold text-base text-[#1A1714] mb-2">
+                    Your History and Right Now
+                  </h3>
+                  <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                    Builds the final two sections: Background (injuries, formative moments, what a new coach wouldn&apos;t know) and Current State — the section LaRue reads first before every session: physical state, mental state, what&apos;s on your mind, what you actually need.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-[#8A8178] mb-1">Chapter 9</p>
+                  <h3 className="font-syne font-semibold text-base text-[#1A1714] mb-2">
+                    Your First Read
+                  </h3>
+                  <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                    Walks through what happens when LaRue reads your completed portrait. Explains the ten-question First Read process at knwn.to/first-read and how to use your portrait in a conversation — including the specific opening prompt that sets AI up to draw from your file rather than its defaults.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-[#8A8178] mb-1">Chapter 10</p>
+                  <h3 className="font-syne font-semibold text-base text-[#1A1714] mb-2">
+                    What AI Can and Can&apos;t Do
+                  </h3>
+                  <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                    The honest chapter on AI&apos;s limits. Clearly names what AI does well and what it cannot do: make decisions, be present in the competitive moment, or replace human relationships. Closes with a simple check: &ldquo;Am I using this to think more clearly, or to avoid thinking?&rdquo;
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* Author */}
+      <section className="flex flex-col items-center px-6 py-14">
+        <div className="max-w-2xl w-full">
+          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4 text-center">
+            About the author
+          </p>
+          <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-6 text-center">
+            Robert Yang
+          </h2>
+          <p className="font-inter text-[#4A443E] leading-relaxed mb-4">
+            Robert Yang is the founder of Mettle, a mental performance platform for competitive athletes. He built LaRue — an AI coach purpose-built for athletes — and has spent years working at the intersection of sports psychology and emerging technology.
+          </p>
+          <p className="font-inter text-[#4A443E] leading-relaxed">
+            <em>AI and Athletes</em> is the practical guide he wished existed when he started building LaRue: a step-by-step system for making AI genuinely useful to athletes at every level.
+          </p>
+        </div>
+      </section>
+
+      <Divider />
 
       {/* Bottom CTA */}
-      <section className="px-6 py-16 flex flex-col items-center text-center bg-white border-t border-[#E0D9CE]">
-        <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-4">
-          This is a work in progress. So is your athlete.md.
-        </p>
-        <h2 className="font-syne font-bold text-3xl text-[#1A1714] mb-4 max-w-xl leading-snug">
-          We&apos;re building this book the same way you&apos;ll use it.
+      <section className="flex flex-col items-center px-6 py-16">
+        <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-3 text-center">
+          Ready to build your profile?
         </h2>
-        <p className="font-inter text-sm text-[#8A8178] max-w-sm mb-3">
-          By being honest about where we are and what we don&apos;t know yet.
+        <p className="font-inter text-[#8A8178] mb-8 text-center max-w-sm">
+          Instant download. Read it once, use it every session.
         </p>
-        <p className="font-inter text-sm text-[#8A8178] max-w-sm mb-10">
-          $29 at launch. Get notified the moment it&apos;s available.
-        </p>
-        <EmailForm submitted={submitted} setSubmitted={setSubmitted} />
+        <BuyButton />
       </section>
 
       {/* Footer */}
-      <footer className="px-6 py-5 border-t border-[#E0D9CE] flex items-center justify-between">
-        <span className="font-mono text-xs text-[#8A8178] tracking-widest uppercase">
-          &copy; {new Date().getFullYear()} knwn.to
-        </span>
-        <Link
-          href="/"
-          className="font-mono text-xs text-[#8A8178] tracking-widest uppercase hover:text-[#1A1714] transition-colors"
-        >
-          &larr; Home
-        </Link>
+      <footer className="mt-auto px-6 py-8 text-center">
+        <p className="font-inter text-xs text-[#8A8178]">
+          &copy; {new Date().getFullYear()} Mettle Performance.{" "}
+          <Link href="/privacy" className="underline hover:text-[#4A443E] transition-colors">
+            Privacy
+          </Link>{" "}
+          &middot;{" "}
+          <Link href="/terms" className="underline hover:text-[#4A443E] transition-colors">
+            Terms
+          </Link>
+        </p>
       </footer>
     </main>
   );
