@@ -47,7 +47,7 @@ export default function Home() {
           Early Access
         </p>
         <h1 className="font-syne font-bold text-5xl md:text-7xl text-[#1A1714] leading-tight mb-6 max-w-3xl">
-          Your performance readiness, captured.
+          Your performance readiness, <span className="text-[#B8821A]">captured.</span>
         </h1>
         <p className="font-inter text-lg text-[#8A8178] max-w-xl mb-12 leading-relaxed">
           knwn.to &#8212; not just your highlights. Your coachability, your preparation, your character.
