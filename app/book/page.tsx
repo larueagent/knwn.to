@@ -72,8 +72,8 @@ export default function BookPage() {
           The definitive guide to building your AI athlete profile.
         </p>
 
-        {/* Book cover */}
-        <div className="mb-10 shadow-lg rounded overflow-hidden">
+        {/* Book cover — uncomment when image is ready */}
+        {/* <div className="mb-10 shadow-lg rounded overflow-hidden">
           <Image
             src="/knwn-book-og-preview.png"
             alt="AI and Athletes book cover"
@@ -82,7 +82,7 @@ export default function BookPage() {
             priority
             className="block"
           />
-        </div>
+        </div> */}
 
         <BuyButton />
       </section>
