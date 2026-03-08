@@ -24,7 +24,7 @@ export default function Nav({ variant = "light" }: NavProps) {
     <nav className="relative flex items-center justify-between px-6 py-4">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2">
-        <Image src={logoSrc} alt="knwn.to" width={80} height={24} priority />
+        <Image src={logoSrc} alt="knwn.to" width={100} height={30} priority />
       </Link>
 
       {/* Desktop nav */}
