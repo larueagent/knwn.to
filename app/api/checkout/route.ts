@@ -17,8 +17,8 @@ export async function POST() {
             currency: "usd",
             unit_amount: 2900, // $29.00
             product_data: {
-              name: "Your Story, All of It",
-              description: "The Athlete's Guide to Personalizing AI for Your Game",
+              name: "AI and Athletes",
+              description: "The definitive guide to building your AI athlete profile.",
               images: ["https://knwn.to/knwn-book-og-preview.png"],
             },
           },
@@ -28,7 +28,7 @@ export async function POST() {
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/book/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/book`,
       metadata: {
-        product: "book-your-story-all-of-it",
+        product: "book-ai-and-athletes",
       },
     });
 
