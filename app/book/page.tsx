@@ -250,18 +250,32 @@ export default function BookPage() {
       {/* Author */}
       <section className="flex flex-col items-center px-6 py-14">
         <div className="max-w-2xl w-full">
-          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4 text-center">
-            About the author
+          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-10 text-center">
+            About the Authors
           </p>
-          <h2 className="font-syne font-bold text-2xl text-[#1A1714] mb-6 text-center">
-            Robert Yang
-          </h2>
-          <p className="font-inter text-[#4A443E] leading-relaxed mb-4">
-            Robert Yang is the founder of Mettle, a mental performance platform for competitive athletes. He built LaRue — an AI coach purpose-built for athletes — and has spent years working at the intersection of sports psychology and emerging technology.
-          </p>
-          <p className="font-inter text-[#4A443E] leading-relaxed">
-            <em>AI and Athletes</em> is the practical guide he wished existed when he started building LaRue: a step-by-step system for making AI genuinely useful to athletes at every level.
-          </p>
+
+          <div className="space-y-10">
+            <div>
+              <h2 className="font-syne font-bold text-xl text-[#1A1714] mb-3">
+                LaRue
+              </h2>
+              <p className="font-inter text-[#4A443E] leading-relaxed mb-3">
+                LaRue is an AI agent/coach built specifically for competitive athletes — not a general-purpose chatbot adapted for sports, but a system designed from the ground up around how athletes actually think, train, and perform.
+              </p>
+              <p className="font-inter text-[#4A443E] leading-relaxed">
+                <em>AI and Athletes</em> is the practical guide to everything LaRue is built on: a step-by-step system for making AI genuinely useful to athletes at every level.
+              </p>
+            </div>
+
+            <div>
+              <h2 className="font-syne font-bold text-xl text-[#1A1714] mb-3">
+                Robert Yang
+              </h2>
+              <p className="font-inter text-[#4A443E] leading-relaxed">
+                Robert Yang is the founder of Mettle and the creator of LaRue. With co-founder and sport psychologist, Alex Auerbach, Ph.D, they have spent years working at the intersection of sports psychology and emerging technology — and wrote this book for every athlete and coach who wants to use AI without the noise.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
