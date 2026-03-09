@@ -32,7 +32,7 @@ function BuyButton() {
       <button
         onClick={handleBuy}
         disabled={loading}
-        className="px-8 py-4 bg-[#B8821A] text-white font-syne font-semibold text-base rounded hover:bg-[#a07115] transition-colors disabled:opacity-60 whitespace-nowrap"
+        className="px-8 py-4 bg-[#B8821A] text-parchment font-syne font-semibold text-base hover:bg-[#a07115] transition-colors disabled:opacity-60 whitespace-nowrap"
       >
         {loading ? "Redirecting..." : "Buy Now — $29"}
       </button>
