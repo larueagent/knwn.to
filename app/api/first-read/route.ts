@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { generateFirstRead, formatFirstReadEmail } from '@/lib/generate-first-read'
 
 const KIT_API = 'https://api.kit.com/v4'
 
@@ -31,7 +32,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Step 1: Add subscriber to Kit
+    // Step 1: Generate athlete First Read document via Claude
+    const firstReadDoc = await generateFirstRead(firstName, answers)
+
+    // Step 2: Add subscriber to Kit
     const subRes = await fetch(`${KIT_API}/subscribers`, {
       method: 'POST',
       headers,
@@ -50,7 +54,7 @@ export async function POST(req: NextRequest) {
     const subData = await subRes.json()
     const subscriberId = subData?.subscriber?.id
 
-    // Step 2: Apply "first-read-complete" tag
+    // Step 3: Apply "first-read-complete" tag
     const tagRes = await fetch(`${KIT_API}/tags`, {
       method: 'POST',
       headers,
@@ -70,13 +74,15 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Step 3: Store key answers as subscriber custom fields
+    // Step 4: Store key answers + generated fields as subscriber custom fields
     if (subscriberId) {
       const fields: Record<string, string> = {
-        first_read_sport: answers[0]?.answer?.slice(0, 255) || '',
+        first_read_sport: firstReadDoc.sport?.slice(0, 255) || '',
         first_read_gap: answers[5]?.answer?.slice(0, 255) || '',
         first_read_chapter_title: answers[9]?.answer?.slice(0, 255) || '',
         first_read_submitted_at: new Date().toISOString(),
+        first_read_pressure_fear: firstReadDoc.pressureFear?.slice(0, 255) || '',
+        first_read_themes: firstReadDoc.themes?.join(', ').slice(0, 255) || '',
       }
 
       await fetch(`${KIT_API}/subscribers/${subscriberId}`, {
@@ -86,22 +92,37 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // Step 4: Send internal notification email with full answers
-    const notificationBody = formatNotificationEmail(firstName, email, answers)
+    // Step 5: Send formatted First Read email to the athlete
+    const athleteEmailHtml = formatFirstReadEmail(firstName, firstReadDoc)
 
     await fetch(`${KIT_API}/broadcasts`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
-        subject: `First Read: ${firstName} (${email})`,
-        content: notificationBody,
+        subject: `Your First Read, ${firstName}`,
+        content: athleteEmailHtml,
+        email_address: email,
+        public: false,
+      }),
+    })
+
+    // Step 6: Send internal notification with full answers + generated doc
+    const notificationHtml = formatNotificationEmail(firstName, email, answers, firstReadDoc)
+
+    await fetch(`${KIT_API}/broadcasts`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        subject: `First Read submitted: ${firstName} (${email})`,
+        content: notificationHtml,
         email_address: process.env.NOTIFICATION_EMAIL || 'robert@mettle.coach',
         public: false,
       }),
     })
 
     return NextResponse.json({ success: true })
-  } catch {
+  } catch (err) {
+    console.error('First Read API error:', err)
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }
@@ -109,18 +130,31 @@ export async function POST(req: NextRequest) {
 function formatNotificationEmail(
   firstName: string,
   email: string,
-  answers: QuestionAnswer[]
+  answers: QuestionAnswer[],
+  doc: { portrait: string; pressureFear: string; themes: string[] }
 ): string {
-  const lines = [
-    `<h2>First Read Submission</h2>`,
-    `<p><strong>Name:</strong> ${firstName}</p>`,
-    `<p><strong>Email:</strong> ${email}</p>`,
-    `<p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>`,
-    `<hr />`,
-    ...answers.map(
-      ({ question, answer }, i) =>
-        `<p><strong>Q${i + 1}: ${question}</strong></p><p>${answer.replace(/\n/g, '<br />')}</p><br />`
-    ),
-  ]
-  return lines.join('\n')
+  const qaHtml = answers
+    .map(
+      (qa, i) => `
+      <div style="margin-bottom:24px;">
+        <p style="font-weight:bold;color:#8B7355;margin-bottom:4px;">Q${i + 1}: ${qa.question}</p>
+        <p style="color:#1A1714;line-height:1.6;">${qa.answer}</p>
+      </div>`
+    )
+    .join('')
+
+  return `
+    <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:40px 20px;">
+      <h1 style="font-size:24px;color:#1A1714;margin-bottom:8px;">First Read Submitted</h1>
+      <p style="color:#8B7355;margin-bottom:8px;">${firstName} · ${email}</p>
+      <p style="color:#8B7355;margin-bottom:32px;font-size:13px;">Themes: ${doc.themes?.join(', ')}</p>
+      <hr style="border:none;border-top:1px solid #D4C5A9;margin-bottom:32px;" />
+      <div style="background:#F5F0E8;padding:20px;margin-bottom:32px;">
+        <p style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8B7355;margin:0 0 12px;">Generated Portrait</p>
+        <p style="line-height:1.8;color:#1A1714;margin:0;">${doc.portrait}</p>
+      </div>
+      <hr style="border:none;border-top:1px solid #D4C5A9;margin-bottom:32px;" />
+      ${qaHtml}
+    </div>
+  `
 }
