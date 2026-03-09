@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { generateFirstRead, formatFirstReadEmail } from '@/lib/generate-first-read'
 
 const KIT_API = 'https://api.kit.com/v4'
+const SENDGRID_API = 'https://api.sendgrid.com/v3/mail/send'
 
 interface QuestionAnswer {
   question: string
@@ -12,6 +13,27 @@ interface FirstReadPayload {
   firstName: string
   email: string
   answers: QuestionAnswer[]
+}
+
+async function sendEmail(to: string, subject: string, html: string): Promise<void> {
+  const res = await fetch(SENDGRID_API, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+    },
+    body: JSON.stringify({
+      personalizations: [{ to: [{ email: to }] }],
+      from: { email: 'larue@agentmail.to', name: 'LaRue' },
+      subject,
+      content: [{ type: 'text/html', value: html }],
+    }),
+  })
+
+  if (!res.ok) {
+    const error = await res.text()
+    throw new Error(`SendGrid error: ${error}`)
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -26,7 +48,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Incomplete submission' }, { status: 400 })
   }
 
-  const headers = {
+  const kitHeaders = {
     'Content-Type': 'application/json',
     'X-Kit-Api-Key': process.env.KIT_API_KEY!,
   }
@@ -38,7 +60,7 @@ export async function POST(req: NextRequest) {
     // Step 2: Add subscriber to Kit
     const subRes = await fetch(`${KIT_API}/subscribers`, {
       method: 'POST',
-      headers,
+      headers: kitHeaders,
       body: JSON.stringify({
         email_address: email,
         first_name: firstName,
@@ -57,7 +79,7 @@ export async function POST(req: NextRequest) {
     // Step 3: Apply "first-read-complete" tag
     const tagRes = await fetch(`${KIT_API}/tags`, {
       method: 'POST',
-      headers,
+      headers: kitHeaders,
       body: JSON.stringify({ name: 'first-read-complete' }),
     })
 
@@ -68,13 +90,13 @@ export async function POST(req: NextRequest) {
       if (subscriberId && tagId) {
         await fetch(`${KIT_API}/tags/${tagId}/subscribers/${subscriberId}`, {
           method: 'POST',
-          headers,
+          headers: kitHeaders,
           body: JSON.stringify({}),
         })
       }
     }
 
-    // Step 4: Store key answers + generated fields as subscriber custom fields
+    // Step 4: Store key fields on Kit subscriber
     if (subscriberId) {
       const fields: Record<string, string> = {
         first_read_sport: firstReadDoc.sport?.slice(0, 255) || '',
@@ -87,7 +109,7 @@ export async function POST(req: NextRequest) {
 
       await fetch(`${KIT_API}/subscribers/${subscriberId}`, {
         method: 'PUT',
-        headers,
+        headers: kitHeaders,
         body: JSON.stringify({ fields }),
       })
     }
@@ -95,30 +117,16 @@ export async function POST(req: NextRequest) {
     // Step 5: Send formatted First Read email to the athlete
     const athleteEmailHtml = formatFirstReadEmail(firstName, firstReadDoc)
 
-    await fetch(`${KIT_API}/broadcasts`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        subject: `Your First Read, ${firstName}`,
-        content: athleteEmailHtml,
-        email_address: email,
-        public: false,
-      }),
-    })
+    await sendEmail(email, `${firstName}, your First Read is ready`, athleteEmailHtml)
 
     // Step 6: Send internal notification with full answers + generated doc
     const notificationHtml = formatNotificationEmail(firstName, email, answers, firstReadDoc)
 
-    await fetch(`${KIT_API}/broadcasts`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        subject: `First Read submitted: ${firstName} (${email})`,
-        content: notificationHtml,
-        email_address: process.env.NOTIFICATION_EMAIL || 'robert@mettle.coach',
-        public: false,
-      }),
-    })
+    await sendEmail(
+      process.env.NOTIFICATION_EMAIL || 'robert@mettle.coach',
+      `First Read submitted: ${firstName} (${email})`,
+      notificationHtml
+    )
 
     return NextResponse.json({ success: true })
   } catch (err) {
@@ -144,7 +152,7 @@ function formatNotificationEmail(
     .join('')
 
   return `
-    <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:40px 20px;">
+  <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:40px 20px;">
       <h1 style="font-size:24px;color:#1A1714;margin-bottom:8px;">First Read Submitted</h1>
       <p style="color:#8B7355;margin-bottom:8px;">${firstName} · ${email}</p>
       <p style="color:#8B7355;margin-bottom:32px;font-size:13px;">Themes: ${doc.themes?.join(', ')}</p>
