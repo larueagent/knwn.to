@@ -2,9 +2,23 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 
 export const metadata = {
-  title: "Start Here — knwn.to",
+  title: "Build Your Athlete Profile Free — Mental Performance for AI | knwn.to",
   description:
-    "Every young athlete needs to know how to work with AI. It starts with one document: your athlete.md. Build yours free in 10 minutes.",
+    "Answer 10 questions. LaRue produces a detailed mental performance profile — your pressure patterns, preparation style, and what you need to compete at your best. Free, no account required.",
+  openGraph: {
+    title: "Build your athlete.md — knwn.to",
+    description:
+      "Ten minutes. Free. No account required. Answer 10 questions and LaRue produces a portrait of how you compete — not a summary of your answers, but an interpretation built on 15 years of sport psychology.",
+    url: "https://www.knwn.to/first-read",
+    siteName: "knwn.to",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Build your athlete.md — knwn.to",
+    description:
+      "Ten minutes. Free. No account required. Answer 10 questions and LaRue produces a portrait of how you compete — not a summary of your answers, but an interpretation built on 15 years of sport psychology.",
+  },
 };
 
 export default function FirstReadPage() {

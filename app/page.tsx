@@ -2,9 +2,23 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 
 export const metadata = {
-  title: "knwn.to — Know your athlete",
+  title: "athlete.md — Build Your Mental Performance Profile | knwn.to",
   description:
-    "Every young athlete needs to know how to work with AI. It starts with one document: your athlete.md.",
+    "Build your athlete.md in 10 minutes. A free mental performance profile that tells AI who you are as a competitor — so every session starts from who you actually are, not from zero.",
+  openGraph: {
+    title: "knwn.to — Build your athlete.md. Be known by AI.",
+    description:
+      "Every athlete will use AI. The ones who get the most out of it won't have the best tools — they'll be the ones with an AI that actually knows them. athlete.md is where that starts. Free, 10 minutes.",
+    url: "https://www.knwn.to/",
+    siteName: "knwn.to",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "knwn.to — Build your athlete.md. Be known by AI.",
+    description:
+      "Every athlete will use AI. The ones who get the most out of it won't have the best tools — they'll be the ones with an AI that actually knows them. athlete.md is where that starts. Free, 10 minutes.",
+  },
 };
 
 export default function HomePage() {
