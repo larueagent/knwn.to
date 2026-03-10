@@ -25,19 +25,35 @@ export interface FirstReadDocument {
   generatedAt: string
 }
 
+export interface AthleteContext {
+  age?: number
+  gender?: string
+  sport?: string
+  position?: string
+  level?: string
+}
+
 const SYSTEM_PROMPT = `You are LaRue, a precision sports psychology intelligence system.
 
 You write athlete portraits that are direct, specific, and earned — never generic, never inflated. You write in second person ("you", "your"). Every sentence must be grounded in something the athlete actually said. You do not praise effort or hustle. You do not use sports cliches. You write the way a great coach thinks: honest, precise, and on the athlete's side.
 
 Your job is to read 10 answers from an athlete's First Read questionnaire and produce a structured psychological portrait. The output must be valid JSON matching the schema exactly.`
 
-function buildUserPrompt(firstName: string, answers: QuestionAnswer[]): string {
+function buildUserPrompt(firstName: string, answers: QuestionAnswer[], context: AthleteContext = {}): string {
   const qa = answers
     .map((a, i) => `Q${i + 1}: ${a.question}\nAnswer: ${a.answer}`)
     .join('\n\n')
 
-  return `Athlete first name: ${firstName}
+  const contextLines = [
+    context.age ? `Age: ${context.age}` : null,
+    context.gender ? `Gender: ${context.gender}` : null,
+    context.sport ? `Sport: ${context.sport}` : null,
+    context.position ? `Position/event: ${context.position}` : null,
+    context.level ? `Level: ${context.level}` : null,
+  ].filter(Boolean).join('\n')
 
+  return `Athlete first name: ${firstName}
+${contextLines ? `\nAthlete context:\n${contextLines}\n` : ''}
 Here are their 10 First Read answers:
 
 ${qa}
@@ -85,7 +101,8 @@ Return only the JSON object. No markdown. No commentary. No wrapper text.`
 
 export async function generateFirstRead(
   firstName: string,
-  answers: QuestionAnswer[]
+  answers: QuestionAnswer[],
+  context: AthleteContext = {}
 ): Promise<FirstReadDocument> {
   const message = await client.messages.create({
     model: 'claude-opus-4-5',
@@ -94,7 +111,7 @@ export async function generateFirstRead(
     messages: [
       {
         role: 'user',
-        content: buildUserPrompt(firstName, answers),
+        content: buildUserPrompt(firstName, answers, context),
       },
     ],
   })
