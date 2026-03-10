@@ -22,7 +22,7 @@ const QUESTIONS = [
   },
   {
     text: "When have you felt most like yourself in competition?",
-    subtext: "A moment when you weren't performing â you were just being.",
+    subtext: "A moment when you weren't performing — you were just being.",
     act: 2,
   },
   {
@@ -76,7 +76,7 @@ const GENDER_OPTIONS = [
 
 const LEVEL_OPTIONS = [
   "Youth / Club (under 14)",
-  "Youth / Club (14\u201318)",
+  "Youth / Club (14–18)",
   "Middle School",
   "High School JV",
   "High School Varsity",
@@ -177,6 +177,8 @@ export default function StartPage() {
   const [gender, setGender] = useState("");
   const [sport, setSport] = useState("");
   const [position, setPosition] = useState("");
+  const [customSport, setCustomSport] = useState("");
+  const [customPosition, setCustomPosition] = useState("");
   const [level, setLevel] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState("");
@@ -252,8 +254,8 @@ export default function StartPage() {
           email,
           birthdate: (birthMonth && birthDay && birthYear) ? `${birthYear}-${birthMonth}-${birthDay}` : undefined,
           gender: gender || undefined,
-          sport: sport || undefined,
-          position: position || undefined,
+          sport: sport === "Other" ? (customSport || "Other") : (sport || undefined),
+          position: sport === "Other" ? (customPosition || undefined) : (position || undefined),
           level: level || undefined,
           answers: finalAnswers,
         }),
@@ -324,7 +326,7 @@ export default function StartPage() {
           </button>
 
           <p className="mt-8 text-sm font-mono text-[#8A8178] tracking-wide">
-            Founding Athlete Session \u2014 March 2026
+            Founding Athlete Session — March 2026
           </p>
         </div>
       </div>
@@ -386,7 +388,7 @@ export default function StartPage() {
               type="submit"
               className="w-full px-6 py-3 bg-[#1A1714] text-white font-inter font-medium rounded-sm hover:bg-[#1A1714]/90 transition-colors"
             >
-              Next \u2192
+              Next →
             </button>
           </form>
         </div>
@@ -479,7 +481,7 @@ export default function StartPage() {
               </label>
               <select
                 value={sport}
-                onChange={(e) => { setSport(e.target.value); setPosition(""); }}
+                onChange={(e) => { setSport(e.target.value); setPosition(""); setCustomSport(""); setCustomPosition(""); }}
                 className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
               >
                 <option value="">Select sport (optional)</option>
@@ -489,7 +491,22 @@ export default function StartPage() {
               </select>
             </div>
 
-            {sport && POSITION_OPTIONS[sport] && (
+            {sport === "Other" && (
+              <div>
+                <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                  What sport do you play?
+                </label>
+                <input
+                  type="text"
+                  value={customSport}
+                  onChange={(e) => setCustomSport(e.target.value)}
+                  className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                  placeholder="e.g. Pickleball, Cheerleading, Esports..."
+                />
+              </div>
+            )}
+
+            {sport && sport !== "Other" && POSITION_OPTIONS[sport] && (
               <div>
                 <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
                   Position / Event
@@ -504,6 +521,20 @@ export default function StartPage() {
                     <option key={p} value={p}>{p}</option>
                   ))}
                 </select>
+              </div>
+            )}
+            {sport === "Other" && (
+              <div>
+                <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                  What's your position or role?
+                </label>
+                <input
+                  type="text"
+                  value={customPosition}
+                  onChange={(e) => setCustomPosition(e.target.value)}
+                  className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                  placeholder="e.g. Setter, Goalkeeper, All-rounder..."
+                />
               </div>
             )}
 
@@ -665,7 +696,10 @@ export default function StartPage() {
 
   // REVEAL SCREEN
   if (screen === "reveal") {
-    const sportDisplay = sport || (answers[0]?.match(/\b(basketball|football|soccer|baseball|track|swimming|wrestling|volleyball|tennis|golf)\b/i)?.[0] || "your sport");
+    const sportDisplay = sport === "Other"
+      ? (customSport || "your sport")
+      : (sport || (answers[0]?.match(/\b(basketball|football|soccer|baseball|track|swimming|wrestling|volleyball|tennis|golf)\b/i)?.[0] || "your sport"));
+    const positionDisplay = sport === "Other" ? customPosition : position;
 
     return (
       <div className="min-h-screen bg-[#FAF8F3] p-6 py-16">
@@ -707,8 +741,8 @@ export default function StartPage() {
                 </h2>
                 <p className="text-[#8A8178] font-inter capitalize">
                   {sportDisplay}
-                  {position && ` \u00b7 ${position}`}
-                  {level && ` \u00b7 ${level}`}
+                  {positionDisplay && ` · ${positionDisplay}`}
+                  {level && ` · ${level}`}
                 </p>
               </div>
               <div className="px-3 py-1 bg-[#B8821A]/10 text-[#B8821A] text-xs font-mono rounded-sm">
@@ -718,7 +752,7 @@ export default function StartPage() {
 
             <div className="border-t border-[#E0D9CE] pt-6">
               <p className="text-sm font-inter text-[#8A8178] mb-4">
-                This is your First Read. It's not complete \u2014 it's a starting
+                This is your First Read. It's not complete — it's a starting
                 point. LaRue will build on this as he learns more.
               </p>
               <p className="text-sm font-inter text-[#1A1714]">
@@ -741,7 +775,7 @@ export default function StartPage() {
                 <strong className="font-semibold">1. LaRue processes your answers.</strong>
                 <br />
                 <span className="text-[#8A8178]">
-                  He'll turn what you shared into a structured read \u2014 a profile
+                  He'll turn what you shared into a structured read — a profile
                   that captures how you think, what drives you, and where you're
                   going.
                 </span>
@@ -750,7 +784,7 @@ export default function StartPage() {
                 <strong className="font-semibold">2. You'll get your full First Read via email.</strong>
                 <br />
                 <span className="text-[#8A8178]">
-                  Within 48 hours, you'll receive a detailed breakdown \u2014 not
+                  Within 48 hours, you'll receive a detailed breakdown — not
                   generic insights, but specific observations about you.
                 </span>
               </p>
