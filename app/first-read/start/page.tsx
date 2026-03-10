@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import MicButton from "@/components/mic-button";
+import { MicButton } from "@/components/mic-button";
 
 const QUESTIONS = [
   {
@@ -76,7 +76,7 @@ const GENDER_OPTIONS = [
 
 const LEVEL_OPTIONS = [
   "Youth / Club (under 14)",
-  "Youth / Club (14–18)",
+  "Youth / Club (14\u201318)",
   "Middle School",
   "High School JV",
   "High School Varsity",
