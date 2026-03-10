@@ -109,8 +109,7 @@ export default function HomePage() {
             <div className="flex flex-col gap-3">
               <p className="font-syne font-bold text-base text-[#1A1714]">For Coaches</p>
               <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
-                The VAC is coming. A team-level tool that gives every athlete on your roster
-                a consistent AI presence.
+                VAC is your AI assistant coach. He knows every athlete on your roster - their readiness, their patterns, what they need - so you can spend your time coaching, not catching up.
               </p>
               <Link
                 href="/for-coaches"
