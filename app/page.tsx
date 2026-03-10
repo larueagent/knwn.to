@@ -3,6 +3,8 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#f0ede8] text-[#1a1a1a] font-sans">
+
+      {/* NAV */}
       <nav className="flex items-center justify-between px-8 py-5 border-b border-[#1a1a1a]/10">
         <span className="font-bold tracking-tight text-lg">knwn.to</span>
         <div className="flex gap-6 text-sm items-center">
@@ -12,6 +14,8 @@ export default function HomePage() {
           <Link href="/for-coaches" className="hover:underline">For Coaches</Link>
         </div>
       </nav>
+
+      {/* HERO */}
       <section className="max-w-4xl mx-auto px-8 py-28 text-center">
         <h1 className="text-5xl font-bold leading-tight tracking-tight mb-6">
           Every young athlete needs to know how to work with AI.
@@ -20,26 +24,39 @@ export default function HomePage() {
         </h1>
         <p className="text-xl text-[#1a1a1a]/70 mb-3 max-w-2xl mx-auto leading-relaxed">The athletes who get the most out of AI won&apos;t be the ones with the best tools.</p>
         <p className="text-xl text-[#1a1a1a]/70 mb-3 max-w-2xl mx-auto leading-relaxed">They&apos;ll be the ones with an AI that actually knows them.</p>
-        <p className="text-xl text-[#1a1a1a]/70 mb-10 max-w-2xl mx-auto leading-relaxed">That starts with one document: <span className="font-mono font-semibold text-[#1a1a1a]">your athlete.md.</span></p>
+        <p className="text-xl text-[#1a1a1a]/70 mb-10 max-w-2xl mx-auto leading-relaxed">That starts with one document:{" "}<span className="font-mono font-semibold text-[#1a1a1a]">your athlete.md.</span></p>
         <Link href="/first-read" className="inline-block bg-[#1a1a1a] text-[#f0ede8] px-8 py-4 text-base font-semibold mb-4 hover:bg-[#2a2520] transition-colors">Build your athlete.md — free, takes 10 minutes</Link>
         <br />
         <Link href="/sign-in" className="text-sm text-[#1a1a1a]/50 underline underline-offset-4 hover:text-[#1a1a1a] transition-colors">Already have yours? Sign in.</Link>
       </section>
+
+      {/* CONTEXT BAND */}
       <section className="bg-[#1a1a1a] text-[#f0ede8] px-8 py-16">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-xl leading-relaxed mb-4 text-[#f0ede8]/90">AI is already in your sport. Scouts use it. Coaches use it. Recruiters use it.</p>
           <p className="text-xl leading-relaxed text-[#f0ede8]/70">The athletes who thrive won&apos;t just be faster — they&apos;ll be the ones who know how to be known, and who use AI to keep developing.</p>
         </div>
       </section>
+
+      {/* WHAT IS AN ATHLETE.MD */}
       <section className="max-w-5xl mx-auto px-8 py-24">
         <h2 className="text-3xl font-bold mb-3 text-center">An athlete.md is your mental performance identity.</h2>
         <p className="text-center text-[#1a1a1a]/50 mb-16 text-lg">In plain language. Yours to own.</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {[{label:"What it captures",body:"How you handle pressure. What derails you. How you prepare. What you need before a big game. Not a test result. Not a score. A real picture of how you compete — written in language you and any coach can actually use."},{label:"Why it matters for AI",body:"An AI is only as useful as what it knows about you. Without a profile, every session starts from zero. With an athlete.md, LaRue knows your patterns before you say a word. That is what it means to get the most out of AI."},{label:"You own it",body:"Your athlete.md is a plain text file. Take it anywhere. Share it with a coach. Use it with any AI tool. It is not locked inside an app. It belongs to you."}].map(({label,body})=>(
-            <div key={label}><h3 className="font-bold uppercase tracking-wider text-[#1a1a1a]/40 text-xs mb-3">{label}</h3><p className="text-[#1a1a1a]/70 text-base leading-relaxed">{body}</p></div>
+          {[
+            { label: "What it captures", body: "How you handle pressure. What derails you. How you prepare. What you need before a big game. Not a test result. Not a score. A real picture of how you compete — written in language you and any coach can actually use." },
+            { label: "Why it matters for AI", body: "An AI is only as useful as what it knows about you. Without a profile, every session starts from zero. With an athlete.md, LaRue knows your patterns before you say a word. That is what it means to get the most out of AI." },
+            { label: "You own it", body: "Your athlete.md is a plain text file. Take it anywhere. Share it with a coach. Use it with any AI tool. It is not locked inside an app. It belongs to you." },
+          ].map(({ label, body }) => (
+            <div key={label}>
+              <h3 className="font-bold uppercase tracking-wider text-[#1a1a1a]/40 text-xs mb-3">{label}</h3>
+              <p className="text-[#1a1a1a]/70 text-base leading-relaxed">{body}</p>
+            </div>
           ))}
         </div>
       </section>
+
+      {/* MEET LARUE */}
       <section className="bg-[#1a1a1a] text-[#f0ede8] px-8 py-24">
         <div className="max-w-3xl mx-auto text-center">
           <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">Meet LaRue</p>
@@ -49,6 +66,8 @@ export default function HomePage() {
           <Link href="/first-read" className="inline-block border border-[#f0ede8] text-[#f0ede8] px-8 py-4 text-base font-semibold hover:bg-[#f0ede8] hover:text-[#1a1a1a] transition-colors">Start your athlete.md — free</Link>
         </div>
       </section>
+
+      {/* SAMPLE PROFILE */}
       <section className="max-w-3xl mx-auto px-8 py-24">
         <h2 className="text-3xl font-bold mb-3 text-center">This is what an athlete.md looks like.</h2>
         <p className="text-center text-[#1a1a1a]/50 mb-10">Jaime is a composite athlete. Ten minutes in, this is what LaRue produced.</p>
@@ -66,6 +85,8 @@ export default function HomePage() {
           <Link href="/first-read" className="inline-block bg-[#1a1a1a] text-[#f0ede8] px-8 py-4 text-sm font-semibold hover:bg-[#2a2520] transition-colors">Build yours free</Link>
         </div>
       </section>
+
+      {/* FOOTER */}
       <footer className="border-t border-[#1a1a1a]/10 px-8 py-10 text-sm text-[#1a1a1a]/40">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between gap-6">
           <div><p className="font-bold text-[#1a1a1a] mb-1">knwn.to</p><p>Powered by Mettle</p></div>
