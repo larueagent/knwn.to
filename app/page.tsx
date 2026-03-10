@@ -168,7 +168,7 @@ export default function HomePage() {
             <Link href="/field-notes" className="hover:text-[#1A1714] transition-colors">Field Notes</Link>
           </div>
           <p className="font-inter text-xs text-[#8A8178]">
-            &copy; {new Date().getFullYear()} Momentum Labs
+            &copy; {new Date().getFullYear()} Mettle Performance
           </p>
         </div>
       </footer>
