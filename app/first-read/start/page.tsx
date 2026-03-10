@@ -76,7 +76,7 @@ const GENDER_OPTIONS = [
 
 const LEVEL_OPTIONS = [
   "Youth / Club (under 14)",
-  "Youth / Club (14–18)",
+  "Youth / Club (14\u201318)",
   "Middle School",
   "High School JV",
   "High School Varsity",
@@ -171,7 +171,9 @@ export default function StartPage() {
   const [screen, setScreen] = useState<Screen>("door");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
-  const [age, setAge] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthDay, setBirthDay] = useState("");
+  const [birthYear, setBirthYear] = useState("");
   const [gender, setGender] = useState("");
   const [sport, setSport] = useState("");
   const [position, setPosition] = useState("");
@@ -248,7 +250,7 @@ export default function StartPage() {
         body: JSON.stringify({
           firstName,
           email,
-          age: age || undefined,
+          birthdate: (birthMonth && birthDay && birthYear) ? `${birthYear}-${birthMonth}-${birthDay}` : undefined,
           gender: gender || undefined,
           sport: sport || undefined,
           position: position || undefined,
@@ -322,7 +324,7 @@ export default function StartPage() {
           </button>
 
           <p className="mt-8 text-sm font-mono text-[#8A8178] tracking-wide">
-            Founding Athlete Session — March 2026
+            Founding Athlete Session \u2014 March 2026
           </p>
         </div>
       </div>
@@ -384,7 +386,7 @@ export default function StartPage() {
               type="submit"
               className="w-full px-6 py-3 bg-[#1A1714] text-white font-inter font-medium rounded-sm hover:bg-[#1A1714]/90 transition-colors"
             >
-              Next →
+              Next \u2192
             </button>
           </form>
         </div>
@@ -411,24 +413,46 @@ export default function StartPage() {
             A little more context
           </h2>
           <p className="text-center text-[#8A8178] font-inter mb-8">
-            Optional — helps LaRue read you more accurately.
+            Your answers help LaRue start in the right place.
           </p>
 
           <form onSubmit={handleContextSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
-                Age
+                Date of Birth
               </label>
-              <select
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
-              >
-                <option value="">Select age (optional)</option>
-                {Array.from({ length: 40 }, (_, i) => i + 10).map((a) => (
-                  <option key={a} value={String(a)}>{a}</option>
-                ))}
-              </select>
+              <div className="grid grid-cols-3 gap-2">
+                <select
+                  value={birthMonth}
+                  onChange={(e) => setBirthMonth(e.target.value)}
+                  className="px-3 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                >
+                  <option value="">Month</option>
+                  {["January","February","March","April","May","June","July","August","September","October","November","December"].map((m, i) => (
+                    <option key={m} value={String(i + 1).padStart(2, "0")}>{m}</option>
+                  ))}
+                </select>
+                <select
+                  value={birthDay}
+                  onChange={(e) => setBirthDay(e.target.value)}
+                  className="px-3 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                >
+                  <option value="">Day</option>
+                  {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                    <option key={d} value={String(d).padStart(2, "0")}>{d}</option>
+                  ))}
+                </select>
+                <select
+                  value={birthYear}
+                  onChange={(e) => setBirthYear(e.target.value)}
+                  className="px-3 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                >
+                  <option value="">Year</option>
+                  {Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - 8 - i).map((y) => (
+                    <option key={y} value={String(y)}>{y}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div>
@@ -683,8 +707,8 @@ export default function StartPage() {
                 </h2>
                 <p className="text-[#8A8178] font-inter capitalize">
                   {sportDisplay}
-                  {position && ` · ${position}`}
-                  {level && ` · ${level}`}
+                  {position && ` \u00b7 ${position}`}
+                  {level && ` \u00b7 ${level}`}
                 </p>
               </div>
               <div className="px-3 py-1 bg-[#B8821A]/10 text-[#B8821A] text-xs font-mono rounded-sm">
@@ -694,7 +718,7 @@ export default function StartPage() {
 
             <div className="border-t border-[#E0D9CE] pt-6">
               <p className="text-sm font-inter text-[#8A8178] mb-4">
-                This is your First Read. It's not complete — it's a starting
+                This is your First Read. It's not complete \u2014 it's a starting
                 point. LaRue will build on this as he learns more.
               </p>
               <p className="text-sm font-inter text-[#1A1714]">
@@ -717,7 +741,7 @@ export default function StartPage() {
                 <strong className="font-semibold">1. LaRue processes your answers.</strong>
                 <br />
                 <span className="text-[#8A8178]">
-                  He'll turn what you shared into a structured read — a profile
+                  He'll turn what you shared into a structured read \u2014 a profile
                   that captures how you think, what drives you, and where you're
                   going.
                 </span>
@@ -726,7 +750,7 @@ export default function StartPage() {
                 <strong className="font-semibold">2. You'll get your full First Read via email.</strong>
                 <br />
                 <span className="text-[#8A8178]">
-                  Within 48 hours, you'll receive a detailed breakdown — not
+                  Within 48 hours, you'll receive a detailed breakdown \u2014 not
                   generic insights, but specific observations about you.
                 </span>
               </p>
