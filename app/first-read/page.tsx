@@ -17,11 +17,12 @@ export default function FirstReadPage() {
         <p className="font-mono text-xs tracking-[0.25em] uppercase text-[#B8821A] mb-8">
           knwn.to / start here
         </p>
-        <h1 className="font-syne font-bold text-4xl sm:text-6xl text-[#1A1714] leading-[1.05] mb-6 max-w-3xl">
+        <h1 className="font-syne font-bold text-4xl sm:text-6xl text-[#1A1714] leading-[1.05] mb-3 max-w-3xl">
           This is where you build your athlete.md.
-          <br />
-          <span className="text-[#8A8178]">Ten minutes. Free. No account required.</span>
         </h1>
+        <p className="font-syne font-bold text-2xl sm:text-3xl text-[#8A8178] leading-snug mb-6 max-w-3xl">
+          Ten minutes. Free. No account required.
+        </p>
         <p className="font-inter text-lg text-[#4A443E] max-w-xl leading-relaxed mb-4">
           The athletes who get the most out of AI won&apos;t be the ones with the best tools.
           They&apos;ll be the ones with an AI that actually knows them.
