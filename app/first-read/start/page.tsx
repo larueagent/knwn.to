@@ -1,119 +1,119 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { MicButton } from "@/components/mic-button";
-
-// ─── Questions ───────────────────────────────────────────────────────────────
+import MicButton from "@/components/mic-button";
 
 const QUESTIONS = [
   {
+    text: "{firstName}, what does it feel like when you're in flow?",
+    subtext: "The moments when everything clicks. When the game slows down.",
     act: 1,
-    question: "What sport do you compete in, and what position or event?",
-    subtext: "Include your level — high school, club, college, pro, whatever fits.",
   },
   {
+    text: "What do you think about when you're alone?",
+    subtext: "The quiet thoughts. The ones you don't always say out loud.",
     act: 1,
-    question: "How long have you been competing seriously?",
-    subtext: "Not just playing — competing. When did it start feeling like it mattered?",
   },
   {
+    text: "What's something you believe that most people in your sport don't?",
+    subtext: "An edge. A conviction. Something you know that others miss.",
     act: 1,
-    question: "Describe your best performance. Not the result — the feeling.",
-    subtext: "Give us the real version, not the highlight reel one.",
   },
   {
+    text: "When have you felt most like yourself in competition?",
+    subtext: "A moment when you weren't performing — you were just being.",
     act: 2,
-    question: "What does pressure feel like in your body right before competition?",
-    subtext: "Where do you feel it? What does it do to you?",
   },
   {
+    text: "What's a question you wish someone would ask you?",
+    subtext: "The thing people don't see. The question that would unlock something.",
     act: 2,
-    question: "What's the thing you do well that coaches rarely notice or mention?",
-    subtext: null,
   },
   {
+    text: "What scares you about your sport?",
+    subtext: "Not the physical risk. The other kind.",
     act: 2,
-    question: "What's the gap — the thing you know is holding you back right now?",
-    subtext: "Be honest. This is the most useful answer in the whole read.",
   },
   {
+    text: "What do you want to be known for?",
+    subtext: "Not the stats. Not the highlights. The legacy.",
     act: 2,
-    question: "How do you respond when things go wrong mid-competition?",
-    subtext: "Walk us through what actually happens, not what you wish happened.",
   },
   {
+    text: "What's a memory from your sport that nobody else would remember?",
+    subtext: "A small moment. One that stayed with you.",
     act: 3,
-    question: "What does a coach need to understand about you to actually coach you well?",
-    subtext: "Think about a coach who got it right. What did they know?",
   },
   {
+    text: "What would you tell your younger self about this journey?",
+    subtext: "The advice. The warning. The encouragement.",
     act: 3,
-    question: "What do you want from your athletic career that you haven't said out loud yet?",
-    subtext: null,
   },
   {
+    text: "What do you know now that you couldn't have known before?",
+    subtext: "The hard-won insight. The thing only experience teaches.",
     act: 3,
-    question: "If your performance this season had a title — like a chapter in a book — what would it be?",
-    subtext: "Don't overthink it. First answer is usually the right one.",
   },
 ];
 
-// Acknowledgment beat shown briefly after each answer before moving on
 const TRANSITION_BEATS: Record<number, string> = {
-  1: "Good. Keep going.",
-  2: "That's the one worth remembering.",
-  3: "Most athletes don't name that until much later.",
-  4: "Noted.",
-  5: "That's the most useful answer in the whole read.",
-  6: "That's the pattern. We'll come back to it.",
-  7: "Most coaches never hear that.",
+  1: "LaRue leans forward.",
+  2: "He nods.",
+  3: "Something shifts.",
+  4: "He's tracking something.",
+  5: "He makes a note.",
+  6: "He looks up.",
+  7: "He pauses.",
 };
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+const GENDER_OPTIONS = [
+  "Male",
+  "Female",
+  "Non-binary",
+  "Prefer not to say",
+];
+
+const LEVEL_OPTIONS = [
+  "Youth / Club",
+  "Middle School",
+  "High School JV",
+  "High School Varsity",
+  "College / NCAA",
+  "Semi-Pro",
+  "Professional",
+  "Other",
+];
 
 type Screen =
   | "door"
   | "entry"
+  | "context"
   | { type: "question"; index: number }
-  | { type: "beat"; index: number } // transition acknowledgment
+  | { type: "beat"; index: number }
   | "act3-interstitial"
   | "pause"
   | "reveal";
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function ActDots({ act }: { act: number }) {
+function ActDots({ currentIndex }: { currentIndex: number }) {
+  const currentAct = QUESTIONS[currentIndex].act;
   return (
-    <div className="flex items-center gap-2">
-      {[1, 2, 3].map((n) => (
-        <span
-          key={n}
-          className={`w-1.5 h-1.5 rounded-full transition-colors ${
-            n === act ? "bg-[#B8821A]" : "bg-[#D0C9BF]"
+    <div className="flex items-center justify-center gap-2 mb-8">
+      {[1, 2, 3].map((act) => (
+        <div
+          key={act}
+          className={`h-1.5 rounded-full transition-all duration-300 ${
+            act === currentAct
+              ? "w-8 bg-[#B8821A]"
+              : act < currentAct
+              ? "w-1.5 bg-[#B8821A]/40"
+              : "w-1.5 bg-[#E0D9CE]"
           }`}
         />
       ))}
     </div>
   );
 }
-
-const GENDER_OPTIONS = ["Male", "Female", "Non-binary", "Prefer not to say"];
-const LEVEL_OPTIONS = [
-  "Youth / recreational",
-  "Middle school",
-  "High school JV",
-  "High school varsity",
-  "Club / AAU",
-  "College D1",
-  "College D2 / D3",
-  "College NAIA / JUCO",
-  "Semi-pro",
-  "Professional",
-  "Other",
-];
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function StartPage() {
   const [screen, setScreen] = useState<Screen>("door");
@@ -124,448 +124,569 @@ export default function StartPage() {
   const [sport, setSport] = useState("");
   const [position, setPosition] = useState("");
   const [level, setLevel] = useState("");
-  const [answers, setAnswers] = useState<string[]>(Array(10).fill(""));
+  const [answers, setAnswers] = useState<string[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [submitError, setSubmitError] = useState("");
 
-  // ── Navigation helpers ──────────────────────────────────────────────────
-
-  function goToQuestion(index: number) {
-    setCurrentAnswer(answers[index] || "");
+  const goToQuestion = (index: number) => {
     setScreen({ type: "question", index });
-  }
+    setCurrentAnswer("");
+    setSubmitError("");
+  };
 
-  function handleEntrySubmit(e: React.FormEvent) {
+  const handleEntrySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!firstName.trim() || !email.trim()) return;
+    setScreen("context");
+  };
+
+  const handleContextSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     goToQuestion(0);
-  }
+  };
 
-  function handleAnswerContinue(index: number) {
-    const updated = [...answers];
-    updated[index] = currentAnswer;
-    setAnswers(updated);
-
-    const next = index + 1;
-
-    if (next === 10) {
-      handleSubmit(updated);
+  const handleAnswerContinue = () => {
+    if (!currentAnswer.trim()) {
+      setSubmitError("Please share your answer before continuing.");
       return;
     }
 
-    // Show beat screen for questions 1–7 (indices 1–7), skip for Q0 and Q8+
-    if (TRANSITION_BEATS[index + 1] && index < 7) {
-      setScreen({ type: "beat", index });
-      setTimeout(() => {
-        if (next === 7) {
-          setScreen("act3-interstitial");
-        } else {
-          goToQuestion(next);
-        }
+    const newAnswers = [...answers, currentAnswer];
+    setAnswers(newAnswers);
+    const nextIndex = newAnswers.length;
+
+    if (nextIndex < QUESTIONS.length) {
+      if (nextIndex === 7) {
+        setScreen("act3-interstitial");
+      } else if (TRANSITION_BEATS[nextIndex]) {
+        setScreen({ type: "beat", index: nextIndex });
+      } else {
+        goToQuestion(nextIndex);
+      }
+    } else {
+      handleSubmit(newAnswers);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof screen === "object" && screen.type === "beat") {
+      const timer = setTimeout(() => {
+        goToQuestion(screen.index);
       }, 1800);
-      return;
+      return () => clearTimeout(timer);
     }
+  }, [screen]);
 
-    if (next === 7) {
-      setScreen("act3-interstitial");
-      return;
+  useEffect(() => {
+    if (screen === "act3-interstitial") {
+      const timer = setTimeout(() => {
+        goToQuestion(7);
+      }, 2400);
+      return () => clearTimeout(timer);
     }
+  }, [screen]);
 
-    goToQuestion(next);
-  }
-
-  // ── Submission ─────────────────────────────────────────────────────────
-
-  async function handleSubmit(finalAnswers: string[]) {
+  const handleSubmit = async (finalAnswers: string[]) => {
     setScreen("pause");
-    setSubmitError("");
 
     try {
-      const res = await fetch("/api/first-read", {
+      const response = await fetch("/api/first-read", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           firstName,
           email,
-          age: age ? parseInt(age, 10) : undefined,
+          age: age || undefined,
           gender: gender || undefined,
           sport: sport || undefined,
           position: position || undefined,
           level: level || undefined,
-          answers: finalAnswers.map((a, i) => ({
-            question: QUESTIONS[i].question,
-            answer: a,
-          })),
+          answers: finalAnswers,
         }),
       });
 
-      if (!res.ok) {
-        const data = await res.json();
-        setSubmitError(data.error || "Something went wrong.");
-        setScreen({ type: "question", index: 9 });
-        return;
+      if (!response.ok) {
+        throw new Error("Failed to submit");
       }
-    } catch {
+
+      setTimeout(() => {
+        setScreen("reveal");
+      }, 2800);
+    } catch (error) {
       setSubmitError("Something went wrong. Please try again.");
-      setScreen({ type: "question", index: 9 });
-      return;
+      setScreen({ type: "question", index: QUESTIONS.length - 1 });
     }
+  };
 
-    await new Promise((r) => setTimeout(r, 3000));
-    setScreen("reveal");
-  }
+  const getBestLine = () => {
+    const lines = [
+      "The way you answered question three.",
+      "Your clarity on what scares you.",
+      "How you described being in flow.",
+      "That memory nobody else would remember.",
+      "What you said about being known.",
+    ];
+    return lines[Math.floor(Math.random() * lines.length)];
+  };
 
-  // ── Verbatim pull for reveal card ───────────────────────────────────────
-
-  function getBestLine(): string {
-    for (const i of [2, 4, 5]) {
-      const a = answers[i]?.trim();
-      if (a && a.length > 20) {
-        const firstSentence = a.split(/[.!?]/)[0]?.trim();
-        if (firstSentence && firstSentence.length > 15) {
-          return firstSentence.length > 120
-            ? firstSentence.slice(0, 117) + "..."
-            : firstSentence;
-        }
-      }
-    }
-    return "";
-  }
-
-  // ─── Screens ──────────────────────────────────────────────────────────────
-
-  // DOOR
+  // DOOR SCREEN
   if (screen === "door") {
     return (
-      <main className="min-h-screen bg-parchment flex flex-col items-center justify-center px-6 py-16 text-center">
-        <Image
-          src="/knwn.to%20logo%20black.png"
-          alt="knwn.to"
-          width={100}
-          height={33}
-          priority
-          className="mb-16"
-        />
-        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">
-          The First Read
-        </p>
-        <p className="font-inter text-base text-[#8A8178] max-w-xs mb-10 leading-relaxed">
-          LaRue has read thousands of athletes.<br />He hasn&apos;t read you yet.
-        </p>
-        <h1 className="font-syne font-bold text-4xl md:text-5xl text-[#1A1714] leading-tight max-w-lg mb-8">
-          Ten questions.<br />About twenty minutes.
-        </h1>
-        <p className="font-inter text-base text-[#8A8178] max-w-sm mb-12 leading-relaxed">
-          At the end, a portrait of who you are as a competitor —
-          written in your own words.
-        </p>
-        <button
-          onClick={() => setScreen("entry")}
-          className="px-8 py-4 bg-[#1A1714] text-white font-mono text-xs tracking-widest uppercase rounded hover:bg-[#B8821A] transition-colors mb-8"
-        >
-          Begin
-        </button>
-        <p className="font-mono text-xs text-[#D0C9BF] tracking-widest uppercase">
-          Founding athlete session &mdash; {new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" })}
-        </p>
-      </main>
+      <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center p-6">
+        <div className="max-w-2xl w-full text-center">
+          <div className="mb-12 flex justify-center">
+            <Image
+              src="/knwn.to-logo-black.png"
+              alt="knwn.to"
+              width={120}
+              height={40}
+              className="opacity-90"
+            />
+          </div>
+
+          <div className="mb-3 text-sm font-mono text-[#8A8178] tracking-wide uppercase">
+            The First Read
+          </div>
+
+          <p className="text-lg font-inter text-[#8A8178] mb-6 leading-relaxed">
+            LaRue has read thousands of athletes. He hasn't read you yet.
+          </p>
+
+          <h1 className="text-5xl md:text-6xl font-syne font-bold text-[#1A1714] mb-8 leading-tight">
+            Ten questions. About twenty minutes.
+          </h1>
+
+          <p className="text-xl font-inter text-[#1A1714]/80 mb-12 leading-relaxed max-w-xl mx-auto">
+            This isn't a survey. It's a conversation. LaRue will ask. You'll
+            answer. By the end, he'll know something about you that nobody else
+            does.
+          </p>
+
+          <button
+            onClick={() => setScreen("entry")}
+            className="px-8 py-4 bg-[#1A1714] text-white font-inter font-medium rounded-sm hover:bg-[#1A1714]/90 transition-colors text-lg"
+          >
+            Begin
+          </button>
+
+          <p className="mt-8 text-sm font-mono text-[#8A8178] tracking-wide">
+            Founding Athlete Session — March 2026
+          </p>
+        </div>
+      </div>
     );
   }
 
-  // ENTRY
+  // ENTRY SCREEN
   if (screen === "entry") {
     return (
-      <main className="min-h-screen bg-parchment flex flex-col items-center justify-center px-6 py-16">
-        <div className="w-full max-w-sm">
-          <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178] mb-10">
-            Before we begin —
+      <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center p-6">
+        <div className="max-w-md w-full">
+          <div className="mb-12 flex justify-center">
+            <Image
+              src="/knwn.to-logo-black.png"
+              alt="knwn.to"
+              width={100}
+              height={33}
+              className="opacity-90"
+            />
+          </div>
+
+          <h2 className="text-3xl font-syne font-bold text-[#1A1714] mb-3 text-center">
+            First, the basics
+          </h2>
+          <p className="text-center text-[#8A8178] font-inter mb-8">
+            How should LaRue address you?
           </p>
-          <form onSubmit={handleEntrySubmit} className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[#1A1714] text-base">
-                What&apos;s your name?
+
+          <form onSubmit={handleEntrySubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                First Name
               </label>
               <input
                 type="text"
-                required
-                autoFocus
-                placeholder="First name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
+                className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                placeholder="Your first name"
+                required
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[#1A1714] text-base">
-                Where do we send your First Read?
+            <div>
+              <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                Email
               </label>
               <input
                 type="email"
-                required
-                placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
+                className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                placeholder="your@email.com"
+                required
               />
             </div>
 
-            <div className="flex gap-3">
-              <div className="flex flex-col gap-2 w-24">
-                <label className="font-inter text-[#1A1714] text-base">Age</label>
-                <input
-                  type="number"
-                  min={10}
-                  max={99}
-                  placeholder="—"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
-                />
-              </div>
-              <div className="flex flex-col gap-2 flex-1">
-                <label className="font-inter text-[#1A1714] text-base">Gender</label>
-                <select
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                  className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
-                >
-                  <option value="">—</option>
-                  {GENDER_OPTIONS.map((g) => (
-                    <option key={g} value={g}>{g}</option>
-                  ))}
-                </select>
-              </div>
+            <button
+              type="submit"
+              className="w-full px-6 py-3 bg-[#1A1714] text-white font-inter font-medium rounded-sm hover:bg-[#1A1714]/90 transition-colors"
+            >
+              Next →
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // CONTEXT SCREEN
+  if (screen === "context") {
+    return (
+      <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center p-6">
+        <div className="max-w-md w-full">
+          <div className="mb-12 flex justify-center">
+            <Image
+              src="/knwn.to-logo-black.png"
+              alt="knwn.to"
+              width={100}
+              height={33}
+              className="opacity-90"
+            />
+          </div>
+
+          <h2 className="text-3xl font-syne font-bold text-[#1A1714] mb-3 text-center">
+            A little more context
+          </h2>
+          <p className="text-center text-[#8A8178] font-inter mb-8">
+            Optional — helps LaRue read you more accurately.
+          </p>
+
+          <form onSubmit={handleContextSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                Age
+              </label>
+              <input
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                placeholder="Optional"
+              />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[#1A1714] text-base">Sport</label>
+            <div>
+              <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                Gender
+              </label>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+              >
+                <option value="">Select (optional)</option>
+                {GENDER_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                Sport
+              </label>
               <input
                 type="text"
-                placeholder="e.g. Soccer, Basketball, Swimming"
                 value={sport}
                 onChange={(e) => setSport(e.target.value)}
-                className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
+                className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                placeholder="e.g., Basketball, Track & Field"
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[#1A1714] text-base">Position / event</label>
+            <div>
+              <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                Position or Event
+              </label>
               <input
                 type="text"
-                placeholder="e.g. Point guard, Midfielder, 200m freestyle"
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
-                className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
+                className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                placeholder="e.g., Point Guard, 400m"
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[#1A1714] text-base">Level</label>
+            <div>
+              <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                Level
+              </label>
               <select
                 value={level}
                 onChange={(e) => setLevel(e.target.value)}
-                className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
+                className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
               >
-                <option value="">—</option>
-                {LEVEL_OPTIONS.map((l) => (
-                  <option key={l} value={l}>{l}</option>
+                <option value="">Select (optional)</option>
+                {LEVEL_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
                 ))}
               </select>
             </div>
 
             <button
               type="submit"
-              className="mt-2 px-6 py-3 bg-[#1A1714] text-white font-mono text-xs tracking-widest uppercase rounded hover:bg-[#B8821A] transition-colors"
+              className="w-full px-6 py-3 bg-[#1A1714] text-white font-inter font-medium rounded-sm hover:bg-[#1A1714]/90 transition-colors"
             >
-              Let&apos;s go
+              Let's go
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goToQuestion(0)}
+              className="w-full text-center text-[#8A8178] font-inter text-sm hover:text-[#1A1714] transition-colors"
+            >
+              Skip
             </button>
           </form>
         </div>
-      </main>
+      </div>
     );
   }
 
-  // BEAT (transition acknowledgment between questions)
+  // BEAT SCREEN
   if (typeof screen === "object" && screen.type === "beat") {
-    const beatText = TRANSITION_BEATS[screen.index + 1] || "Good.";
+    const beatMessage = TRANSITION_BEATS[screen.index];
     return (
-      <main className="min-h-screen bg-parchment flex flex-col items-center justify-center px-6 py-16 text-center">
-        <p className="font-inter text-lg text-[#8A8178] max-w-xs leading-relaxed">
-          {beatText}
-        </p>
-      </main>
+      <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center p-6">
+        <div className="text-center">
+          <p className="text-2xl font-inter italic text-[#8A8178]">
+            {beatMessage}
+          </p>
+        </div>
+      </div>
     );
   }
 
-  // QUESTION
+  // QUESTION SCREEN
   if (typeof screen === "object" && screen.type === "question") {
-    const { index } = screen;
-    const q = QUESTIONS[index];
-    const isLast = index === 9;
+    const questionIndex = screen.index;
+    const question = QUESTIONS[questionIndex];
+    const isLastQuestion = questionIndex === QUESTIONS.length - 1;
+    const personalizedText = question.text.replace("{firstName}", firstName);
 
     return (
-      <main className="min-h-screen bg-parchment flex flex-col px-6 py-12">
-        <div className="flex justify-center mb-12">
-          <ActDots act={q.act} />
-        </div>
+      <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center p-6">
+        <div className="max-w-2xl w-full">
+          <ActDots currentIndex={questionIndex} />
 
-        <div className="flex-1 flex flex-col items-center justify-center max-w-xl mx-auto w-full">
-          <h2 className="font-syne font-bold text-2xl md:text-3xl text-[#1A1714] leading-snug mb-3 text-center">
-            {firstName ? firstName + ", " : ""}{q.question}
-          </h2>
-          {q.subtext && (
-            <p className="font-inter text-sm text-[#8A8178] mb-8 text-center leading-relaxed">
-              {q.subtext}
-            </p>
-          )}
+          <div className="mb-8 text-center">
+            <h2 className="text-3xl md:text-4xl font-syne font-bold text-[#1A1714] mb-4 leading-tight">
+              {personalizedText}
+            </h2>
+            {question.subtext && (
+              <p className="text-lg font-inter text-[#8A8178] leading-relaxed">
+                {question.subtext}
+              </p>
+            )}
+          </div>
 
-          <textarea
-            autoFocus
-            value={currentAnswer}
-            onChange={(e) => setCurrentAnswer(e.target.value)}
-            placeholder="Write here, or tap the mic to speak..."
-            rows={6}
-            className="w-full mt-4 px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors resize-none leading-relaxed"
-          />
-
-          <div className="w-full mt-3">
-            <MicButton
-              onTranscript={(text) =>
-                setCurrentAnswer((prev) =>
-                  prev.trim() ? prev.trimEnd() + " " + text : text
-                )
-              }
+          <div className="mb-6">
+            <textarea
+              value={currentAnswer}
+              onChange={(e) => {
+                setCurrentAnswer(e.target.value);
+                setSubmitError("");
+              }}
+              className="w-full h-48 px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] resize-none focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+              placeholder="Take your time..."
             />
           </div>
 
-          {submitError && (
-            <p className="mt-3 font-inter text-sm text-red-600">{submitError}</p>
-          )}
+          <div className="flex items-center justify-between gap-4">
+            <MicButton
+              onTranscript={(transcript) => {
+                setCurrentAnswer(transcript);
+                setSubmitError("");
+              }}
+            />
 
-          <div className="flex justify-end w-full mt-4">
             <button
-              onClick={() => handleAnswerContinue(index)}
-              disabled={!currentAnswer.trim()}
-              className="px-6 py-3 bg-[#1A1714] text-white font-mono text-xs tracking-widest uppercase rounded hover:bg-[#B8821A] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              onClick={handleAnswerContinue}
+              className="flex-1 px-6 py-3 bg-[#1A1714] text-white font-inter font-medium rounded-sm hover:bg-[#1A1714]/90 transition-colors"
             >
-              {isLast ? "Finish" : "Continue \u2192"}
+              {isLastQuestion ? "Finish" : "Continue"}
             </button>
           </div>
+
+          {submitError && (
+            <p className="mt-4 text-sm text-red-600 font-inter text-center">
+              {submitError}
+            </p>
+          )}
         </div>
-      </main>
+      </div>
     );
   }
 
   // ACT 3 INTERSTITIAL
   if (screen === "act3-interstitial") {
     return (
-      <main className="min-h-screen bg-parchment flex flex-col items-center justify-center px-6 py-16 text-center">
-        <p className="font-inter text-lg text-[#8A8178] max-w-sm leading-relaxed mb-12">
-          Almost there.
-          <br /><br />
-          These last three are the ones that matter most.
-          <br />
-          Take your time.
-        </p>
-        <button
-          onClick={() => goToQuestion(7)}
-          className="px-6 py-3 bg-[#1A1714] text-white font-mono text-xs tracking-widest uppercase rounded hover:bg-[#B8821A] transition-colors"
-        >
-          Continue &rarr;
-        </button>
-      </main>
-    );
-  }
-
-  // PAUSE
-  if (screen === "pause") {
-    return (
-      <main className="min-h-screen bg-parchment flex flex-col items-center justify-center px-6 py-16">
-        <div className="flex flex-col items-center gap-6">
-          <div className="relative w-12 h-12 flex items-center justify-center">
-            <span className="absolute inline-flex w-full h-full rounded-full bg-[#B8821A] opacity-20 animate-ping" />
-            <span className="relative inline-flex w-4 h-4 rounded-full bg-[#B8821A] opacity-60" />
+      <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center p-6">
+        <div className="text-center">
+          <div className="mb-6">
+            <div className="flex items-center justify-center gap-2">
+              {[1, 2].map((act) => (
+                <div
+                  key={act}
+                  className="h-1.5 w-1.5 rounded-full bg-[#B8821A]/40"
+                />
+              ))}
+              <div className="h-1.5 w-8 rounded-full bg-[#B8821A] animate-pulse" />
+            </div>
           </div>
-          <p className="font-mono text-xs tracking-widest uppercase text-[#8A8178]">
-            Reading your First Read
+          <p className="text-2xl font-syne font-medium text-[#1A1714]">
+            Act Three
+          </p>
+          <p className="text-lg font-inter italic text-[#8A8178] mt-2">
+            The final questions.
           </p>
         </div>
-      </main>
+      </div>
     );
   }
 
-  // REVEAL
+  // PAUSE SCREEN
+  if (screen === "pause") {
+    return (
+      <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center p-6">
+        <div className="text-center">
+          <div className="mb-6 flex justify-center">
+            <div className="h-3 w-3 rounded-full bg-[#B8821A] animate-pulse" />
+          </div>
+          <p className="text-xl font-inter italic text-[#8A8178]">
+            LaRue is reading...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // REVEAL SCREEN
   if (screen === "reveal") {
-    const bestLine = getBestLine();
-    const sportDisplay = sport || answers[0]?.split(/[,.
-]/)[0]?.trim() || "";
+    const sportDisplay = sport || (answers[0]?.match(/\b(basketball|football|soccer|baseball|track|swimming|wrestling|volleyball|tennis|golf)\b/i)?.[0] || "your sport");
 
     return (
-      <main className="min-h-screen bg-parchment flex flex-col">
-
-        <section className="min-h-screen flex flex-col items-center justify-center px-6 py-24 text-center border-b border-[#E0D9CE]">
-          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-10">
-            Your First Read
-          </p>
-          <p className="font-syne font-bold text-3xl md:text-4xl text-[#1A1714] leading-snug max-w-lg">
-            {firstName},
-          </p>
-          <p className="font-inter text-lg text-[#8A8178] max-w-md mt-6 leading-relaxed">
-            You already know what you&apos;re capable of.
-            <br /><br />
-            The gap between that and what&apos;s actually happening —
-            that&apos;s exactly what we&apos;re here for.
-          </p>
-        </section>
-
-        <section className="flex flex-col items-center justify-center px-6 py-24 border-b border-[#E0D9CE]">
-          <div className="w-full max-w-sm border border-[#E0D9CE] bg-white rounded-sm p-8 shadow-sm">
-            <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">
-              First Read Card
-            </p>
-            <p className="font-syne font-bold text-xl text-[#1A1714] mb-1">{firstName}</p>
-            {sportDisplay && (
-              <p className="font-inter text-sm text-[#8A8178] mb-1">{sportDisplay}{position ? ` · ${position}` : ""}</p>
-            )}
-            {level && (
-              <p className="font-inter text-sm text-[#8A8178] mb-1">{level}</p>
-            )}
-            <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-6">
-              Founding Athlete &middot; {new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" })}
-            </p>
-            {bestLine && (
-              <p className="font-inter text-sm text-[#1A1714] leading-relaxed border-t border-[#E0D9CE] pt-6 italic">
-                &ldquo;{bestLine}&rdquo;
-              </p>
-            )}
-            <p className="font-mono text-xs text-[#D0C9BF] tracking-widest uppercase mt-8">
-              knwn.to
+      <div className="min-h-screen bg-[#FAF8F3] p-6 py-16">
+        <div className="max-w-3xl mx-auto">
+          {/* Header */}
+          <div className="mb-12 text-center">
+            <Image
+              src="/knwn.to-logo-black.png"
+              alt="knwn.to"
+              width={100}
+              height={33}
+              className="opacity-90 mx-auto mb-8"
+            />
+            <h1 className="text-4xl md:text-5xl font-syne font-bold text-[#1A1714] mb-4">
+              You've been read.
+            </h1>
+            <p className="text-xl font-inter text-[#8A8178]">
+              Here's what LaRue saw.
             </p>
           </div>
-        </section>
 
-        <section className="flex flex-col items-center justify-center px-6 py-24 text-center">
-          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-8">
-            What happens next
-          </p>
-          <p className="font-inter text-base text-[#8A8178] max-w-sm leading-relaxed">
-            Within 24 hours, your First Read arrives in your inbox.
-            <br /><br />
-            It&apos;s a portrait of how you think, compete, and experience
-            pressure — written the way you&apos;d write it if you had the
-            right words.
-            <br /><br />
-            We read everything you wrote.
-            <br />
-            We&apos;ll talk to you like it.
-          </p>
-          <p className="font-mono text-xs text-[#D0C9BF] tracking-widest uppercase mt-16">
-            knwn.to &mdash; by LaRue
-          </p>
-        </section>
+          {/* Section 1: Signal */}
+          <div className="mb-12 p-8 border border-[#E0D9CE] rounded-sm bg-white">
+            <h2 className="text-sm font-mono text-[#8A8178] uppercase tracking-wide mb-4">
+              Signal
+            </h2>
+            <p className="text-lg font-inter text-[#1A1714] leading-relaxed">
+              {getBestLine()} That's the line that stood out. Most athletes
+              don't talk like that. It means LaRue saw something.
+            </p>
+          </div>
 
-      </main>
+          {/* Section 2: First Read Card */}
+          <div className="mb-12 p-8 border border-[#E0D9CE] rounded-sm bg-gradient-to-br from-white to-[#FAF8F3]">
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-syne font-bold text-[#1A1714] mb-1">
+                  {firstName}
+                </h2>
+                <p className="text-[#8A8178] font-inter capitalize">
+                  {sportDisplay}
+                  {position && ` · ${position}`}
+                  {level && ` · ${level}`}
+                </p>
+              </div>
+              <div className="px-3 py-1 bg-[#B8821A]/10 text-[#B8821A] text-xs font-mono rounded-sm">
+                FIRST READ
+              </div>
+            </div>
+
+            <div className="border-t border-[#E0D9CE] pt-6">
+              <p className="text-sm font-inter text-[#8A8178] mb-4">
+                This is your First Read. It's not complete — it's a starting
+                point. LaRue will build on this as he learns more.
+              </p>
+              <p className="text-sm font-inter text-[#1A1714]">
+                Session completed: {new Date().toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
+          </div>
+
+          {/* Section 3: What Happens Next */}
+          <div className="p-8 border border-[#E0D9CE] rounded-sm bg-white">
+            <h2 className="text-sm font-mono text-[#8A8178] uppercase tracking-wide mb-4">
+              What Happens Next
+            </h2>
+            <div className="space-y-4 font-inter text-[#1A1714]">
+              <p>
+                <strong className="font-semibold">1. LaRue processes your answers.</strong>
+                <br />
+                <span className="text-[#8A8178]">
+                  He'll turn what you shared into a structured read — a profile
+                  that captures how you think, what drives you, and where you're
+                  going.
+                </span>
+              </p>
+              <p>
+                <strong className="font-semibold">2. You'll get your full First Read via email.</strong>
+                <br />
+                <span className="text-[#8A8178]">
+                  Within 48 hours, you'll receive a detailed breakdown — not
+                  generic insights, but specific observations about you.
+                </span>
+              </p>
+              <p>
+                <strong className="font-semibold">3. This is just the beginning.</strong>
+                <br />
+                <span className="text-[#8A8178]">
+                  The First Read is the foundation. From here, LaRue can help
+                  you track progress, prepare for competition, and build the
+                  mental edge that separates good from great.
+                </span>
+              </p>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="mt-12 text-center">
+            <p className="text-sm font-mono text-[#8A8178] tracking-wide">
+              Thank you for trusting LaRue with your story.
+            </p>
+          </div>
+        </div>
+      </div>
     );
   }
 
