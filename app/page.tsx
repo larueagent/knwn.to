@@ -121,7 +121,7 @@ export default function HomePage() {
             <div className="flex flex-col gap-3">
               <p className="font-syne font-bold text-base text-[#1A1714]">The Book</p>
               <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
-                <em>Pressure, Identity, Performance</em> — the research behind athlete.md
+                <em>AI and Athletes</em> — the research behind athlete.md
                 and why self-knowledge is the missing variable in athletic development.
               </p>
               <Link
