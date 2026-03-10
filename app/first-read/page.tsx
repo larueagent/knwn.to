@@ -30,18 +30,12 @@ export default function FirstReadPage() {
           That starts with one document:{" "}
           <span className="font-mono text-[#B8821A]">your athlete.md</span>.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 items-center">
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
           <Link
             href="/start"
             className="px-8 py-4 bg-[#B8821A] text-parchment font-syne font-semibold text-sm tracking-wide hover:bg-[#a07115] transition-colors"
           >
             Build your athlete.md — free, takes 10 minutes
-          </Link>
-          <Link
-            href="/start"
-            className="font-inter text-sm text-[#8A8178] hover:text-[#1A1714] transition-colors underline underline-offset-4"
-          >
-            Already have yours? Sign in.
           </Link>
         </div>
       </section>
@@ -155,13 +149,13 @@ export default function FirstReadPage() {
               href="/jaime"
               className="font-mono text-xs text-[#B8821A] tracking-widest uppercase hover:underline"
             >
-              View full sample profile →
+              View full sample profile &rarr;
             </Link>
             <Link
               href="/start"
               className="font-mono text-xs text-[#1A1714] tracking-widest uppercase hover:text-[#B8821A] transition-colors"
             >
-              Build yours free →
+              Build yours free &rarr;
             </Link>
           </div>
         </div>
@@ -220,12 +214,6 @@ export default function FirstReadPage() {
             className="inline-block px-10 py-4 bg-[#B8821A] text-parchment font-syne font-semibold text-sm tracking-wide hover:bg-[#a07115] transition-colors"
           >
             Build your athlete.md — free
-          </Link>
-          <Link
-            href="/notify"
-            className="font-inter text-sm text-[#8A8178] hover:text-[#1A1714] transition-colors underline underline-offset-4"
-          >
-            Text me when I&apos;m set up →
           </Link>
         </div>
       </section>
