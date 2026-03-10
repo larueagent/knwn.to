@@ -59,12 +59,24 @@ const QUESTIONS = [
   },
 ];
 
+// Acknowledgment beat shown briefly after each answer before moving on
+const TRANSITION_BEATS: Record<number, string> = {
+  1: "Good. Keep going.",
+  2: "That's the one worth remembering.",
+  3: "Most athletes don't name that until much later.",
+  4: "Noted.",
+  5: "That's the most useful answer in the whole read.",
+  6: "That's the pattern. We'll come back to it.",
+  7: "Most coaches never hear that.",
+};
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type Screen =
   | "door"
   | "entry"
   | { type: "question"; index: number }
+  | { type: "beat"; index: number } // transition acknowledgment
   | "act3-interstitial"
   | "pause"
   | "reveal";
@@ -86,16 +98,34 @@ function ActDots({ act }: { act: number }) {
   );
 }
 
+const GENDER_OPTIONS = ["Male", "Female", "Non-binary", "Prefer not to say"];
+const LEVEL_OPTIONS = [
+  "Youth / recreational",
+  "Middle school",
+  "High school JV",
+  "High school varsity",
+  "Club / AAU",
+  "College D1",
+  "College D2 / D3",
+  "College NAIA / JUCO",
+  "Semi-pro",
+  "Professional",
+  "Other",
+];
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function StartPage() {
   const [screen, setScreen] = useState<Screen>("door");
   const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [sport, setSport] = useState("");
+  const [position, setPosition] = useState("");
+  const [level, setLevel] = useState("");
   const [answers, setAnswers] = useState<string[]>(Array(10).fill(""));
   const [currentAnswer, setCurrentAnswer] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [submitError, setSubmitError] = useState("");
 
   // ── Navigation helpers ──────────────────────────────────────────────────
@@ -119,12 +149,23 @@ export default function StartPage() {
     const next = index + 1;
 
     if (next === 10) {
-      // All questions answered — go to pause then reveal
       handleSubmit(updated);
       return;
     }
 
-    // Before Q8 (index 7, act 3), show the act 3 interstitial
+    // Show beat screen for questions 1–7 (indices 1–7), skip for Q0 and Q8+
+    if (TRANSITION_BEATS[index + 1] && index < 7) {
+      setScreen({ type: "beat", index });
+      setTimeout(() => {
+        if (next === 7) {
+          setScreen("act3-interstitial");
+        } else {
+          goToQuestion(next);
+        }
+      }, 1800);
+      return;
+    }
+
     if (next === 7) {
       setScreen("act3-interstitial");
       return;
@@ -146,6 +187,11 @@ export default function StartPage() {
         body: JSON.stringify({
           firstName,
           email,
+          age: age ? parseInt(age, 10) : undefined,
+          gender: gender || undefined,
+          sport: sport || undefined,
+          position: position || undefined,
+          level: level || undefined,
           answers: finalAnswers.map((a, i) => ({
             question: QUESTIONS[i].question,
             answer: a,
@@ -165,7 +211,6 @@ export default function StartPage() {
       return;
     }
 
-    // Delay on pause screen before reveal — let it breathe
     await new Promise((r) => setTimeout(r, 3000));
     setScreen("reveal");
   }
@@ -173,12 +218,9 @@ export default function StartPage() {
   // ── Verbatim pull for reveal card ───────────────────────────────────────
 
   function getBestLine(): string {
-    // Pull from Q3 (index 2) first — "describe your best performance"
-    // Fall back to Q5 (index 4) or Q6 (index 5)
     for (const i of [2, 4, 5]) {
       const a = answers[i]?.trim();
       if (a && a.length > 20) {
-        // Take first sentence or first 120 chars
         const firstSentence = a.split(/[.!?]/)[0]?.trim();
         if (firstSentence && firstSentence.length > 15) {
           return firstSentence.length > 120
@@ -204,22 +246,28 @@ export default function StartPage() {
           priority
           className="mb-16"
         />
-        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-8">
+        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">
           The First Read
+        </p>
+        <p className="font-inter text-base text-[#8A8178] max-w-xs mb-10 leading-relaxed">
+          LaRue has read thousands of athletes.<br />He hasn&apos;t read you yet.
         </p>
         <h1 className="font-syne font-bold text-4xl md:text-5xl text-[#1A1714] leading-tight max-w-lg mb-8">
           Ten questions.<br />About twenty minutes.
         </h1>
-        <p className="font-inter text-base text-[#8A8178] max-w-sm mb-16 leading-relaxed">
+        <p className="font-inter text-base text-[#8A8178] max-w-sm mb-12 leading-relaxed">
           At the end, a portrait of who you are as a competitor —
           written in your own words.
         </p>
         <button
           onClick={() => setScreen("entry")}
-          className="px-8 py-4 bg-[#1A1714] text-white font-mono text-xs tracking-widest uppercase rounded hover:bg-[#B8821A] transition-colors"
+          className="px-8 py-4 bg-[#1A1714] text-white font-mono text-xs tracking-widest uppercase rounded hover:bg-[#B8821A] transition-colors mb-8"
         >
           Begin
         </button>
+        <p className="font-mono text-xs text-[#D0C9BF] tracking-widest uppercase">
+          Founding athlete session &mdash; {new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+        </p>
       </main>
     );
   }
@@ -247,6 +295,7 @@ export default function StartPage() {
                 className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
               />
             </div>
+
             <div className="flex flex-col gap-2">
               <label className="font-inter text-[#1A1714] text-base">
                 Where do we send your First Read?
@@ -260,6 +309,71 @@ export default function StartPage() {
                 className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
               />
             </div>
+
+            <div className="flex gap-3">
+              <div className="flex flex-col gap-2 w-24">
+                <label className="font-inter text-[#1A1714] text-base">Age</label>
+                <input
+                  type="number"
+                  min={10}
+                  max={99}
+                  placeholder="—"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
+                />
+              </div>
+              <div className="flex flex-col gap-2 flex-1">
+                <label className="font-inter text-[#1A1714] text-base">Gender</label>
+                <select
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
+                >
+                  <option value="">—</option>
+                  {GENDER_OPTIONS.map((g) => (
+                    <option key={g} value={g}>{g}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="font-inter text-[#1A1714] text-base">Sport</label>
+              <input
+                type="text"
+                placeholder="e.g. Soccer, Basketball, Swimming"
+                value={sport}
+                onChange={(e) => setSport(e.target.value)}
+                className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="font-inter text-[#1A1714] text-base">Position / event</label>
+              <input
+                type="text"
+                placeholder="e.g. Point guard, Midfielder, 200m freestyle"
+                value={position}
+                onChange={(e) => setPosition(e.target.value)}
+                className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] placeholder-[#8A8178] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="font-inter text-[#1A1714] text-base">Level</label>
+              <select
+                value={level}
+                onChange={(e) => setLevel(e.target.value)}
+                className="px-4 py-3 bg-white border border-[#E0D9CE] rounded text-[#1A1714] font-inter text-sm focus:outline-none focus:border-[#B8821A] transition-colors"
+              >
+                <option value="">—</option>
+                {LEVEL_OPTIONS.map((l) => (
+                  <option key={l} value={l}>{l}</option>
+                ))}
+              </select>
+            </div>
+
             <button
               type="submit"
               className="mt-2 px-6 py-3 bg-[#1A1714] text-white font-mono text-xs tracking-widest uppercase rounded hover:bg-[#B8821A] transition-colors"
@@ -272,6 +386,18 @@ export default function StartPage() {
     );
   }
 
+  // BEAT (transition acknowledgment between questions)
+  if (typeof screen === "object" && screen.type === "beat") {
+    const beatText = TRANSITION_BEATS[screen.index + 1] || "Good.";
+    return (
+      <main className="min-h-screen bg-parchment flex flex-col items-center justify-center px-6 py-16 text-center">
+        <p className="font-inter text-lg text-[#8A8178] max-w-xs leading-relaxed">
+          {beatText}
+        </p>
+      </main>
+    );
+  }
+
   // QUESTION
   if (typeof screen === "object" && screen.type === "question") {
     const { index } = screen;
@@ -280,12 +406,10 @@ export default function StartPage() {
 
     return (
       <main className="min-h-screen bg-parchment flex flex-col px-6 py-12">
-        {/* Act indicator */}
         <div className="flex justify-center mb-12">
           <ActDots act={q.act} />
         </div>
 
-        {/* Question */}
         <div className="flex-1 flex flex-col items-center justify-center max-w-xl mx-auto w-full">
           <h2 className="font-syne font-bold text-2xl md:text-3xl text-[#1A1714] leading-snug mb-3 text-center">
             {firstName ? firstName + ", " : ""}{q.question}
@@ -359,7 +483,6 @@ export default function StartPage() {
     return (
       <main className="min-h-screen bg-parchment flex flex-col items-center justify-center px-6 py-16">
         <div className="flex flex-col items-center gap-6">
-          {/* Subtle pulsing indicator */}
           <div className="relative w-12 h-12 flex items-center justify-center">
             <span className="absolute inline-flex w-full h-full rounded-full bg-[#B8821A] opacity-20 animate-ping" />
             <span className="relative inline-flex w-4 h-4 rounded-full bg-[#B8821A] opacity-60" />
@@ -375,12 +498,12 @@ export default function StartPage() {
   // REVEAL
   if (screen === "reveal") {
     const bestLine = getBestLine();
-    const sport = answers[0]?.split(/[,.\n]/)[0]?.trim() || "";
+    const sportDisplay = sport || answers[0]?.split(/[,.
+]/)[0]?.trim() || "";
 
     return (
       <main className="min-h-screen bg-parchment flex flex-col">
 
-        {/* Moment 1 — The Signal */}
         <section className="min-h-screen flex flex-col items-center justify-center px-6 py-24 text-center border-b border-[#E0D9CE]">
           <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-10">
             Your First Read
@@ -396,15 +519,17 @@ export default function StartPage() {
           </p>
         </section>
 
-        {/* Moment 2 — The First Read Card */}
         <section className="flex flex-col items-center justify-center px-6 py-24 border-b border-[#E0D9CE]">
           <div className="w-full max-w-sm border border-[#E0D9CE] bg-white rounded-sm p-8 shadow-sm">
             <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">
               First Read Card
             </p>
             <p className="font-syne font-bold text-xl text-[#1A1714] mb-1">{firstName}</p>
-            {sport && (
-              <p className="font-inter text-sm text-[#8A8178] mb-1">{sport}</p>
+            {sportDisplay && (
+              <p className="font-inter text-sm text-[#8A8178] mb-1">{sportDisplay}{position ? ` · ${position}` : ""}</p>
+            )}
+            {level && (
+              <p className="font-inter text-sm text-[#8A8178] mb-1">{level}</p>
             )}
             <p className="font-mono text-xs text-[#8A8178] tracking-widest uppercase mb-6">
               Founding Athlete &middot; {new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" })}
@@ -420,7 +545,6 @@ export default function StartPage() {
           </div>
         </section>
 
-        {/* Moment 3 — What Happens Next */}
         <section className="flex flex-col items-center justify-center px-6 py-24 text-center">
           <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-8">
             What happens next
