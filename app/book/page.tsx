@@ -71,7 +71,7 @@ export default function BookPage() {
     <main className="min-h-screen bg-parchment flex flex-col">
       <Nav />
       <section className="flex flex-col items-center text-center px-6 pt-20 pb-16">
-        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">Robert Yang with LaRue</p>
+        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">For athletes serious about what comes next</p>
         <h1 className="font-syne font-bold text-4xl sm:text-5xl text-[#1A1714] mb-4 leading-tight">AI and Athletes</h1>
         <p className="font-inter text-lg text-[#4A443E] max-w-xl mb-3">AI doesn&apos;t know you. Yet.</p>
         <p className="font-inter text-base text-[#8A8178] max-w-lg mb-10">Every young athlete will use AI. The ones who get the most out of it won&apos;t have the best tools — they&apos;ll be the ones with an AI that actually knows them. This book shows you how to get there. It starts with one document: your athlete.md.</p>
