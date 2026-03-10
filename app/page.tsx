@@ -1,106 +1,175 @@
 import Link from "next/link";
+import Nav from "@/components/Nav";
+
+export const metadata = {
+  title: "knwn.to — Know your athlete",
+  description:
+    "Every young athlete needs to know how to work with AI. It starts with one document: your athlete.md.",
+};
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#f0ede8] text-[#1a1a1a] font-sans">
+    <main className="min-h-screen bg-parchment text-[#1A1714] flex flex-col">
+      <Nav />
 
-      {/* NAV */}
-      <nav className="flex items-center justify-between px-8 py-5 border-b border-[#1a1a1a]/10">
-        <span className="font-bold tracking-tight text-lg">knwn.to</span>
-        <div className="flex gap-6 text-sm items-center">
-          <Link href="/first-read" className="font-bold bg-[#1a1a1a] text-[#f0ede8] px-4 py-2 hover:bg-[#2a2520] transition-colors">Start Here</Link>
-          <Link href="/field-notes" className="hover:underline">Field Notes</Link>
-          <Link href="/book" className="hover:underline">The Book</Link>
-          <Link href="/for-coaches" className="hover:underline">For Coaches</Link>
-        </div>
-      </nav>
-
-      {/* HERO */}
-      <section className="max-w-4xl mx-auto px-8 py-28 text-center">
-        <h1 className="text-5xl font-bold leading-tight tracking-tight mb-6">
+      {/* Hero */}
+      <section className="flex flex-col items-center justify-center px-6 pt-24 pb-16 text-center">
+        <p className="font-mono text-xs tracking-[0.25em] uppercase text-[#B8821A] mb-8">
+          knwn.to
+        </p>
+        <h1 className="font-syne font-bold text-4xl sm:text-6xl text-[#1A1714] leading-[1.05] mb-6 max-w-3xl">
           Every young athlete needs to know how to work with AI.
           <br />
-          <span className="text-[#1a1a1a]/50">Most don&apos;t know where to start.</span>
+          <span className="text-[#8A8178]">Most don&apos;t know where to start.</span>
         </h1>
-        <p className="text-xl text-[#1a1a1a]/70 mb-3 max-w-2xl mx-auto leading-relaxed">The athletes who get the most out of AI won&apos;t be the ones with the best tools.</p>
-        <p className="text-xl text-[#1a1a1a]/70 mb-3 max-w-2xl mx-auto leading-relaxed">They&apos;ll be the ones with an AI that actually knows them.</p>
-        <p className="text-xl text-[#1a1a1a]/70 mb-10 max-w-2xl mx-auto leading-relaxed">That starts with one document:{" "}<span className="font-mono font-semibold text-[#1a1a1a]">your athlete.md.</span></p>
-        <Link href="/first-read" className="inline-block bg-[#1a1a1a] text-[#f0ede8] px-8 py-4 text-base font-semibold mb-4 hover:bg-[#2a2520] transition-colors">Build your athlete.md — free, takes 10 minutes</Link>
-        <br />
-        <Link href="/sign-in" className="text-sm text-[#1a1a1a]/50 underline underline-offset-4 hover:text-[#1a1a1a] transition-colors">Already have yours? Sign in.</Link>
-      </section>
-
-      {/* CONTEXT BAND */}
-      <section className="bg-[#1a1a1a] text-[#f0ede8] px-8 py-16">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xl leading-relaxed mb-4 text-[#f0ede8]/90">AI is already in your sport. Scouts use it. Coaches use it. Recruiters use it.</p>
-          <p className="text-xl leading-relaxed text-[#f0ede8]/70">The athletes who thrive won&apos;t just be faster — they&apos;ll be the ones who know how to be known, and who use AI to keep developing.</p>
+        <p className="font-inter text-lg text-[#4A443E] max-w-xl leading-relaxed mb-4">
+          The athletes who get the most out of AI won&apos;t be the ones with the best tools.
+          They&apos;ll be the ones with an AI that actually knows them.
+        </p>
+        <p className="font-inter text-base text-[#8A8178] max-w-lg leading-relaxed mb-12">
+          That starts with one document:{" "}
+          <span className="font-mono text-[#B8821A]">your athlete.md</span>.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <Link
+            href="/first-read"
+            className="px-8 py-4 bg-[#B8821A] text-parchment font-syne font-semibold text-sm tracking-wide hover:bg-[#a07115] transition-colors"
+          >
+            Start here — it&apos;s free
+          </Link>
+          <Link
+            href="/book"
+            className="font-inter text-sm text-[#8A8178] hover:text-[#1A1714] transition-colors underline underline-offset-4"
+          >
+            Read the book
+          </Link>
         </div>
       </section>
 
-      {/* WHAT IS AN ATHLETE.MD */}
-      <section className="max-w-5xl mx-auto px-8 py-24">
-        <h2 className="text-3xl font-bold mb-3 text-center">An athlete.md is your mental performance identity.</h2>
-        <p className="text-center text-[#1a1a1a]/50 mb-16 text-lg">In plain language. Yours to own.</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {[
-            { label: "What it captures", body: "How you handle pressure. What derails you. How you prepare. What you need before a big game. Not a test result. Not a score. A real picture of how you compete — written in language you and any coach can actually use." },
-            { label: "Why it matters for AI", body: "An AI is only as useful as what it knows about you. Without a profile, every session starts from zero. With an athlete.md, LaRue knows your patterns before you say a word. That is what it means to get the most out of AI." },
-            { label: "You own it", body: "Your athlete.md is a plain text file. Take it anywhere. Share it with a coach. Use it with any AI tool. It is not locked inside an app. It belongs to you." },
-          ].map(({ label, body }) => (
-            <div key={label}>
-              <h3 className="font-bold uppercase tracking-wider text-[#1a1a1a]/40 text-xs mb-3">{label}</h3>
-              <p className="text-[#1a1a1a]/70 text-base leading-relaxed">{body}</p>
+      {/* Context band */}
+      <section className="bg-[#EAE5DC] text-[#1A1714] px-6 py-12">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="font-syne font-semibold text-lg mb-3">
+            AI doesn&apos;t know your athlete.
+          </p>
+          <p className="font-inter text-base text-[#4A443E] leading-relaxed">
+            Every AI tool — ChatGPT, Claude, Gemini — starts from zero every session.
+            It doesn&apos;t know your sport, your role, your pressure patterns, or what you need from a coach.
+            Without context, it gives generic answers. With context, it becomes a training partner that actually knows you.
+          </p>
+        </div>
+      </section>
+
+      {/* LaRue intro band */}
+      <section className="bg-[#E0D9CE] text-[#1A1714] px-6 py-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="font-mono text-xs tracking-[0.25em] uppercase text-[#B8821A] mb-6">
+            Meet LaRue
+          </p>
+          <h2 className="font-syne font-bold text-3xl sm:text-4xl text-[#1A1714] leading-tight mb-6">
+            An AI coach built for athletes who want to be known.
+          </h2>
+          <p className="font-inter text-base text-[#4A443E] leading-relaxed mb-4">
+            LaRue is a sport psychology AI trained on pressure performance research.
+            It reads your athlete.md at the start of every session — so it always knows who you are,
+            what you&apos;re working on, and how you respond under pressure.
+          </p>
+          <p className="font-inter text-base text-[#4A443E] leading-relaxed mb-10">
+            Not a chatbot. Not a generic wellness app. A coach that builds a model of you over time.
+          </p>
+          <Link
+            href="/first-read"
+            className="inline-block px-8 py-4 bg-[#B8821A] text-parchment font-syne font-semibold text-sm tracking-wide hover:bg-[#a07115] transition-colors"
+          >
+            Build your athlete.md — free, takes 10 minutes
+          </Link>
+        </div>
+      </section>
+
+      {/* Three paths */}
+      <section className="bg-parchment px-6 py-20">
+        <div className="max-w-4xl mx-auto">
+          <p className="font-mono text-xs tracking-[0.25em] uppercase text-[#B8821A] mb-10 text-center">
+            Where to go from here
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            <div className="flex flex-col gap-3">
+              <p className="font-syne font-bold text-base text-[#1A1714]">For Athletes</p>
+              <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                Build your athlete.md and start working with LaRue.
+                Free, private, takes 10 minutes.
+              </p>
+              <Link
+                href="/first-read"
+                className="font-inter text-sm text-[#B8821A] hover:text-[#a07115] underline underline-offset-4 transition-colors mt-auto"
+              >
+                Start here &rarr;
+              </Link>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* MEET LARUE */}
-      <section className="bg-[#1a1a1a] text-[#f0ede8] px-8 py-24">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">Meet LaRue</p>
-          <h2 className="text-3xl font-bold mb-6">LaRue builds your athlete.md. Then puts it to work.</h2>
-          <p className="text-lg text-[#f0ede8]/70 leading-relaxed mb-4">LaRue is an AI agent trained on mental performance in sport. Answer 10 questions. He generates your profile, reads it before every session, reaches out before big moments, and gets smarter the longer you work together.</p>
-          <p className="text-lg text-[#f0ede8]/70 leading-relaxed mb-10">The athletes who will outperform in the next decade aren&apos;t just mentally tough — they&apos;re self-aware enough to use every tool available, including AI, to know themselves better. LaRue is built to develop that skill. When you need a real coach, he connects you to one.</p>
-          <Link href="/first-read" className="inline-block border border-[#f0ede8] text-[#f0ede8] px-8 py-4 text-base font-semibold hover:bg-[#f0ede8] hover:text-[#1a1a1a] transition-colors">Start your athlete.md — free</Link>
-        </div>
-      </section>
-
-      {/* SAMPLE PROFILE */}
-      <section className="max-w-3xl mx-auto px-8 py-24">
-        <h2 className="text-3xl font-bold mb-3 text-center">This is what an athlete.md looks like.</h2>
-        <p className="text-center text-[#1a1a1a]/50 mb-10">Jaime is a composite athlete. Ten minutes in, this is what LaRue produced.</p>
-        <div className="border border-[#1a1a1a]/15 bg-[#e8e4de] p-8 font-mono text-sm leading-relaxed text-[#1a1a1a]/80">
-          <p className="text-[#1a1a1a]/40 mb-4"># athlete.md — Jaime R.</p>
-          <p className="mb-1"><span className="text-[#1a1a1a]/40">athlete_type:</span> The Grinder</p>
-          <p className="mb-1"><span className="text-[#1a1a1a]/40">pressure_response:</span> Internalizes. Goes quiet before big moments.</p>
-          <p className="mb-1"><span className="text-[#1a1a1a]/40">derailer:</span> Comparison to teammates. Rumination after errors.</p>
-          <p className="mb-1"><span className="text-[#1a1a1a]/40">pre_competition:</span> Needs 20 min alone. Music off. No strategy talk.</p>
-          <p className="mb-1"><span className="text-[#1a1a1a]/40">strength:</span> Consistency under fatigue. Coachable. Process-oriented.</p>
-          <p className="mt-4 text-[#1a1a1a]/40">[full profile — 380 words]</p>
-        </div>
-        <div className="text-center mt-10 flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <Link href="/jaime" className="text-sm text-[#1a1a1a]/50 underline underline-offset-4 hover:text-[#1a1a1a] transition-colors">View full sample →</Link>
-          <Link href="/first-read" className="inline-block bg-[#1a1a1a] text-[#f0ede8] px-8 py-4 text-sm font-semibold hover:bg-[#2a2520] transition-colors">Build yours free</Link>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-[#1a1a1a]/10 px-8 py-10 text-sm text-[#1a1a1a]/40">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between gap-6">
-          <div><p className="font-bold text-[#1a1a1a] mb-1">knwn.to</p><p>Powered by Mettle</p></div>
-          <div className="flex gap-6 flex-wrap items-start">
-            <Link href="/first-read" className="hover:text-[#1a1a1a] transition-colors">Start Here</Link>
-            <Link href="/field-notes" className="hover:text-[#1a1a1a] transition-colors">Field Notes</Link>
-            <Link href="/book" className="hover:text-[#1a1a1a] transition-colors">The Book</Link>
-            <Link href="/for-coaches" className="hover:text-[#1a1a1a] transition-colors">For Coaches</Link>
-            <Link href="https://momentumlabs.coach" className="hover:text-[#1a1a1a] transition-colors" target="_blank" rel="noopener noreferrer">momentumlabs.coach</Link>
+            <div className="flex flex-col gap-3">
+              <p className="font-syne font-bold text-base text-[#1A1714]">For Coaches</p>
+              <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                The VAC is coming. A team-level tool that gives every athlete on your roster
+                a consistent AI presence.
+              </p>
+              <Link
+                href="/for-coaches"
+                className="font-inter text-sm text-[#B8821A] hover:text-[#a07115] underline underline-offset-4 transition-colors mt-auto"
+              >
+                Join the waitlist &rarr;
+              </Link>
+            </div>
+            <div className="flex flex-col gap-3">
+              <p className="font-syne font-bold text-base text-[#1A1714]">The Book</p>
+              <p className="font-inter text-sm text-[#4A443E] leading-relaxed">
+                <em>Pressure, Identity, Performance</em> — the research behind athlete.md
+                and why self-knowledge is the missing variable in athletic development.
+              </p>
+              <Link
+                href="/book"
+                className="font-inter text-sm text-[#B8821A] hover:text-[#a07115] underline underline-offset-4 transition-colors mt-auto"
+              >
+                Read it &rarr;
+              </Link>
+            </div>
           </div>
         </div>
-        <div className="max-w-5xl mx-auto mt-6 pt-6 border-t border-[#1a1a1a]/10">
-          <p className="mb-1">LaRue is an AI agent. He is not a licensed therapist or clinical psychologist. AI-powered. Real coaches available when you need them.</p>
-          <p>&copy; 2026 Mettle Performance. Athlete data is never sold or shared without explicit consent.</p>
+      </section>
+
+      {/* Final CTA */}
+      <section className="bg-[#EAE5DC] px-6 py-20 text-center">
+        <div className="max-w-xl mx-auto">
+          <h2 className="font-syne font-bold text-3xl text-[#1A1714] leading-tight mb-4">
+            The athletes who understand themselves win more.
+          </h2>
+          <p className="font-inter text-base text-[#4A443E] leading-relaxed mb-10">
+            Not because they&apos;re more talented. Because they know how to use what they have.
+            Your athlete.md is where that starts.
+          </p>
+          <Link
+            href="/first-read"
+            className="inline-block px-8 py-4 bg-[#B8821A] text-parchment font-syne font-semibold text-sm tracking-wide hover:bg-[#a07115] transition-colors"
+          >
+            Build your athlete.md — free
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-[#1A1714]/10 px-8 py-8">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span className="font-syne font-bold text-sm text-[#1A1714] tracking-tight">
+            knwn.to
+          </span>
+          <div className="flex gap-6 text-xs text-[#8A8178]">
+            <Link href="/first-read" className="hover:text-[#1A1714] transition-colors">Start Here</Link>
+            <Link href="/for-coaches" className="hover:text-[#1A1714] transition-colors">For Coaches</Link>
+            <Link href="/book" className="hover:text-[#1A1714] transition-colors">The Book</Link>
+            <Link href="/field-notes" className="hover:text-[#1A1714] transition-colors">Field Notes</Link>
+          </div>
+          <p className="font-inter text-xs text-[#8A8178]">
+            &copy; {new Date().getFullYear()} Momentum Labs
+          </p>
         </div>
       </footer>
     </main>
