@@ -12,6 +12,11 @@ interface QuestionAnswer {
 interface FirstReadPayload {
   firstName: string
   email: string
+  age?: number
+  gender?: string
+  sport?: string
+  position?: string
+  level?: string
   answers: QuestionAnswer[]
 }
 
@@ -38,7 +43,7 @@ async function sendEmail(to: string, subject: string, html: string): Promise<voi
 
 export async function POST(req: NextRequest) {
   const body: FirstReadPayload = await req.json()
-  const { firstName, email, answers } = body
+  const { firstName, email, age, gender, sport, position, level, answers } = body
 
   if (!email || !email.includes('@')) {
     return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
@@ -55,7 +60,7 @@ export async function POST(req: NextRequest) {
 
   try {
     // Step 1: Generate athlete First Read document via Claude
-    const firstReadDoc = await generateFirstRead(firstName, answers)
+    const firstReadDoc = await generateFirstRead(firstName, answers, { age, gender, sport, position, level })
 
     // Step 2: Add subscriber to Kit
     const subRes = await fetch(`${KIT_API}/subscribers`, {
@@ -65,6 +70,13 @@ export async function POST(req: NextRequest) {
         email_address: email,
         first_name: firstName,
         state: 'active',
+        fields: {
+          age: age?.toString() || '',
+          gender: gender || '',
+          sport: sport || '',
+          position: position || '',
+          level: level || '',
+        },
       }),
     })
 
