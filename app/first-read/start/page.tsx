@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import MicButton from "@/components/mic-button";
+import { MicButton } from "@/components/mic-button";
 
 const QUESTIONS = [
   {
@@ -22,7 +22,7 @@ const QUESTIONS = [
   },
   {
     text: "When have you felt most like yourself in competition?",
-    subtext: "A moment when you weren't performing — you were just being.",
+    subtext: "A moment when you weren't performing â you were just being.",
     act: 2,
   },
   {
