@@ -7,6 +7,7 @@ import Nav from "@/components/Nav";
 function BuyButton() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const handleBuy = async () => {
     setError(""); setLoading(true);
     try {
@@ -16,6 +17,7 @@ function BuyButton() {
       window.location.href = data.url;
     } catch { setError("Something went wrong. Please try again."); setLoading(false); }
   };
+
   return (
     <div className="flex flex-col items-center gap-3">
       <button onClick={handleBuy} disabled={loading} className="px-8 py-4 bg-[#B8821A] text-white font-syne font-semibold text-base rounded hover:bg-[#a07115] transition-colors disabled:opacity-60 whitespace-nowrap">
@@ -70,6 +72,8 @@ export default function BookPage() {
   return (
     <main className="min-h-screen bg-parchment flex flex-col">
       <Nav />
+
+      {/* Hero */}
       <section className="flex flex-col items-center text-center px-6 pt-20 pb-16">
         <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">For athletes serious about what comes next</p>
         <h1 className="font-syne font-bold text-4xl sm:text-5xl text-[#1A1714] mb-4 leading-tight">AI and Athletes</h1>
@@ -77,7 +81,10 @@ export default function BookPage() {
         <p className="font-inter text-base text-[#8A8178] max-w-lg mb-10">Every young athlete will use AI. The ones who get the most out of it won&apos;t have the best tools — they&apos;ll be the ones with an AI that actually knows them. This book shows you how to get there. It starts with one document: your athlete.md.</p>
         <BuyButton />
       </section>
+
       <Divider />
+
+      {/* What you get */}
       <section className="flex flex-col items-center px-6 py-14">
         <div className="max-w-2xl w-full">
           <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4 text-center">What you get</p>
@@ -97,9 +104,10 @@ export default function BookPage() {
           </div>
         </div>
       </section>
+
       <Divider />
-      <section className="flex flex-col items-center px-6 py-14"><ChapterList /></section>
-      <Divider />
+
+      {/* The core idea — above chapters */}
       <section className="flex flex-col items-center px-6 py-14">
         <div className="max-w-2xl w-full">
           <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">The core idea</p>
@@ -109,7 +117,15 @@ export default function BookPage() {
           <p className="font-inter text-base text-[#4A443E] leading-relaxed">This book is the guide. LaRue is the shortcut to building your profile. The athlete.md is yours to keep.</p>
         </div>
       </section>
+
       <Divider />
+
+      {/* Chapter list */}
+      <section className="flex flex-col items-center px-6 py-14"><ChapterList /></section>
+
+      <Divider />
+
+      {/* About */}
       <section className="flex flex-col items-center px-6 py-14">
         <div className="max-w-2xl w-full">
           <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">About</p>
@@ -118,7 +134,10 @@ export default function BookPage() {
           <p className="font-inter text-base text-[#4A443E] leading-relaxed">LaRue contributed the research, the structure, and the prompts. Robert contributed the reps.</p>
         </div>
       </section>
+
       <Divider />
+
+      {/* FAQ */}
       <section className="flex flex-col items-center px-6 py-14">
         <div className="max-w-2xl w-full">
           <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">Questions</p>
@@ -140,13 +159,17 @@ export default function BookPage() {
           </div>
         </div>
       </section>
+
       <Divider />
+
+      {/* Footer CTA */}
       <section className="flex flex-col items-center text-center px-6 py-16">
         <h2 className="font-syne font-bold text-3xl text-[#1A1714] mb-4">AI doesn&apos;t know you yet.</h2>
         <p className="font-inter text-base text-[#8A8178] max-w-md mb-4">That changes when you give it something worth knowing.</p>
         <p className="font-inter text-sm text-[#8A8178] max-w-md mb-8">Start with your athlete.md — free, 10 minutes.{" "}<Link href="/first-read" className="text-[#B8821A] hover:underline">Build yours here.</Link></p>
         <BuyButton />
       </section>
+
       <footer className="mt-auto px-6 py-8 border-t border-[#E0D9CE]">
         <div className="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex gap-6">
