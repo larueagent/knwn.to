@@ -38,6 +38,12 @@ export default function Nav({ variant = "light" }: NavProps) {
         <span className={`font-mono text-xs tracking-widest uppercase ${mutedColor}`}>
           by LaRue
         </span>
+        <Link
+          href="/first-read"
+          className="bg-[#B8821A] text-white font-syne font-semibold text-sm px-5 py-2 rounded hover:bg-[#a07115] transition-colors"
+        >
+          Start Here
+        </Link>
       </div>
 
       {/* Mobile hamburger */}
@@ -63,6 +69,13 @@ export default function Nav({ variant = "light" }: NavProps) {
           <span className={`font-mono text-xs tracking-widest uppercase ${mutedColor}`}>
             by LaRue
           </span>
+          <Link
+            href="/first-read"
+            onClick={() => setOpen(false)}
+            className="bg-[#B8821A] text-white font-syne font-semibold text-sm px-5 py-2 rounded hover:bg-[#a07115] transition-colors text-center"
+          >
+            Start Here
+          </Link>
         </div>
       )}
     </nav>
