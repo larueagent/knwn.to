@@ -177,6 +177,8 @@ export default function StartPage() {
   const [gender, setGender] = useState("");
   const [sport, setSport] = useState("");
   const [position, setPosition] = useState("");
+  const [customSport, setCustomSport] = useState("");
+  const [customPosition, setCustomPosition] = useState("");
   const [level, setLevel] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState("");
@@ -252,8 +254,8 @@ export default function StartPage() {
           email,
           birthdate: (birthMonth && birthDay && birthYear) ? `${birthYear}-${birthMonth}-${birthDay}` : undefined,
           gender: gender || undefined,
-          sport: sport || undefined,
-          position: position || undefined,
+          sport: sport === "Other" ? (customSport || "Other") : (sport || undefined),
+          position: sport === "Other" ? (customPosition || undefined) : (position || undefined),
           level: level || undefined,
           answers: finalAnswers,
         }),
@@ -479,7 +481,7 @@ export default function StartPage() {
               </label>
               <select
                 value={sport}
-                onChange={(e) => { setSport(e.target.value); setPosition(""); }}
+                onChange={(e) => { setSport(e.target.value); setPosition(""); setCustomSport(""); setCustomPosition(""); }}
                 className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
               >
                 <option value="">Select sport (optional)</option>
@@ -489,7 +491,22 @@ export default function StartPage() {
               </select>
             </div>
 
-            {sport && POSITION_OPTIONS[sport] && (
+            {sport === "Other" && (
+              <div>
+                <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                  What sport do you play?
+                </label>
+                <input
+                  type="text"
+                  value={customSport}
+                  onChange={(e) => setCustomSport(e.target.value)}
+                  className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                  placeholder="e.g. Pickleball, Cheerleading, Esports..."
+                />
+              </div>
+            )}
+
+            {sport && sport !== "Other" && POSITION_OPTIONS[sport] && (
               <div>
                 <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
                   Position / Event
@@ -504,6 +521,20 @@ export default function StartPage() {
                     <option key={p} value={p}>{p}</option>
                   ))}
                 </select>
+              </div>
+            )}
+            {sport === "Other" && (
+              <div>
+                <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
+                  What's your position or role?
+                </label>
+                <input
+                  type="text"
+                  value={customPosition}
+                  onChange={(e) => setCustomPosition(e.target.value)}
+                  className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                  placeholder="e.g. Setter, Goalkeeper, All-rounder..."
+                />
               </div>
             )}
 
@@ -665,7 +696,10 @@ export default function StartPage() {
 
   // REVEAL SCREEN
   if (screen === "reveal") {
-    const sportDisplay = sport || (answers[0]?.match(/\b(basketball|football|soccer|baseball|track|swimming|wrestling|volleyball|tennis|golf)\b/i)?.[0] || "your sport");
+    const sportDisplay = sport === "Other"
+      ? (customSport || "your sport")
+      : (sport || (answers[0]?.match(/\b(basketball|football|soccer|baseball|track|swimming|wrestling|volleyball|tennis|golf)\b/i)?.[0] || "your sport"));
+    const positionDisplay = sport === "Other" ? customPosition : position;
 
     return (
       <div className="min-h-screen bg-[#FAF8F3] p-6 py-16">
@@ -707,7 +741,7 @@ export default function StartPage() {
                 </h2>
                 <p className="text-[#8A8178] font-inter capitalize">
                   {sportDisplay}
-                  {position && ` · ${position}`}
+                  {positionDisplay && ` · ${positionDisplay}`}
                   {level && ` · ${level}`}
                 </p>
               </div>
