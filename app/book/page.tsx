@@ -12,12 +12,21 @@ export const metadata: Metadata = {
     url: "https://www.knwn.to/book",
     siteName: "knwn.to",
     type: "website",
+    images: [
+      {
+        url: "/AI-and-Athletes-cover.png",
+        width: 1200,
+        height: 630,
+        alt: "AI and Athletes — What the Best Athletes Know About Themselves",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "AI and Athletes — knwn.to",
     description:
       "The practical guide to building your athlete.md and getting the most out of AI. Every athlete will use AI. The ones who win will be the ones it actually knows. $29, instant download.",
+    images: ["/AI-and-Athletes-cover.png"],
   },
 };
 
