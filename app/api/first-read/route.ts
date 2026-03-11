@@ -160,10 +160,10 @@ export async function POST(req: NextRequest) {
       .select('id')
       .single()
 
-    if (athleteError || !athleteRow) {
-      console.error('Supabase athlete upsert error:', athleteError)
-      // Non-fatal: continue so athlete still gets their email
-    }
+      if (athleteError || !athleteRow) {
+        console.error('Supabase athlete upsert error:', athleteError)
+        return NextResponse.json({ error: 'Supabase error', detail: athleteError }, { status: 500 })
+      }
 
     // Insert first_read_submission linked to athlete
     if (athleteRow?.id) {
