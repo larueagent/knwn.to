@@ -32,7 +32,7 @@ interface FirstReadPayload {
 export async function POST(req: NextRequest) {
   const body: FirstReadPayload = await req.json()
   const { firstName, email, birthdate, gender, sport, position, level, answers } = body
-  const age = birthdate ? Math.floor((Date.now() - new Date(birthdate).getTime()) / (1000 * 60 * 60 * 24 * 365.25)) : undefined
+  const age = birthdate ? Math.floor((Date.now() - new Date(birthdate).getTime()) / 31557600000) : 0
 
   if (!email || !email.includes('@')) {
     return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
@@ -111,12 +111,12 @@ export async function POST(req: NextRequest) {
     // Step 4: Generate LaRue JSON portrait (Claude Pass 1)
     // -----------------------------------------------------------------------
     const profile: AthleteProfile = {
-      age: age ?? 0,
+      age,
+      birthdate: birthdate ?? '',
       gender: gender ?? '',
       sport: sport ?? '',
       position: position ?? '',
       level: level ?? '',
-      birthdate: birthdate ?? '',
     }
     const portrait = await generatePortrait(firstName, profile, answers)
 
@@ -143,7 +143,6 @@ export async function POST(req: NextRequest) {
         {
           first_name: firstName,
           email,
-          date_of_birth: birthdate ?? null,
           gender: (() => {
             const genderMap: Record<string, string> = {
               'Male': 'male',
@@ -156,6 +155,7 @@ export async function POST(req: NextRequest) {
           sport: sport ?? '',
           position: position ?? null,
           level: level ?? null,
+          date_of_birth: birthdate ?? null,
           kit_subscriber_id: subscriberId ? String(subscriberId) : null,
         },
         { onConflict: 'email', ignoreDuplicates: false }
