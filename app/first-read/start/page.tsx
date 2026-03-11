@@ -76,7 +76,7 @@ const GENDER_OPTIONS = [
 
 const LEVEL_OPTIONS = [
   "Youth / Club (under 14)",
-  "Youth / Club (14–18)",
+  "Youth / Club (14\u201318)",
   "Middle School",
   "High School JV",
   "High School Varsity",
@@ -137,6 +137,8 @@ const POSITION_OPTIONS: Record<string, string[]> = {
   Other: ["Other"],
 };
 
+const STORAGE_KEY = "larue_first_read_draft";
+
 type Screen =
   | "door"
   | "entry"
@@ -144,8 +146,8 @@ type Screen =
   | { type: "question"; index: number }
   | { type: "beat"; index: number }
   | "act3-interstitial"
-  | "pause"
-  | "reveal";
+  | "submitting"
+  | "success";
 
 function ActDots({ currentIndex }: { currentIndex: number }) {
   const currentAct = QUESTIONS[currentIndex].act;
@@ -182,9 +184,43 @@ export default function StartPage() {
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [submitError, setSubmitError] = useState("");
 
+  // Load saved draft on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const draft = JSON.parse(saved);
+        if (draft.firstName) setFirstName(draft.firstName);
+        if (draft.email) setEmail(draft.email);
+        if (draft.birthMonth) setBirthMonth(draft.birthMonth);
+        if (draft.birthDay) setBirthDay(draft.birthDay);
+        if (draft.birthYear) setBirthYear(draft.birthYear);
+        if (draft.gender) setGender(draft.gender);
+        if (draft.sport) setSport(draft.sport);
+        if (draft.position) setPosition(draft.position);
+        if (draft.level) setLevel(draft.level);
+        if (draft.answers) setAnswers(draft.answers);
+      }
+    } catch (_) {}
+  }, []);
+
+  // Save draft on every change
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ firstName, email, birthMonth, birthDay, birthYear, gender, sport, position, level, answers })
+      );
+    } catch (_) {}
+  }, [firstName, email, birthMonth, birthDay, birthYear, gender, sport, position, level, answers]);
+
+  const clearDraft = () => {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+  };
+
   const goToQuestion = (index: number) => {
     setScreen({ type: "question", index });
-    setCurrentAnswer("");
+    setCurrentAnswer(answers[index] ?? "");
     setSubmitError("");
   };
 
@@ -199,15 +235,28 @@ export default function StartPage() {
     goToQuestion(0);
   };
 
+  const handleBack = () => {
+    if (typeof screen === "object" && screen.type === "question") {
+      const idx = screen.index;
+      if (idx === 0) {
+        setScreen("context");
+      } else {
+        goToQuestion(idx - 1);
+      }
+    }
+  };
+
   const handleAnswerContinue = () => {
     if (!currentAnswer.trim()) {
       setSubmitError("Please share your answer before continuing.");
       return;
     }
 
-    const newAnswers = [...answers, currentAnswer];
+    const currentIndex = typeof screen === "object" && screen.type === "question" ? screen.index : 0;
+    const newAnswers = [...answers];
+    newAnswers[currentIndex] = currentAnswer;
     setAnswers(newAnswers);
-    const nextIndex = newAnswers.length;
+    const nextIndex = currentIndex + 1;
 
     if (nextIndex < QUESTIONS.length) {
       if (nextIndex === 7) {
@@ -241,7 +290,8 @@ export default function StartPage() {
   }, [screen]);
 
   const handleSubmit = async (finalAnswers: string[]) => {
-    setScreen("pause");
+    setScreen("submitting");
+    setSubmitError("");
 
     try {
       const response = await fetch("/api/first-read", {
@@ -250,7 +300,10 @@ export default function StartPage() {
         body: JSON.stringify({
           firstName,
           email,
-          birthdate: (birthMonth && birthDay && birthYear) ? `${birthYear}-${birthMonth}-${birthDay}` : undefined,
+          birthdate:
+            birthMonth && birthDay && birthYear
+              ? `${birthYear}-${birthMonth}-${birthDay}`
+              : undefined,
           gender: gender || undefined,
           sport: sport || undefined,
           position: position || undefined,
@@ -263,9 +316,8 @@ export default function StartPage() {
         throw new Error("Failed to submit");
       }
 
-      setTimeout(() => {
-        setScreen("reveal");
-      }, 2800);
+      clearDraft();
+      setScreen("success");
     } catch (error) {
       setSubmitError("Something went wrong. Please try again.");
       setScreen({ type: "question", index: QUESTIONS.length - 1 });
@@ -324,7 +376,7 @@ export default function StartPage() {
           </button>
 
           <p className="mt-8 text-sm font-mono text-[#8A8178] tracking-wide">
-            Founding Athlete Session — March 2026
+            Founding Athlete Session \u2014 March 2026
           </p>
         </div>
       </div>
@@ -386,7 +438,7 @@ export default function StartPage() {
               type="submit"
               className="w-full px-6 py-3 bg-[#1A1714] text-white font-inter font-medium rounded-sm hover:bg-[#1A1714]/90 transition-colors"
             >
-              Next →
+              Next \u2192
             </button>
           </form>
         </div>
@@ -568,7 +620,14 @@ export default function StartPage() {
 
     return (
       <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center p-6">
-        <div className="max-w-2xl w-full">
+        <div className="w-full max-w-lg">
+          <button
+            onClick={handleBack}
+            className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase text-[#8A8178] hover:text-[#1A1714] transition-colors mb-10"
+          >
+            <span>\u2190</span> Back
+          </button>
+
           <ActDots currentIndex={questionIndex} />
 
           <div className="mb-8 text-center">
@@ -647,133 +706,41 @@ export default function StartPage() {
     );
   }
 
-  // PAUSE SCREEN
-  if (screen === "pause") {
+  // SUBMITTING SCREEN
+  if (screen === "submitting") {
     return (
-      <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center p-6">
-        <div className="text-center">
-          <div className="mb-6 flex justify-center">
-            <div className="h-3 w-3 rounded-full bg-[#B8821A] animate-pulse" />
-          </div>
-          <p className="text-xl font-inter italic text-[#8A8178]">
-            LaRue is reading...
-          </p>
-        </div>
-      </div>
+      <main className="min-h-screen bg-[#1A1714] flex flex-col items-center justify-center px-6 text-center">
+        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">LaRue \u00b7 First Read</p>
+        <p className="font-serif text-xl text-[#FAF7F2] italic opacity-80">
+          Reading your file...
+        </p>
+      </main>
     );
   }
 
-  // REVEAL SCREEN
-  if (screen === "reveal") {
-    const sportDisplay = sport || (answers[0]?.match(/\b(basketball|football|soccer|baseball|track|swimming|wrestling|volleyball|tennis|golf)\b/i)?.[0] || "your sport");
-
+  // SUCCESS SCREEN
+  if (screen === "success") {
     return (
-      <div className="min-h-screen bg-[#FAF8F3] p-6 py-16">
-        <div className="max-w-3xl mx-auto">
-          {/* Header */}
-          <div className="mb-12 text-center">
-            <Image
-              src="/knwn.to-logo-black.png"
-              alt="knwn.to"
-              width={100}
-              height={33}
-              className="opacity-90 mx-auto mb-8"
-            />
-            <h1 className="text-4xl md:text-5xl font-syne font-bold text-[#1A1714] mb-4">
-              You've been read.
-            </h1>
-            <p className="text-xl font-inter text-[#8A8178]">
-              Here's what LaRue saw.
-            </p>
-          </div>
-
-          {/* Section 1: Signal */}
-          <div className="mb-12 p-8 border border-[#E0D9CE] rounded-sm bg-white">
-            <h2 className="text-sm font-mono text-[#8A8178] uppercase tracking-wide mb-4">
-              Signal
-            </h2>
-            <p className="text-lg font-inter text-[#1A1714] leading-relaxed">
-              {getBestLine()} That's the line that stood out. Most athletes
-              don't talk like that. It means LaRue saw something.
-            </p>
-          </div>
-
-          {/* Section 2: First Read Card */}
-          <div className="mb-12 p-8 border border-[#E0D9CE] rounded-sm bg-gradient-to-br from-white to-[#FAF8F3]">
-            <div className="flex items-start justify-between mb-6">
-              <div>
-                <h2 className="text-2xl font-syne font-bold text-[#1A1714] mb-1">
-                  {firstName}
-                </h2>
-                <p className="text-[#8A8178] font-inter capitalize">
-                  {sportDisplay}
-                  {position && ` · ${position}`}
-                  {level && ` · ${level}`}
-                </p>
-              </div>
-              <div className="px-3 py-1 bg-[#B8821A]/10 text-[#B8821A] text-xs font-mono rounded-sm">
-                FIRST READ
-              </div>
-            </div>
-
-            <div className="border-t border-[#E0D9CE] pt-6">
-              <p className="text-sm font-inter text-[#8A8178] mb-4">
-                This is your First Read. It's not complete — it's a starting
-                point. LaRue will build on this as he learns more.
-              </p>
-              <p className="text-sm font-inter text-[#1A1714]">
-                Session completed: {new Date().toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </p>
-            </div>
-          </div>
-
-          {/* Section 3: What Happens Next */}
-          <div className="p-8 border border-[#E0D9CE] rounded-sm bg-white">
-            <h2 className="text-sm font-mono text-[#8A8178] uppercase tracking-wide mb-4">
-              What Happens Next
-            </h2>
-            <div className="space-y-4 font-inter text-[#1A1714]">
-              <p>
-                <strong className="font-semibold">1. LaRue processes your answers.</strong>
-                <br />
-                <span className="text-[#8A8178]">
-                  He'll turn what you shared into a structured read — a profile
-                  that captures how you think, what drives you, and where you're
-                  going.
-                </span>
-              </p>
-              <p>
-                <strong className="font-semibold">2. You'll get your full First Read via email.</strong>
-                <br />
-                <span className="text-[#8A8178]">
-                  Within 48 hours, you'll receive a detailed breakdown — not
-                  generic insights, but specific observations about you.
-                </span>
-              </p>
-              <p>
-                <strong className="font-semibold">3. This is just the beginning.</strong>
-                <br />
-                <span className="text-[#8A8178]">
-                  The First Read is the foundation. From here, LaRue can help
-                  you track progress, prepare for competition, and build the
-                  mental edge that separates good from great.
-                </span>
-              </p>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="mt-12 text-center">
-            <p className="text-sm font-mono text-[#8A8178] tracking-wide">
-              Thank you for trusting LaRue with your story.
-            </p>
-          </div>
+      <main className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center px-6">
+        <div className="w-full max-w-sm text-center">
+          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">LaRue \u00b7 First Read</p>
+          <h2 className="font-serif text-3xl text-[#1A1714] leading-tight mb-6">
+            Your file is ready.
+          </h2>
+          <p className="text-[#6B6560] text-sm leading-relaxed mb-3">
+            Check your email \u2014 your LaRue file is on its way to <span className="text-[#1A1714] font-medium">{email}</span>.
+          </p>
+          <p className="text-[#8A8178] text-xs leading-relaxed mb-10">
+            It may take a few minutes to arrive. Check your spam folder if you don't see it.
+          </p>
+          <a
+            href="https://knwn.to"
+            className="inline-block font-mono text-xs tracking-widest uppercase text-[#8A8178] hover:text-[#1A1714] transition-colors border-b border-[#E0D9CE] pb-0.5"
+          >
+            Return to knwn.to
+          </a>
         </div>
-      </div>
+      </main>
     );
   }
 
