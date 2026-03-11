@@ -141,7 +141,15 @@ export async function POST(req: NextRequest) {
         {
           first_name: firstName,
           email,
-          gender: gender ?? null,
+          gender: (() => {
+            const genderMap: Record<string, string> = {
+              'Male': 'male',
+              'Female': 'female',
+              'Non-binary': 'non_binary',
+              'Prefer not to say': 'prefer_not_to_say',
+            }
+            return gender ? (genderMap[gender] ?? null) : null
+          })(),
           sport: sport ?? '',
           position: position ?? null,
           level: level ?? null,
