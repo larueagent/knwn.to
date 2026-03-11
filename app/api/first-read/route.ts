@@ -21,7 +21,7 @@ const INTERNAL_EMAIL = 'robert@mettle.coach'
 interface FirstReadPayload {
   firstName: string
   email: string
-  age?: number
+  birthdate?: string
   gender?: string
   sport?: string
   position?: string
@@ -31,7 +31,8 @@ interface FirstReadPayload {
 
 export async function POST(req: NextRequest) {
   const body: FirstReadPayload = await req.json()
-  const { firstName, email, age, gender, sport, position, level, answers } = body
+  const { firstName, email, birthdate, gender, sport, position, level, answers } = body
+  const age = birthdate ? Math.floor((Date.now() - new Date(birthdate).getTime()) / (1000 * 60 * 60 * 24 * 365.25)) : undefined
 
   if (!email || !email.includes('@')) {
     return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
@@ -115,6 +116,7 @@ export async function POST(req: NextRequest) {
       sport: sport ?? '',
       position: position ?? '',
       level: level ?? '',
+      birthdate: birthdate ?? '',
     }
     const portrait = await generatePortrait(firstName, profile, answers)
 
@@ -141,6 +143,7 @@ export async function POST(req: NextRequest) {
         {
           first_name: firstName,
           email,
+          date_of_birth: birthdate ?? null,
           gender: (() => {
             const genderMap: Record<string, string> = {
               'Male': 'male',
@@ -152,24 +155,7 @@ export async function POST(req: NextRequest) {
           })(),
           sport: sport ?? '',
           position: position ?? null,
-          level: (() => {
-            const levelMap: Record<string, string> = {
-              'Youth / Club (under 14)': 'youth_club',
-              'Youth / Club (1418)': 'youth_club',
-              'Middle School': 'middle_school',
-              'High School JV': 'high_school_jv',
-              'High School Varsity': 'high_school_varsity',
-              'Prep / Post-Grad': 'prep_post_grad',
-              'College / NCAA D1': 'college_d1',
-              'College / NCAA D2': 'college_d2',
-              'College / NCAA D3': 'college_d3',
-              'College / NAIA / JUCO': 'college_naia_juco',
-              'Semi-Pro': 'semi_pro',
-              'Professional': 'professional',
-              'Olympic / National Team': 'olympic_national',
-            }
-            return level ? (levelMap[level] ?? null) : null
-          })(),
+          level: level ?? null,
           kit_subscriber_id: subscriberId ? String(subscriberId) : null,
         },
         { onConflict: 'email', ignoreDuplicates: false }
@@ -332,7 +318,7 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
           <!-- Header -->
           <tr>
             <td style="padding:0 0 40px 0; border-bottom:1px solid #e0d9ce;">
-              <p style="margin:0 0 16px 0; font-family:'Courier New',Courier,monospace; font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#b8821a;">LARUE \u00b7 FIRST READ</p>
+              <p style="margin:0 0 16px 0; font-family:'Courier New',Courier,monospace; font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#b8821a;">LARUE · FIRST READ</p>
               <h1 style="margin:0; font-family:Georgia,serif; font-size:48px; font-weight:700; line-height:1; color:#1a1714;">${firstName}</h1>
             </td>
           </tr>
@@ -340,7 +326,7 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
           <!-- Intro -->
           <tr>
             <td style="padding:32px 0;">
-              <p style="margin:0; font-family:Georgia,serif; font-size:16px; line-height:26px; color:#1a1714;">Your LaRue file is ready. Everything below is grounded in what you actually said \u2014 not a template, not a generic profile. Read the <span style="color:#b8821a;">Where to Start</span> section first if you're short on time.</p>
+              <p style="margin:0; font-family:Georgia,serif; font-size:16px; line-height:26px; color:#1a1714;">Your LaRue file is ready. Everything below is grounded in what you actually said — not a template, not a generic profile. Read the <span style="color:#b8821a;">Where to Start</span> section first if you're short on time.</p>
             </td>
           </tr>
 
