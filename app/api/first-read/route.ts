@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generatePortrait, generateAthleteMd, QuestionAnswer } from '@/lib/generate-first-read'
 import type { LaRuePortrait } from '@/lib/generate-first-read'
+import { AthleteProfile } from '@/lib/generate-first-read'
 
 const KIT_API = 'https://api.kit.com/v4'
 const SENDGRID_API = 'https://api.sendgrid.com/v3/mail/send'
