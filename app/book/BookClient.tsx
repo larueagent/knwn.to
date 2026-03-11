@@ -86,11 +86,11 @@ export default function BookClient() {
         <p className="font-inter text-base text-[#8A8178] max-w-lg mb-10">Every young athlete will use AI. The ones who get the most out of it won&apos;t have the best tools — they&apos;ll be the ones with an AI that actually knows them. This book shows you how to get there. It starts with one document: your athlete.md.</p>
         <div className="mb-10">
           <Image
-            src="/AI-and-Athletes-cover-image.png"
+            src="/AI-and-Athletes-ebook-cover.png"
             alt="AI and Athletes book cover"
             width={320}
             height={420}
-            className="rounded shadow-md mx-auto"
+            className="mx-auto"
             priority
           />
         </div>
