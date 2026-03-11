@@ -1,7 +1,16 @@
+// app/api/first-read/route.ts
+// LaRue First Read submission handler
+// 1. Validates input
+// 2. Adds athlete to Kit (subscriber + tag)
+// 3. Generates LaRue JSON portrait via Claude (v2.1)
+// 4. Renders athlete.md via Claude (v2.1.1)
+// 5. Upserts athlete + inserts first_read_submission to Supabase
+// 6. Sends athlete email via SendGrid with athlete.md attached
+// 7. Sends internal notification to robert@mettle.coach via SendGrid
+
 import { NextRequest, NextResponse } from 'next/server'
 import { generatePortrait, generateAthleteMd, QuestionAnswer } from '@/lib/generate-first-read'
-import type { LaRuePortrait } from '@/lib/generate-first-read'
-import { AthleteProfile } from '@/lib/generate-first-read'
+import { supabase } from '@/lib/supabase'
 
 const KIT_API = 'https://api.kit.com/v4'
 const SENDGRID_API = 'https://api.sendgrid.com/v3/mail/send'
@@ -12,11 +21,11 @@ const INTERNAL_EMAIL = 'robert@mettle.coach'
 interface FirstReadPayload {
   firstName: string
   email: string
-  age: number
-  gender: string
-  sport: string
-  position: string
-  level: string
+  age?: number
+  gender?: string
+  sport?: string
+  position?: string
+  level?: string
   answers: QuestionAnswer[]
 }
 
@@ -38,11 +47,17 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    // -----------------------------------------------------------------------
     // Step 1: Add subscriber to Kit
+    // -----------------------------------------------------------------------
     const subRes = await fetch(`${KIT_API}/subscribers`, {
       method: 'POST',
       headers: kitHeaders,
-      body: JSON.stringify({ email_address: email, first_name: firstName, state: 'active' }),
+      body: JSON.stringify({
+        email_address: email,
+        first_name: firstName,
+        state: 'active',
+      }),
     })
 
     if (!subRes.ok) {
@@ -53,7 +68,9 @@ export async function POST(req: NextRequest) {
     const subData = await subRes.json()
     const subscriberId = subData?.subscriber?.id
 
-    // Step 2: Apply tag
+    // -----------------------------------------------------------------------
+    // Step 2: Apply "first-read-complete" tag
+    // -----------------------------------------------------------------------
     const tagRes = await fetch(`${KIT_API}/tags`, {
       method: 'POST',
       headers: kitHeaders,
@@ -72,14 +89,12 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Step 3: Store custom fields
+    // -----------------------------------------------------------------------
+    // Step 3: Store key answers as Kit custom fields
+    // -----------------------------------------------------------------------
     if (subscriberId) {
       const fields: Record<string, string> = {
-        first_read_sport: sport,
-        first_read_position: position,
-        first_read_level: level,
-        first_read_age: String(age),
-        first_read_gender: gender,
+        first_read_sport: answers[0]?.answer?.slice(0, 255) || '',
         first_read_gap: answers[5]?.answer?.slice(0, 255) || '',
         first_read_chapter_title: answers[9]?.answer?.slice(0, 255) || '',
         first_read_submitted_at: new Date().toISOString(),
@@ -91,18 +106,79 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // Step 4: Generate athlete.md via Claude
-    const profile = { age, gender, sport, position, level }
-    const portrait = await generatePortrait(firstName, profile, answers)
-    const athleteMdContent = await generateAthleteMd(firstName, portrait)
-    const translatedPortrait = translatePortrait(portrait)
+    // -----------------------------------------------------------------------
+    // Step 4: Generate LaRue JSON portrait (Claude Pass 1)
+    // -----------------------------------------------------------------------
+    const portrait = await generatePortrait(firstName, answers)
 
+    // -----------------------------------------------------------------------
+    // Step 5: Render athlete.md (Claude Pass 2)
+    // -----------------------------------------------------------------------
+    const athleteMdContent = await generateAthleteMd(firstName, portrait)
+
+    // Build the .md filename per spec: {firstName}-athlete-{YYYY-MM-DD}.md
     const dateStr = new Date().toISOString().split('T')[0]
     const mdFilename = `${firstName.toLowerCase()}-athlete-${dateStr}.md`
+
+    // Base64-encode the .md content for SendGrid attachment
     const mdBase64 = Buffer.from(athleteMdContent, 'utf-8').toString('base64')
 
+    // -----------------------------------------------------------------------
+    // Step 5.5: Upsert athlete + insert first_read_submission to Supabase
+    // -----------------------------------------------------------------------
 
-    // Step 5: Email athlete with attachment
+    // Upsert athlete by email — creates on first read, updates kit_subscriber_id on repeat
+    const { data: athleteRow, error: athleteError } = await supabase
+      .from('athletes')
+      .upsert(
+        {
+          first_name: firstName,
+          email,
+          gender: gender ?? null,
+          sport: sport ?? '',
+          position: position ?? null,
+          level: level ?? null,
+          kit_subscriber_id: subscriberId ? String(subscriberId) : null,
+        },
+        { onConflict: 'email', ignoreDuplicates: false }
+      )
+      .select('id')
+      .single()
+
+    if (athleteError || !athleteRow) {
+      console.error('Supabase athlete upsert error:', athleteError)
+      // Non-fatal: continue so athlete still gets their email
+    }
+
+    // Insert first_read_submission linked to athlete
+    if (athleteRow?.id) {
+      const { error: submissionError } = await supabase
+        .from('first_read_submissions')
+        .insert({
+          athlete_id: athleteRow.id,
+          raw_answers: answers,
+          portrait_json: portrait,
+          athlete_md_text: athleteMdContent,
+          inferred_tier: portrait.inferredTier ?? null,
+          dominant_quality: portrait.dominantQuality ?? null,
+          development_edge: portrait.developmentEdge ?? null,
+          themes: portrait.themes ?? [],
+          kit_tagged_at: subscriberId ? new Date().toISOString() : null,
+          source: 'knwn.to',
+        })
+
+      if (submissionError) {
+        console.error('Supabase submission insert error:', submissionError)
+        // Non-fatal: continue so athlete still gets their email
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // Step 6: Send athlete confirmation email with athlete.md attached
+    // -----------------------------------------------------------------------
+    const translatedPortrait = translatePortrait(portrait)
+    const athleteEmailBody = buildAthleteEmail(firstName, translatedPortrait)
+
     await fetch(SENDGRID_API, {
       method: 'POST',
       headers: {
@@ -111,19 +187,25 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         personalizations: [{ to: [{ email, name: firstName }] }],
-        from: { email: 'larue@knwn.to', name: 'LaRue' },
+        from: { email: FROM_EMAIL, name: FROM_NAME },
         subject: `Your LaRue file is ready, ${firstName}`,
-        content: [{ type: 'text/html', value: buildAthleteEmail(firstName, translatedPortrait, profile) }],
-        attachments: [{
-          content: mdBase64,
-          filename: mdFilename,
-          type: 'text/plain',
-          disposition: 'attachment',
-        }],
+        content: [{ type: 'text/html', value: athleteEmailBody }],
+        attachments: [
+          {
+            content: mdBase64,
+            filename: mdFilename,
+            type: 'text/plain',
+            disposition: 'attachment',
+          },
+        ],
       }),
     })
 
-    // Step 6: Internal notification
+    // -----------------------------------------------------------------------
+    // Step 7: Send internal notification with full answers + portrait JSON
+    // -----------------------------------------------------------------------
+    const notificationBody = buildNotificationEmail(firstName, email, answers, translatedPortrait)
+
     await fetch(SENDGRID_API, {
       method: 'POST',
       headers: {
@@ -132,11 +214,21 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         personalizations: [{ to: [{ email: INTERNAL_EMAIL }] }],
-        from: { email: 'larue@knwn.to', name: 'LaRue' },
+        from: { email: FROM_EMAIL, name: FROM_NAME },
         subject: `First Read: ${firstName} (${email})`,
-        content: [{ type: 'text/html', value: buildNotificationEmail(firstName, email, answers, portrait, profile) }],
+        content: [{ type: 'text/html', value: notificationBody }],
       }),
     })
+
+    // Update email_sent_at on the submission now that the email was sent
+    if (athleteRow?.id) {
+      await supabase
+        .from('first_read_submissions')
+        .update({ email_sent_at: new Date().toISOString() })
+        .eq('athlete_id', athleteRow.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+    }
 
     return NextResponse.json({ success: true })
   } catch (err) {
@@ -149,73 +241,10 @@ export async function POST(req: NextRequest) {
 }
 
 // ---------------------------------------------------------------------------
-// Plain-language translation
+// Email builders
 // ---------------------------------------------------------------------------
-const TERM_MAP: Array<[RegExp, string]> = [
-  [new RegExp('somatic carryover', 'gi'), 'carrying mistakes in your body'],
-  [new RegExp('somatic', 'gi'), 'physical'],
-  [new RegExp('approval-driven performance', 'gi'), 'playing for others'],
-  [new RegExp('approval-driven', 'gi'), 'playing for others'],
-  [new RegExp('approval-seeking', 'gi'), 'playing for someone else'],
-  [new RegExp('hypervigilance', 'gi'), 'being on high alert'],
-  [new RegExp('hypervigilant', 'gi'), 'on high alert'],
-  [new RegExp('psychophysiological', 'gi'), 'mental and physical'],
-  [new RegExp('physiological', 'gi'), 'physical'],
-  [new RegExp('self-regulation', 'gi'), 'self-coaching'],
-  [new RegExp('self-regulate', 'gi'), 'self-coach'],
-  [new RegExp('rumination', 'gi'), 'replaying mistakes'],
-  [new RegExp('metacognitive', 'gi'), 'self-aware'],
-  [new RegExp('cognitive', 'gi'), 'mental'],
-  [new RegExp('arousal regulation', 'gi'), 'managing your intensity'],
-  [new RegExp('arousal', 'gi'), 'intensity'],
-  [new RegExp('autonomic', 'gi'), 'automatic'],
-  [new RegExp('parasympathetic', 'gi'), 'calm-down'],
-  [new RegExp('sympathetic nervous', 'gi'), 'stress response'],
-  [new RegExp('maladaptive', 'gi'), 'unhelpful'],
-  [new RegExp('avoidant', 'gi'), 'avoiding'],
-  [new RegExp('dysregulated', 'gi'), 'unraveling'],
-  [new RegExp('dysregulation', 'gi'), 'when things start to unravel'],
-  [new RegExp('schema', 'gi'), 'pattern'],
-  [new RegExp('pathology', 'gi'), 'challenge'],
-  [new RegExp('psychological flexibility', 'gi'), 'adaptability'],
-  [new RegExp('energy optimization', 'gi'), 'managing your intensity'],
-  [new RegExp('mental strength', 'gi'), 'belief and confidence'],
-  [new RegExp('immersion', 'gi'), 'full engagement'],
-  [new RegExp('resilience', 'gi'), 'bouncing back'],
-]
 
-function translateTerms(text: string): string {
-  return TERM_MAP.reduce((str, [pattern, replacement]) => str.replace(pattern, replacement), text)
-}
-
-function translatePortrait(portrait: LaRuePortrait): LaRuePortrait {
-  const t = translateTerms
-  return {
-    ...portrait,
-    identity: portrait.identity.map(t),
-    stateUnlocks: t(portrait.stateUnlocks),
-    pressureState: t(portrait.pressureState),
-    pressurePatterns: portrait.pressurePatterns.map(t),
-    relationshipGets: t(portrait.relationshipGets),
-    relationshipDoesnt: t(portrait.relationshipDoesnt),
-    coachQuote: t(portrait.coachQuote),
-    directionWant: t(portrait.directionWant),
-    directionConsistent: t(portrait.directionConsistent),
-    themes: portrait.themes.map(t),
-    nextStep: {
-      ...portrait.nextStep,
-      primaryFocus: t(portrait.nextStep.primaryFocus),
-      approachSignal: t(portrait.nextStep.approachSignal),
-    },
-    readinessSignals: {
-      ...portrait.readinessSignals,
-      dominantQuality: t(portrait.readinessSignals.dominantQuality),
-      developmentEdge: t(portrait.readinessSignals.developmentEdge),
-    },
-  }
-}
-
-function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: AthleteProfile): string {
+function buildAthleteEmail(firstName: string, portrait: LaRuePortrait): string {
   const sections = [
     {
       label: 'HOW I COMPETE AT MY BEST',
@@ -235,7 +264,7 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
     {
       label: 'WHAT COACHES NEED TO KNOW',
       content: `<p style="margin:0 0 12px 0;">${portrait.relationshipGets}</p>` +
-        `<p style="margin:0; padding:12px 16px; border-left:3px solid #b8821a; color:#8a8178; font-style:italic;">"${portrait.coachQuote}"</p>`,
+        `<p style="margin:0; padding:12px 16px; border-left:3px solid #b8821a; color:#8a8178; font-style:italic;">&ldquo;${portrait.coachQuote}&rdquo;</p>`,
     },
     {
       label: "WHAT I'M WORKING TOWARD",
@@ -251,7 +280,7 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
   const sectionsHtml = sections.map(s => `
     <tr>
       <td style="padding: 0 0 32px 0;">
-        <p style="margin:0 0 8px 0; font-family:'Courier New',Courier,monospace; font-size:12px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#b8821a;">${s.label}</p>
+        <p style="margin:0 0 8px 0; font-family:'Courier New',Courier,monospace; font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#b8821a;">${s.label}</p>
         <div style="font-family:Georgia,serif; font-size:16px; line-height:26px; color:#1a1714;">${s.content}</div>
       </td>
     </tr>`).join('')
@@ -274,7 +303,6 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
             <td style="padding:0 0 40px 0; border-bottom:1px solid #e0d9ce;">
               <p style="margin:0 0 16px 0; font-family:'Courier New',Courier,monospace; font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#b8821a;">LARUE · FIRST READ</p>
               <h1 style="margin:0; font-family:Georgia,serif; font-size:48px; font-weight:700; line-height:1; color:#1a1714;">${firstName}</h1>
-              <p style="margin:0; font-family:'Courier New',Courier,monospace; font-size:11px; letter-spacing:1.2px; color:#8a8178; text-transform:uppercase;">${profile.sport} · ${profile.position} · ${profile.level} · Age ${profile.age}</p>
             </td>
           </tr>
 
@@ -321,12 +349,12 @@ function buildNotificationEmail(
   firstName: string,
   email: string,
   answers: QuestionAnswer[],
-  portrait: LaRuePortrait,
-  profile: AthleteProfile
+  portrait: LaRuePortrait
 ): string {
   const answersHtml = answers
-    .map(({ question, answer }, i) =>
-      `<p><strong>Q${i + 1}: ${question}</strong></p><p>${answer.replace(/\n/g, '<br />')}</p><br />`
+    .map(
+      ({ question, answer }, i) =>
+        `<p><strong>Q${i + 1}: ${question}</strong></p><p>${answer.replace(/\n/g, '<br />')}</p><br />`
     )
     .join('\n')
 
@@ -335,8 +363,6 @@ function buildNotificationEmail(
   <h2>First Read Submission</h2>
   <p><strong>Name:</strong> ${firstName}</p>
   <p><strong>Email:</strong> ${email}</p>
-  <p><strong>Sport:</strong> ${profile.sport} · ${profile.position} · ${profile.level}</p>
-  <p><strong>Age:</strong> ${profile.age} &nbsp;&nbsp; <strong>Gender:</strong> ${profile.gender}</p>
   <p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
   <hr />
   <h3>Answers</h3>
@@ -346,3 +372,6 @@ function buildNotificationEmail(
   <pre style="background:#f5f5f5;padding:16px;overflow-x:auto;">${JSON.stringify(portrait, null, 2)}</pre>
 </div>`.trim()
 }
+
+// Re-export LaRuePortrait so the notification builder has the type in scope
+import type { LaRuePortrait } from '@/lib/generate-first-read'
