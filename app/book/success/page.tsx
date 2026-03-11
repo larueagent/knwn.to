@@ -1,7 +1,22 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
+import { usePostHog } from "posthog-js/react";
 
 export default function BookSuccessPage() {
+  const posthog = usePostHog();
+
+  useEffect(() => {
+    posthog?.capture("purchase_completed", {
+      product: "book-ai-and-athletes",
+      product_name: "AI and Athletes",
+      price: 29,
+      currency: "usd",
+    });
+  }, [posthog]);
+
   return (
     <main className="min-h-screen bg-parchment flex flex-col">
       <Nav />
