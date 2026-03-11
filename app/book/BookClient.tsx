@@ -24,7 +24,10 @@ function BuyButton() {
         {loading ? "Redirecting..." : "Buy Now — $29"}
       </button>
       {error && <p className="font-inter text-sm text-red-500">{error}</p>}
-      <p className="font-inter text-xs text-[#8A8178]">Instant download. Secure checkout via Stripe.</p>
+      <div className="mt-4 space-y-2 text-sm text-center" style={{ color: '#8a8a8a' }}>
+        <p>✓ This edition grows with the research. Buyers get every update free.</p>
+        <p>Instant download. Secure checkout via Stripe.</p>
+      </div>
     </div>
   );
 }
