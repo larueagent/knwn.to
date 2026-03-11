@@ -379,7 +379,7 @@ export default function StartPage() {
           </button>
 
           <p className="mt-8 text-sm font-mono text-[#8A8178] tracking-wide">
-            Founding Athlete Session \u2014 March 2026
+            Founding Athlete Session - March 2026
           </p>
         </div>
       </div>
