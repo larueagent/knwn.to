@@ -21,7 +21,7 @@ const INTERNAL_EMAIL = 'robert@mettle.coach'
 interface FirstReadPayload {
   firstName: string
   email: string
-  birthdate?: string
+  age?: number
   gender?: string
   sport?: string
   position?: string
@@ -31,8 +31,7 @@ interface FirstReadPayload {
 
 export async function POST(req: NextRequest) {
   const body: FirstReadPayload = await req.json()
-  const { firstName, email, birthdate, gender, sport, position, level, answers } = body
-  const age = birthdate ? Math.floor((Date.now() - new Date(birthdate).getTime()) / 31557600000) : 0
+  const { firstName, email, age, gender, sport, position, level, answers } = body
 
   if (!email || !email.includes('@')) {
     return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
@@ -111,8 +110,7 @@ export async function POST(req: NextRequest) {
     // Step 4: Generate LaRue JSON portrait (Claude Pass 1)
     // -----------------------------------------------------------------------
     const profile: AthleteProfile = {
-      age,
-      birthdate: birthdate ?? '',
+      age: age ?? 0,
       gender: gender ?? '',
       sport: sport ?? '',
       position: position ?? '',
@@ -155,7 +153,6 @@ export async function POST(req: NextRequest) {
           sport: sport ?? '',
           position: position ?? null,
           level: level ?? null,
-          date_of_birth: birthdate ?? null,
           kit_subscriber_id: subscriberId ? String(subscriberId) : null,
         },
         { onConflict: 'email', ignoreDuplicates: false }
@@ -262,6 +259,7 @@ export async function POST(req: NextRequest) {
 // ---------------------------------------------------------------------------
 
 function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: AthleteProfile): string {
+  const { sport, position, age } = profile
   const sections = [
     {
       label: 'HOW I COMPETE AT MY BEST',
@@ -318,15 +316,16 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
           <!-- Header -->
           <tr>
             <td style="padding:0 0 40px 0; border-bottom:1px solid #e0d9ce;">
-              <p style="margin:0 0 16px 0; font-family:'Courier New',Courier,monospace; font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#b8821a;">LARUE · FIRST READ</p>
+              <p style="margin:0 0 16px 0; font-family:'Courier New',Courier,monospace; font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#b8821a;">LARUE \u00b7 FIRST READ</p>
               <h1 style="margin:0; font-family:Georgia,serif; font-size:48px; font-weight:700; line-height:1; color:#1a1714;">${firstName}</h1>
+              <div style="font-size:14px;letter-spacing:0.08em;color:#666;margin-top:4px;">${position} \u00b7 ${sport} \u00b7 ${age}</div>
             </td>
           </tr>
 
           <!-- Intro -->
           <tr>
             <td style="padding:32px 0;">
-              <p style="margin:0; font-family:Georgia,serif; font-size:16px; line-height:26px; color:#1a1714;">Your LaRue file is ready. Everything below is grounded in what you actually said — not a template, not a generic profile. Read the <span style="color:#b8821a;">Where to Start</span> section first if you're short on time.</p>
+              <p style="margin:0; font-family:Georgia,serif; font-size:16px; line-height:26px; color:#1a1714;">Your LaRue file is ready. Everything below is grounded in what you actually said \u2014 not a template, not a generic profile. Read the <span style="color:#b8821a;">Where to Start</span> section first if you're short on time.</p>
             </td>
           </tr>
 
