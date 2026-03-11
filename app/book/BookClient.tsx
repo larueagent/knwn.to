@@ -88,7 +88,7 @@ export default function BookClient() {
           <Image
             src="/AI-and-Athletes-ebook-cover.png"
             alt="AI and Athletes book cover"
-            width={320}
+            width={360}
             height={420}
             className="mx-auto"
             priority
