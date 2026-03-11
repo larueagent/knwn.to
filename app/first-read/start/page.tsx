@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { MicButton } from "@/components/mic-button";
 
+const STORAGE_KEY = 'larue_first_read_draft'
+
 const QUESTIONS = [
   {
     text: "{firstName}, what does it feel like when you're in flow?",
@@ -136,8 +138,6 @@ const POSITION_OPTIONS: Record<string, string[]> = {
   Wrestling: ["Freestyle", "Greco-Roman", "Folkstyle"],
   Other: ["Other"],
 };
-
-const STORAGE_KEY = "larue_first_read_draft";
 
 type Screen =
   | "door"
@@ -308,7 +308,10 @@ export default function StartPage() {
           sport: sport || undefined,
           position: position || undefined,
           level: level || undefined,
-          answers: finalAnswers,
+          answers: finalAnswers.map((answer, i) => ({
+            question: QUESTIONS[i].text.replace("{firstName}", firstName),
+            answer,
+          })),
         }),
       });
 

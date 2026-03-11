@@ -9,7 +9,7 @@
 // 7. Sends internal notification to robert@mettle.coach via SendGrid
 
 import { NextRequest, NextResponse } from 'next/server'
-import { generatePortrait, generateAthleteMd, QuestionAnswer } from '@/lib/generate-first-read'
+import { generatePortrait, generateAthleteMd, QuestionAnswer, AthleteProfile, LaRuePortrait } from '@/lib/generate-first-read'
 import { supabase } from '@/lib/supabase'
 
 const KIT_API = 'https://api.kit.com/v4'
@@ -109,7 +109,14 @@ export async function POST(req: NextRequest) {
     // -----------------------------------------------------------------------
     // Step 4: Generate LaRue JSON portrait (Claude Pass 1)
     // -----------------------------------------------------------------------
-    const portrait = await generatePortrait(firstName, answers)
+    const profile: AthleteProfile = {
+      age: age ?? 0,
+      gender: gender ?? '',
+      sport: sport ?? '',
+      position: position ?? '',
+      level: level ?? '',
+    }
+    const portrait = await generatePortrait(firstName, profile, answers)
 
     // -----------------------------------------------------------------------
     // Step 5: Render athlete.md (Claude Pass 2)
@@ -159,9 +166,9 @@ export async function POST(req: NextRequest) {
           raw_answers: answers,
           portrait_json: portrait,
           athlete_md_text: athleteMdContent,
-          inferred_tier: portrait.inferredTier ?? null,
-          dominant_quality: portrait.dominantQuality ?? null,
-          development_edge: portrait.developmentEdge ?? null,
+          inferred_tier: portrait.readinessSignals.inferredTier ?? null,
+          dominant_quality: portrait.readinessSignals.dominantQuality ?? null,
+          development_edge: portrait.readinessSignals.developmentEdge ?? null,
           themes: portrait.themes ?? [],
           kit_tagged_at: subscriberId ? new Date().toISOString() : null,
           source: 'knwn.to',
@@ -176,8 +183,7 @@ export async function POST(req: NextRequest) {
     // -----------------------------------------------------------------------
     // Step 6: Send athlete confirmation email with athlete.md attached
     // -----------------------------------------------------------------------
-    const translatedPortrait = translatePortrait(portrait)
-    const athleteEmailBody = buildAthleteEmail(firstName, translatedPortrait)
+    const athleteEmailBody = buildAthleteEmail(firstName, portrait, profile)
 
     await fetch(SENDGRID_API, {
       method: 'POST',
@@ -204,7 +210,7 @@ export async function POST(req: NextRequest) {
     // -----------------------------------------------------------------------
     // Step 7: Send internal notification with full answers + portrait JSON
     // -----------------------------------------------------------------------
-    const notificationBody = buildNotificationEmail(firstName, email, answers, translatedPortrait)
+    const notificationBody = buildNotificationEmail(firstName, email, answers, portrait)
 
     await fetch(SENDGRID_API, {
       method: 'POST',
@@ -244,7 +250,7 @@ export async function POST(req: NextRequest) {
 // Email builders
 // ---------------------------------------------------------------------------
 
-function buildAthleteEmail(firstName: string, portrait: LaRuePortrait): string {
+function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: AthleteProfile): string {
   const sections = [
     {
       label: 'HOW I COMPETE AT MY BEST',
@@ -374,4 +380,3 @@ function buildNotificationEmail(
 }
 
 // Re-export LaRuePortrait so the notification builder has the type in scope
-import type { LaRuePortrait } from '@/lib/generate-first-read'
