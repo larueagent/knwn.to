@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 
@@ -80,8 +81,19 @@ export default function BookClient() {
       <section className="flex flex-col items-center text-center px-6 pt-20 pb-16">
         <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-6">For athletes serious about what comes next</p>
         <h1 className="font-syne font-bold text-4xl sm:text-5xl text-[#1A1714] mb-4 leading-tight">AI and Athletes</h1>
+        <p className="font-inter text-base text-[#8A8178] mb-2 italic">What the Best Athletes Know About Themselves</p>
         <p className="font-inter text-lg text-[#4A443E] max-w-xl mb-3">AI doesn&apos;t know you. Yet.</p>
         <p className="font-inter text-base text-[#8A8178] max-w-lg mb-10">Every young athlete will use AI. The ones who get the most out of it won&apos;t have the best tools — they&apos;ll be the ones with an AI that actually knows them. This book shows you how to get there. It starts with one document: your athlete.md.</p>
+        <div className="mb-10">
+          <Image
+            src="/AI-and-Athletes-cover-image.png"
+            alt="AI and Athletes book cover"
+            width={320}
+            height={420}
+            className="rounded shadow-md mx-auto"
+            priority
+          />
+        </div>
         <BuyButton />
       </section>
 
@@ -110,7 +122,7 @@ export default function BookClient() {
 
       <Divider />
 
-      {/* The core idea — above chapters */}
+      {/* The core idea */}
       <section className="flex flex-col items-center px-6 py-14">
         <div className="max-w-2xl w-full">
           <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">The core idea</p>
@@ -131,35 +143,16 @@ export default function BookClient() {
       {/* About */}
       <section className="flex flex-col items-center px-6 py-14">
         <div className="max-w-2xl w-full">
-          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-10 text-center">
-            About
-          </p>
+          <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-10 text-center">About</p>
           <div className="space-y-10">
             <div>
-              <h2 className="font-syne font-bold text-xl text-[#1A1714] mb-3">
-                LaRue
-              </h2>
-              <p className="font-inter text-[#4A443E] leading-relaxed mb-3">
-                LaRue is an AI agent built specifically for competitive athletes — not a
-                general-purpose chatbot adapted for sports, but a system built from the
-                ground up around how athletes actually compete.
-              </p>
-              <p className="font-inter text-[#4A443E] leading-relaxed">
-                <em>AI and Athletes</em> is the practical guide to everything LaRue is
-                built on: a step-by-step system for making AI genuinely useful to
-                athletes at every level.
-              </p>
+              <h2 className="font-syne font-bold text-xl text-[#1A1714] mb-3">LaRue</h2>
+              <p className="font-inter text-[#4A443E] leading-relaxed mb-3">LaRue is an AI agent built specifically for competitive athletes — not a general-purpose chatbot adapted for sports, but a system built from the ground up around how athletes actually compete.</p>
+              <p className="font-inter text-[#4A443E] leading-relaxed"><em>AI and Athletes</em> is the practical guide to everything LaRue is built on: a step-by-step system for making AI genuinely useful to athletes at every level.</p>
             </div>
             <div>
-              <h2 className="font-syne font-bold text-xl text-[#1A1714] mb-3">
-                Robert Yang
-              </h2>
-              <p className="font-inter text-[#4A443E] leading-relaxed">
-                Robert Yang is the founder of Mettle and the creator of LaRue. With
-                co-founder and sport psychologist Alex Auerbach, Ph.D., they have spent
-                years building the methodology that powers LaRue — and wrote this book
-                for every athlete and coach who wants to use AI without the noise.
-              </p>
+              <h2 className="font-syne font-bold text-xl text-[#1A1714] mb-3">Robert Yang</h2>
+              <p className="font-inter text-[#4A443E] leading-relaxed">Robert Yang is the founder of Mettle and the creator of LaRue. With co-founder and sport psychologist Alex Auerbach, Ph.D., they have spent years building the methodology that powers LaRue — and wrote this book for every athlete and coach who wants to use AI without the noise.</p>
             </div>
           </div>
         </div>
