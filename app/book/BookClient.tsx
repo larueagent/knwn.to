@@ -35,7 +35,7 @@ function BuyButton() {
 const Divider = () => (<div className="px-6 max-w-2xl mx-auto w-full"><hr className="border-[#E0D9CE]" /></div>);
 
 const chapters = [
-  { part: "Intro", title: "A Note Before You Start", body: "Robert Yang introduces LaRue — an AI coach built specifically for competitive athletes — and frames the book's core deliverable: your athlete.md, a file that tells AI who you actually are." },
+  { part: "Intro", title: "A Note Before You Start", body: "Introducing LaRue — an AI coach built specifically for competitive athletes — and frames the book's core deliverable: your athlete.md, a file that tells AI who you actually are." },
   { part: "Part One — The New Landscape", title: "Chapter 1: You've Talked to AI. It Didn't Really Talk to You.", body: "Explains why every AI conversation starts from zero — AI has no memory of who you are, so it defaults to generic advice that misses your specific situation. Introduces athlete.md as a context file you own, can read, can share, and carry to any AI tool." },
   { part: null, title: "Chapter 2: What's Possible When It Knows You", body: "Shows two real First Read portraits to demonstrate what AI conversations look like when context is loaded. Describes the six sections every portrait contains and lays out the two paths to building your own." },
   { part: null, title: "Chapter 3: Who You Are as an Athlete", body: "Builds the first section of athlete.md: Identity. Guides athletes through articulating not just their sport and position, but what being an athlete actually means to them — the honest version, not the college essay version." },
