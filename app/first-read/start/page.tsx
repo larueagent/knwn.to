@@ -78,7 +78,7 @@ const GENDER_OPTIONS = [
 
 const LEVEL_OPTIONS = [
   "Youth / Club (under 14)",
-  "Youth / Club (14\u201318)",
+  "Youth / Club (14–18)",
   "Middle School",
   "High School JV",
   "High School Varsity",
@@ -441,7 +441,7 @@ export default function StartPage() {
               type="submit"
               className="w-full px-6 py-3 bg-[#1A1714] text-white font-inter font-medium rounded-sm hover:bg-[#1A1714]/90 transition-colors"
             >
-              Next \u2192
+              Next →
             </button>
           </form>
         </div>
@@ -628,7 +628,7 @@ export default function StartPage() {
             onClick={handleBack}
             className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase text-[#8A8178] hover:text-[#1A1714] transition-colors mb-10"
           >
-            <span>\u2190</span> Back
+            <span>←</span> Back
           </button>
 
           <ActDots currentIndex={questionIndex} />
@@ -713,7 +713,7 @@ export default function StartPage() {
   if (screen === "submitting") {
     return (
       <main className="min-h-screen bg-[#1A1714] flex flex-col items-center justify-center px-6 text-center">
-        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">LaRue \u00b7 First Read</p>
+        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">LaRue · First Read</p>
         <p className="font-serif text-xl text-[#FAF7F2] italic opacity-80">
           Reading your file...
         </p>
@@ -731,7 +731,7 @@ export default function StartPage() {
             Your file is ready.
           </h2>
           <p className="text-[#6B6560] text-sm leading-relaxed mb-3">
-            Check your email \u2014 your LaRue file is on its way to <span className="text-[#1A1714] font-medium">{email}</span>.
+            Check your email — your LaRue file is on its way to <span className="text-[#1A1714] font-medium">{email}</span>.
           </p>
           <p className="text-[#8A8178] text-xs leading-relaxed mb-10">
             It may take a few minutes to arrive. Check your spam folder if you don't see it.
