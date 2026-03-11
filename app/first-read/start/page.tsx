@@ -24,7 +24,7 @@ const QUESTIONS = [
   },
   {
     text: "When have you felt most like yourself in competition?",
-    subtext: "A moment when you weren't performing — you were just being.",
+    subtext: "A moment when you weren't performing \u2014 you were just being.",
     act: 2,
   },
   {
@@ -78,7 +78,7 @@ const GENDER_OPTIONS = [
 
 const LEVEL_OPTIONS = [
   "Youth / Club (under 14)",
-  "Youth / Club (14–18)",
+  "Youth / Club (14\u201318)",
   "Middle School",
   "High School JV",
   "High School Varsity",
@@ -183,6 +183,9 @@ export default function StartPage() {
   const [answers, setAnswers] = useState<string[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [submitError, setSubmitError] = useState("");
+  const [ageError, setAgeError] = useState("");
+  const [customSport, setCustomSport] = useState("");
+  const [customPosition, setCustomPosition] = useState("");
 
   // Load saved draft on mount
   useEffect(() => {
@@ -232,6 +235,25 @@ export default function StartPage() {
 
   const handleContextSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setAgeError("");
+
+    // Age gate: block under-13
+    if (birthMonth && birthDay && birthYear) {
+      const dob = new Date(Number(birthYear), Number(birthMonth) - 1, Number(birthDay));
+      const today = new Date();
+      let age = today.getFullYear() - dob.getFullYear();
+      const m = today.getMonth() - dob.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+      if (age < 13) {
+        setAgeError("LaRue is designed for athletes 13 and older.");
+        return;
+      }
+    }
+
+    // Use custom sport/position if "Other" selected
+    if (sport === "Other" && customSport.trim()) setSport(customSport.trim());
+    if (position === "Other" && customPosition.trim()) setPosition(customPosition.trim());
+
     goToQuestion(0);
   };
 
@@ -379,7 +401,7 @@ export default function StartPage() {
           </button>
 
           <p className="mt-8 text-sm font-mono text-[#8A8178] tracking-wide">
-            Founding Athlete Session - March 2026
+            Founding Athlete Session \u2014 March 2026
           </p>
         </div>
       </div>
@@ -441,7 +463,7 @@ export default function StartPage() {
               type="submit"
               className="w-full px-6 py-3 bg-[#1A1714] text-white font-inter font-medium rounded-sm hover:bg-[#1A1714]/90 transition-colors"
             >
-              Next →
+              Next \u2192
             </button>
           </form>
         </div>
@@ -508,6 +530,9 @@ export default function StartPage() {
                   ))}
                 </select>
               </div>
+              {ageError && (
+                <p className="text-sm text-red-600 font-inter mt-2">{ageError}</p>
+              )}
             </div>
 
             <div>
@@ -534,7 +559,7 @@ export default function StartPage() {
               </label>
               <select
                 value={sport}
-                onChange={(e) => { setSport(e.target.value); setPosition(""); }}
+                onChange={(e) => { setSport(e.target.value); setPosition(""); setCustomSport(""); setCustomPosition(""); }}
                 className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
               >
                 <option value="">Select sport (optional)</option>
@@ -542,16 +567,25 @@ export default function StartPage() {
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
+              {sport === "Other" && (
+                <input
+                  type="text"
+                  value={customSport}
+                  onChange={(e) => setCustomSport(e.target.value)}
+                  className="mt-2 w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                  placeholder="Enter your sport"
+                />
+              )}
             </div>
 
-            {sport && POSITION_OPTIONS[sport] && (
+            {sport && sport !== "Other" && POSITION_OPTIONS[sport] && (
               <div>
                 <label className="block text-sm font-inter font-medium text-[#1A1714] mb-2">
                   Position / Event
                 </label>
                 <select
                   value={position}
-                  onChange={(e) => setPosition(e.target.value)}
+                  onChange={(e) => { setPosition(e.target.value); setCustomPosition(""); }}
                   className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
                 >
                   <option value="">Select position (optional)</option>
@@ -559,6 +593,15 @@ export default function StartPage() {
                     <option key={p} value={p}>{p}</option>
                   ))}
                 </select>
+                {position === "Other" && (
+                  <input
+                    type="text"
+                    value={customPosition}
+                    onChange={(e) => setCustomPosition(e.target.value)}
+                    className="mt-2 w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
+                    placeholder="Enter your position"
+                  />
+                )}
               </div>
             )}
 
@@ -628,7 +671,7 @@ export default function StartPage() {
             onClick={handleBack}
             className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase text-[#8A8178] hover:text-[#1A1714] transition-colors mb-10"
           >
-            <span>←</span> Back
+            <span>\u2190</span> Back
           </button>
 
           <ActDots currentIndex={questionIndex} />
@@ -713,7 +756,7 @@ export default function StartPage() {
   if (screen === "submitting") {
     return (
       <main className="min-h-screen bg-[#1A1714] flex flex-col items-center justify-center px-6 text-center">
-        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">LaRue · First Read</p>
+        <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">LaRue \u00b7 First Read</p>
         <p className="font-serif text-xl text-[#FAF7F2] italic opacity-80">
           Reading your file...
         </p>
@@ -731,7 +774,7 @@ export default function StartPage() {
             Your file is ready.
           </h2>
           <p className="text-[#6B6560] text-sm leading-relaxed mb-3">
-            Check your email — your LaRue file is on its way to <span className="text-[#1A1714] font-medium">{email}</span>.
+            Check your email \u2014 your LaRue file is on its way to <span className="text-[#1A1714] font-medium">{email}</span>.
           </p>
           <p className="text-[#8A8178] text-xs leading-relaxed mb-10">
             It may take a few minutes to arrive. Check your spam folder if you don't see it.
