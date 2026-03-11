@@ -13,6 +13,7 @@ export interface QuestionAnswer {
 
 export interface AthleteProfile {
   age: number
+  birthdate?: string
   gender: string
   sport: string
   position: string
@@ -129,6 +130,7 @@ export async function generatePortrait(
   const userPrompt = [
     `Athlete first name: ${firstName}`,
     `Age: ${profile.age}`,
+    `Date of birth: ${profile.birthdate ?? 'not provided'}`,
     `Gender: ${profile.gender}`,
     `Sport: ${profile.sport}`,
     `Position/event: ${profile.position}`,
