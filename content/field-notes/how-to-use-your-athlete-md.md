@@ -38,7 +38,7 @@ That distinction matters. A lot.
 
 This is the most powerful use, and it's simpler than it sounds.
 
-Open ChatGPT or Claude. Start a new conversation. Paste your entire athlete.md into the chat. Then say:
+Open ChatGPT or Claude. Start a new conversation. Paste your athlete.md into the chat. Then say:
 
 "This is me. I want to work on [specific thing]."
 
@@ -86,7 +86,7 @@ It is not a substitute for doing the work. Knowing that you go quiet under press
 
 After reviewing reports like yours, coaches sometimes say something like this:
 
-*"The report describes the pattern beautifully. But what does the athlete actually do when they're in the moment and feel it happening?"*
+"The report describes the pattern beautifully. But what does the athlete actually do when they're in the moment and feel it happening?"
 
 That's a fair challenge. Your athlete.md is a mirror, not a map. It shows you the pattern. It doesn't hand you a three-step protocol for the moment the pressure hits.
 
