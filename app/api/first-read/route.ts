@@ -141,15 +141,7 @@ export async function POST(req: NextRequest) {
         {
           first_name: firstName,
           email,
-          gender: (() => {
-            const genderMap: Record<string, string> = {
-              'Male': 'male',
-              'Female': 'female',
-              'Non-binary': 'non_binary',
-              'Prefer not to say': 'prefer_not_to_say',
-            }
-            return gender ? (genderMap[gender] ?? null) : null
-          })(),
+          gender: gender ?? null,
           sport: sport ?? '',
           position: position ?? null,
           level: level ?? null,
@@ -293,44 +285,37 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
   ]
 
   const sectionsHtml = sections.map(s => `
-    <tr>
-      <td style="padding: 32px 40px; border-bottom: 1px solid #e5e5e5;">
-        <p style="font-family: monospace; font-size: 11px; letter-spacing: 0.1em; color: #999; text-transform: uppercase; margin: 0 0 12px;">${s.label}</p>
-        ${s.content}
-      </td>
-    </tr>
-  `).join('')
+  <tr>
+    <td style="padding: 24px 32px; border-bottom: 1px solid #e5e5e5;">
+      <p style="font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: #888; text-transform: uppercase; margin: 0 0 12px 0;">${s.label}</p>
+      ${s.content}
+    </td>
+  </tr>`).join('')
 
   const themesHtml = portrait.themes
-    .map(t => `<span style="display:inline-block;background:#f0f0f0;border-radius:4px;padding:4px 10px;margin:4px;font-size:13px;">${t}</span>`)
+    .map(t => `<span style="display:inline-block;background:#f0f0f0;border-radius:4px;padding:4px 10px;margin:4px;font-size:12px;color:#444;">${t}</span>`)
     .join('')
 
   return `
-<!DOCTYPE html>
-<html>
-<body style="margin:0;padding:0;background:#fafafa;font-family:Georgia,serif;color:#1a1a1a;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:40px 20px;">
-<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border:1px solid #e5e5e5;">
-  <tr><td style="padding:32px 40px;border-bottom:2px solid #1a1a1a;">
-    <p style="font-family:monospace;font-size:11px;letter-spacing:0.1em;color:#999;margin:0 0 8px;">LARUE &middot; FIRST READ</p>
-    <h1 style="margin:0 0 4px;font-size:28px;">${firstName}</h1>
-    <p style="margin:0;color:#666;font-size:14px;">${position} &middot; ${sport} &middot; ${age}</p>
-  </td></tr>
-  <tr><td style="padding:24px 40px;border-bottom:1px solid #e5e5e5;background:#f9f9f9;">
-    <p style="margin:0;font-size:15px;line-height:1.6;">Your LaRue file is ready. Everything below is grounded in what you actually said &mdash; not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you're short on time.</p>
-  </td></tr>
-  <tr><td style="padding:16px 40px;border-bottom:1px solid #e5e5e5;">${themesHtml}</td></tr>
-  ${sectionsHtml}
-  <tr><td style="padding:32px 40px;background:#f9f9f9;">
-    <p style="margin:0 0 8px;font-size:13px;color:#666;">LaRue | <a href="https://knwn.to">knwn.to</a><br>Powered by Mettle</p>
-    <p style="margin:0 0 8px;font-size:13px;color:#666;">Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br><a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md">How to use your athlete.md &rarr;</a></p>
-    <p style="margin:0;font-size:11px;color:#999;">This is not a clinical assessment.</p>
-  </td></tr>
-</table>
-</td></tr></table>
-</body>
-</html>
-  `.trim()
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;font-family:Georgia,serif;color:#1a1a1a;">
+    <tr><td style="padding:32px 32px 0;">
+      <p style="font-size:11px;letter-spacing:0.12em;color:#888;text-transform:uppercase;margin:0 0 8px;">LARUE · FIRST READ</p>
+      <h1 style="font-size:28px;margin:0 0 4px;">${firstName}</h1>
+      <p style="font-size:14px;color:#555;margin:0 0 24px;">${position} · ${sport} · ${age}</p>
+      <p style="font-size:15px;line-height:1.6;color:#333;">Your LaRue file is ready. Everything below is grounded in what you actually said — not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you're short on time.</p>
+    </td></tr>
+    ${sectionsHtml}
+    <tr><td style="padding:24px 32px;">
+      ${themesHtml}
+    </td></tr>
+    <tr><td style="padding:24px 32px;border-top:1px solid #e5e5e5;font-size:12px;color:#888;">
+      LaRue | <a href="https://knwn.to/">knwn.to</a><br>
+      Powered by Mettle<br><br>
+      Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br>
+      <a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md">How to use your athlete.md →</a><br><br>
+      <em>This is not a clinical assessment.</em>
+    </td></tr>
+  </table>`.trim()
 }
 
 function buildNotificationEmail(
@@ -342,27 +327,21 @@ function buildNotificationEmail(
   const answersHtml = answers
     .map(
       ({ question, answer }, i) =>
-        `<tr><td style="padding:12px 0;border-bottom:1px solid #eee;"><strong>Q${i + 1}: ${question}</strong><br>${answer.replace(/\n/g, '<br>')}</td></tr>`
+        `<p><strong>Q${i + 1}: ${question}</strong></p><p>${answer.replace(/\n/g, '<br>')}</p>`
     )
     .join('\n')
 
   return `
-<!DOCTYPE html>
-<html>
-<body style="font-family:sans-serif;color:#1a1a1a;padding:24px;">
-<h2>First Read Submission</h2>
-<p><strong>Name:</strong> ${firstName}</p>
-<p><strong>Email:</strong> ${email}</p>
-<p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
-<hr>
-<h3>Answers</h3>
-<table width="100%">${answersHtml}</table>
-<hr>
-<h3>LaRue Portrait JSON</h3>
-<pre style="background:#f4f4f4;padding:16px;overflow:auto;">${JSON.stringify(portrait, null, 2)}</pre>
-</body>
-</html>
-  `.trim()
+  <h2>First Read Submission</h2>
+  <p><strong>Name:</strong> ${firstName}</p>
+  <p><strong>Email:</strong> ${email}</p>
+  <p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
+  <hr>
+  <h3>Answers</h3>
+  ${answersHtml}
+  <hr>
+  <h3>LaRue Portrait JSON</h3>
+  <pre>${JSON.stringify(portrait, null, 2)}</pre>`.trim()
 }
 
 // Re-export LaRuePortrait so the notification builder has the type in scope
