@@ -188,11 +188,8 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Return immediately — emails fire in the background
-    return NextResponse.json({ success: true })
-
     // ---------------------------------------------------------------------------
-    // Step 6: Send athlete confirmation email with athlete.md attached
+    // Step 6: Send athlete confirmation email with athlete.md attached (fire-and-forget)
     // ---------------------------------------------------------------------------
     const athleteEmailBody = buildAthleteEmail(firstName, portrait, profile)
 
@@ -219,7 +216,7 @@ export async function POST(req: NextRequest) {
     })
 
     // ---------------------------------------------------------------------------
-    // Step 7: Send internal notification with full answers + portrait JSON
+    // Step 7: Send internal notification with full answers + portrait JSON (fire-and-forget)
     // ---------------------------------------------------------------------------
     const notificationBody = buildNotificationEmail(firstName, email, answers, portrait)
 
@@ -237,7 +234,7 @@ export async function POST(req: NextRequest) {
       }),
     })
 
-    // Update email_sent_at on the submission now that the email was sent
+    // Update email_sent_at on the submission (fire-and-forget)
     if (athleteRow?.id) {
       supabase
         .from('first_read_submissions')
@@ -246,6 +243,9 @@ export async function POST(req: NextRequest) {
         .order('created_at', { ascending: false })
         .limit(1)
     }
+
+    // Return immediately — emails are already in flight
+    return NextResponse.json({ success: true })
   } catch (err) {
     console.error('First Read error:', err)
     return NextResponse.json(
@@ -264,32 +264,32 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
   const sections = [
     {
       label: 'HOW I COMPETE AT MY BEST',
-      content: portrait.identity.map(i => `<p>${i}</p>`).join(''),
+      content: portrait.identity.map(i => `<p style="font-size:15px;line-height:1.7;color:#1a1a1a;margin:0 0 12px;">${i}</p>`).join(''),
     },
     {
       label: 'WHAT UNLOCKS ME',
-      content: `<p>${portrait.stateUnlocks}</p>`,
+      content: `<p style="font-size:15px;line-height:1.7;color:#1a1a1a;margin:0;">${portrait.stateUnlocks}</p>`,
     },
     {
       label: 'UNDER PRESSURE',
-      content: `<p>${portrait.pressureState}</p>` +
+      content: `<p style="font-size:15px;line-height:1.7;color:#1a1a1a;margin:0 0 12px;">${portrait.pressureState}</p>` +
         portrait.pressurePatterns.map(p =>
-          `<p>${p}</p>`
+          `<p style="font-size:15px;line-height:1.7;color:#444;margin:0 0 8px;">— ${p}</p>`
         ).join(''),
     },
     {
       label: 'WHAT COACHES NEED TO KNOW',
-      content: `<p>${portrait.relationshipGets}</p>` +
-        `<p><em>"${portrait.coachQuote}"</em></p>`,
+      content: `<p style="font-size:15px;line-height:1.7;color:#1a1a1a;margin:0 0 12px;">${portrait.relationshipGets}</p>` +
+        `<p style="font-size:15px;line-height:1.7;color:#555;margin:0;"><em>"${portrait.coachQuote}"</em></p>`,
     },
     {
       label: "WHAT I'M WORKING TOWARD",
-      content: `<p>${portrait.directionWant}</p>` +
-        `<p>${portrait.directionConsistent}</p>`,
+      content: `<p style="font-size:15px;line-height:1.7;color:#1a1a1a;margin:0 0 12px;">${portrait.directionWant}</p>` +
+        `<p style="font-size:15px;line-height:1.7;color:#1a1a1a;margin:0;">${portrait.directionConsistent}</p>`,
     },
     {
       label: 'WHERE TO START',
-      content: `<p>${portrait.nextStep.primaryFocus}</p>`,
+      content: `<p style="font-size:15px;line-height:1.7;color:#1a1a1a;margin:0;">${portrait.nextStep.primaryFocus}</p>`,
     },
   ]
 
@@ -309,29 +309,23 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
     .join('')
 
   return `
-<table width="600" cellpadding="0" cellspacing="0" border="0" align="center">
-  <tr><td>${sectionsHtml}</td></tr>
-</table>
-<table width="600" cellpadding="0" cellspacing="0" border="0" align="center">
-  <tr>
-    <td style="padding: 32px 0 8px 0;">
-      <p style="font-size:11px;color:#999;margin:0;">LARUE · FIRST READ</p>
-      <h1 style="margin:4px 0;">${firstName}</h1>
-      <p style="margin:0;color:#666;">${position} · ${sport} · ${age}</p>
-    </td>
-  </tr>
-  <tr><td><p>Your LaRue file is ready. Everything below is grounded in what you actually said — not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you're short on time.</p></td></tr>
-  <tr><td>${themesHtml}</td></tr>
-  <tr>
-    <td style="padding-top:32px;font-size:12px;color:#999;">
-      LaRue | <a href="https://knwn.to/">knwn.to</a><br>
-      Powered by Mettle<br>
-      Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br>
-      <a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md">How to use your athlete.md →</a><br>
-      This is not a clinical assessment.
-    </td>
-  </tr>
-</table>
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;font-family:Georgia,serif;color:#1a1a1a;">
+    <tr><td style="padding:32px 32px 0;">
+      <p style="font-size:11px;letter-spacing:0.12em;color:#888;text-transform:uppercase;margin:0 0 8px;">LARUE · FIRST READ</p>
+      <h1 style="font-size:28px;margin:0 0 4px;">${firstName}</h1>
+      <p style="font-size:14px;color:#555;margin:0 0 24px;">${position} · ${sport} · ${age}</p>
+      <p style="font-size:15px;line-height:1.6;color:#333;">Your LaRue file is ready. Everything below is grounded in what you actually said — not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you're short on time.</p>
+    </td></tr>
+    <tr><td style="padding:0 32px;">${themesHtml}</td></tr>
+    <tr><td style="padding:0 32px 32px;">${sectionsHtml}</td></tr>
+    <tr><td style="padding:24px 32px;background:#f9f9f9;border-top:1px solid #e5e5e5;">
+      <p style="font-size:13px;color:#555;margin:0 0 8px;">LaRue | <a href="https://knwn.to" style="color:#1a1a1a;">knwn.to</a></p>
+      <p style="font-size:13px;color:#555;margin:0 0 8px;">Powered by Mettle</p>
+      <p style="font-size:13px;color:#555;margin:0 0 8px;">Your .md file is attached. Open it, read it, then follow the guide below for what to do next.</p>
+      <p style="font-size:13px;margin:0 0 8px;"><a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md" style="color:#1a1a1a;">How to use your athlete.md →</a></p>
+      <p style="font-size:11px;color:#999;margin:0;">This is not a clinical assessment.</p>
+    </td></tr>
+  </table>
   `.trim()
 }
 
@@ -344,21 +338,25 @@ function buildNotificationEmail(
   const answersHtml = answers
     .map(
       ({ question, answer }, i) =>
-        `<p><strong>Q${i + 1}: ${question}</strong></p><p>${answer.replace(/\n/g, '<br>')}</p>`
+        `<p><strong>Q${i + 1}: ${question}</strong></p><p>${answer.replace(/\n/g, '<br/>')}</p>`
     )
     .join('\n')
 
   return `
-<h2>First Read Submission</h2>
-<p><strong>Name:</strong> ${firstName}</p>
-<p><strong>Email:</strong> ${email}</p>
-<p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
-<hr>
-<h3>Answers</h3>
-${answersHtml}
-<hr>
-<h3>LaRue Portrait JSON</h3>
-<pre>${JSON.stringify(portrait, null, 2)}</pre>
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;font-family:sans-serif;color:#1a1a1a;">
+    <tr><td style="padding:32px;">
+      <h2>First Read Submission</h2>
+      <p><strong>Name:</strong> ${firstName}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
+      <hr/>
+      <h3>Answers</h3>
+      ${answersHtml}
+      <hr/>
+      <h3>LaRue Portrait JSON</h3>
+      <pre style="background:#f5f5f5;padding:16px;font-size:12px;overflow:auto;">${JSON.stringify(portrait, null, 2)}</pre>
+    </td></tr>
+  </table>
   `.trim()
 }
 
