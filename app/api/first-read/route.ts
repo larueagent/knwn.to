@@ -203,7 +203,7 @@ export async function POST(req: NextRequest) {
         Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
       },
       body: JSON.stringify({
-        personalizations: [{ to: [{ email, name: firstName }], bcc: [{ email: 'robert@mettle.coach' }] }],
+        personalizations: [{ to: [{ email, name: firstName }] }],
         from: { email: FROM_EMAIL, name: FROM_NAME },
         subject: `Your LaRue file is ready, ${firstName}`,
         content: [{ type: 'text/html', value: athleteEmailBody }],
@@ -237,7 +237,7 @@ export async function POST(req: NextRequest) {
       }),
     })
 
-    // Update email_sent_at on the submission (fire-and-forget)
+    // Return immediately — emails and email_sent_at update fire in the background
     if (athleteRow?.id) {
       supabase
         .from('first_read_submissions')
@@ -245,9 +245,9 @@ export async function POST(req: NextRequest) {
         .eq('athlete_id', athleteRow.id)
         .order('created_at', { ascending: false })
         .limit(1)
+        .then(() => {})
     }
 
-    // Return immediately — emails are already in flight
     return NextResponse.json({ success: true })
   } catch (err) {
     console.error('First Read error:', err)
@@ -277,7 +277,7 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
       label: 'UNDER PRESSURE',
       content: `<p>${portrait.pressureState}</p>` +
         portrait.pressurePatterns.map(p =>
-          `<p>— ${p}</p>`
+          `<p>\u2014 ${p}</p>`
         ).join(''),
     },
     {
@@ -306,30 +306,33 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
   `).join('')
 
   const themesHtml = portrait.themes
-    .map(t => `<span style="display:inline-block;padding:4px 10px;margin:2px;background:#f5f5f5;border-radius:4px;font-size:12px;">${t}</span>`)
+    .map(t => `<span style="display:inline-block;padding:4px 10px;background:#f0f0f0;border-radius:4px;font-size:12px;margin:0 4px 4px 0;">${t}</span>`)
     .join('')
 
   return `
-    <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#1a1a1a;">
-      <table width="100%" cellpadding="32" cellspacing="0" style="background:#1a1a1a;color:#fff;margin-bottom:24px;">
-        <tr><td>
-          <p style="font-size:11px;letter-spacing:0.15em;color:#999;margin:0 0 16px;">LARUE · FIRST READ</p>
-          <h1 style="font-size:32px;margin:0 0 8px;">${firstName}</h1>
-          <p style="color:#999;margin:0 0 16px;">${position} · ${sport} · ${age}</p>
-          <p style="color:#ccc;line-height:1.6;">Your LaRue file is ready. Everything below is grounded in what you actually said — not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you're short on time.</p>
-        </td></tr>
-      </table>
-      <div style="margin-bottom:24px;">${themesHtml}</div>
-      ${sectionsHtml}
-      <table width="100%" cellpadding="24" cellspacing="0" style="border-top:1px solid #e5e5e5;color:#999;">
-        <tr><td>
-          <p style="font-size:12px;">LaRue | <a href="https://knwn.to">knwn.to</a><br>Powered by Mettle</p>
-          <p style="font-size:12px;">Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br>
-          <a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md">How to use your athlete.md →</a></p>
-          <p style="font-size:11px;color:#bbb;">This is not a clinical assessment.</p>
-        </td></tr>
-      </table>
-    </div>
+<!DOCTYPE html>
+<html>
+<body style="font-family:Georgia,serif;max-width:640px;margin:0 auto;padding:24px;color:#1a1a1a;">
+  <table width="100%" cellpadding="24" cellspacing="0" style="margin-bottom:24px;background:#1a1a1a;color:#fff;">
+    <tr><td>
+      <p style="font-size:11px;letter-spacing:0.15em;color:#999;margin:0 0 8px;">LARUE &middot; FIRST READ</p>
+      <h1 style="margin:0 0 4px;font-size:28px;">${firstName}</h1>
+      <p style="margin:0 0 16px;color:#ccc;">${position} &middot; ${sport} &middot; ${age}</p>
+      <p style="margin:0;color:#ccc;">Your LaRue file is ready. Everything below is grounded in what you actually said &mdash; not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you're short on time.</p>
+    </td></tr>
+  </table>
+  <div style="margin-bottom:24px;">${themesHtml}</div>
+  ${sectionsHtml}
+  <table width="100%" cellpadding="24" cellspacing="0" style="border-top:1px solid #e5e5e5;">
+    <tr><td style="font-size:13px;color:#999;">
+      <p>LaRue | <a href="https://knwn.to/">knwn.to</a><br>Powered by Mettle</p>
+      <p>Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br>
+      <a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md">How to use your athlete.md &rarr;</a></p>
+      <p><em>This is not a clinical assessment.</em></p>
+    </td></tr>
+  </table>
+</body>
+</html>
   `.trim()
 }
 
@@ -347,7 +350,11 @@ function buildNotificationEmail(
     .join('\n')
 
   return `
-    <div style="font-family:monospace;max-width:700px;margin:0 auto;">
+<!DOCTYPE html>
+<html>
+<body style="font-family:Georgia,serif;max-width:640px;margin:0 auto;padding:24px;color:#1a1a1a;">
+  <table width="100%" cellpadding="24" cellspacing="0" style="border:1px solid #e5e5e5;">
+    <tr><td>
       <h2>First Read Submission</h2>
       <p><strong>Name:</strong> ${firstName}<br>
       <strong>Email:</strong> ${email}<br>
@@ -358,8 +365,9 @@ function buildNotificationEmail(
       <hr>
       <h3>LaRue Portrait JSON</h3>
       <pre style="background:#f5f5f5;padding:16px;overflow:auto;">${JSON.stringify(portrait, null, 2)}</pre>
-    </div>
+    </td></tr>
+  </table>
+</body>
+</html>
   `.trim()
 }
-
-// Re-export LaRuePortrait so the notification builder has the type in scope
