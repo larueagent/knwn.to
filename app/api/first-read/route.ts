@@ -152,7 +152,30 @@ export async function POST(req: NextRequest) {
           })(),
           sport: sport ?? '',
           position: position ?? null,
-          level: level ?? null,
+          level: (() => {
+            const levelMap: Record<string, string> = {
+              'Recreational': 'recreational',
+              'Club': 'club',
+              'JV': 'jv',
+              'Varsity': 'varsity',
+              'Travel': 'travel',
+              'Elite': 'elite',
+              'Collegiate': 'collegiate',
+              'Professional': 'professional',
+              'Youth Club': 'youth_club',
+              'Middle School': 'middle_school',
+              'High School JV': 'high_school_jv',
+              'High School Varsity': 'high_school_varsity',
+              'Prep / Post-Grad': 'prep_post_grad',
+              'College D1': 'college_d1',
+              'College D2': 'college_d2',
+              'College D3': 'college_d3',
+              'College NAIA/JUCO': 'college_naia_juco',
+              'Semi-Pro': 'semi_pro',
+              'Olympic / National': 'olympic_national',
+            }
+            return level ? (levelMap[level] ?? null) : null
+          })(),
           kit_subscriber_id: subscriberId ? String(subscriberId) : null,
         },
         { onConflict: 'email', ignoreDuplicates: false }
@@ -204,13 +227,13 @@ export async function POST(req: NextRequest) {
         from: { email: FROM_EMAIL, name: FROM_NAME },
         subject: `Your LaRue file is ready, ${firstName}`,
         content: [{ type: 'text/html', value: athleteEmailBody }],
-        attachments: [
-          {
-            content: mdBase64,
-            filename: mdFilename,
-            type: 'text/plain',
-            disposition: 'attachment',
-          },
+        attachments: [\
+          {\
+            content: mdBase64,\
+            filename: mdFilename,\
+            type: 'text/plain',\
+            disposition: 'attachment',\
+          },\
         ],
       }),
     })
@@ -260,36 +283,36 @@ export async function POST(req: NextRequest) {
 
 function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: AthleteProfile): string {
   const { sport, position, age } = profile
-  const sections = [
-    {
-      label: 'HOW I COMPETE AT MY BEST',
-      content: portrait.identity.map(i => `<p style="margin:0 0 8px 0;">${i}</p>`).join(''),
-    },
-    {
-      label: 'WHAT UNLOCKS ME',
-      content: `<p style="margin:0;">${portrait.stateUnlocks}</p>`,
-    },
-    {
-      label: 'UNDER PRESSURE',
-      content: `<p style="margin:0 0 12px 0;">${portrait.pressureState}</p>` +
-        portrait.pressurePatterns.map(p =>
-          `<p style="margin:0 0 6px 0; padding-left:16px; border-left:2px solid #b8821a; color:#1a1714;">${p}</p>`
-        ).join(''),
-    },
-    {
-      label: 'WHAT COACHES NEED TO KNOW',
-      content: `<p style="margin:0 0 12px 0;">${portrait.relationshipGets}</p>` +
-        `<p style="margin:0; padding:12px 16px; border-left:3px solid #b8821a; color:#8a8178; font-style:italic;">&ldquo;${portrait.coachQuote}&rdquo;</p>`,
-    },
-    {
-      label: "WHAT I'M WORKING TOWARD",
-      content: `<p style="margin:0 0 8px 0;">${portrait.directionWant}</p>` +
-        `<p style="margin:0; color:#8a8178;">${portrait.directionConsistent}</p>`,
-    },
-    {
-      label: 'WHERE TO START',
-      content: `<p style="margin:0;">${portrait.nextStep.primaryFocus}</p>`,
-    },
+  const sections = [\
+    {\
+      label: 'HOW I COMPETE AT MY BEST',\
+      content: portrait.identity.map(i => `<p style="margin:0 0 8px 0;">${i}</p>`).join(''),\
+    },\
+    {\
+      label: 'WHAT UNLOCKS ME',\
+      content: `<p style="margin:0;">${portrait.stateUnlocks}</p>`,\
+    },\
+    {\
+      label: 'UNDER PRESSURE',\
+      content: `<p style="margin:0 0 12px 0;">${portrait.pressureState}</p>` +\
+        portrait.pressurePatterns.map(p =>\
+          `<p style="margin:0 0 6px 0; padding-left:16px; border-left:2px solid #b8821a; color:#1a1714;">${p}</p>`\
+        ).join(''),\
+    },\
+    {\
+      label: 'WHAT COACHES NEED TO KNOW',\
+      content: `<p style="margin:0 0 12px 0;">${portrait.relationshipGets}</p>` +\
+        `<p style="margin:0; padding:12px 16px; border-left:3px solid #b8821a; color:#8a8178; font-style:italic;">&ldquo;${portrait.coachQuote}&rdquo;</p>`,\
+    },\
+    {\
+      label: "WHAT I'M WORKING TOWARD",\
+      content: `<p style="margin:0 0 8px 0;">${portrait.directionWant}</p>` +\
+        `<p style="margin:0; color:#8a8178;">${portrait.directionConsistent}</p>`,\
+    },\
+    {\
+      label: 'WHERE TO START',\
+      content: `<p style="margin:0;">${portrait.nextStep.primaryFocus}</p>`,\
+    },\
   ]
 
   const sectionsHtml = sections.map(s => `
