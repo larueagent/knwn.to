@@ -133,45 +133,26 @@ export async function POST(req: NextRequest) {
     // -----------------------------------------------------------------------
     // Step 5.5: Upsert athlete + insert first_read_submission to Supabase
     // -----------------------------------------------------------------------
-    const genderMap: Record<string, string> = {
-      'Male': 'male',
-      'Female': 'female',
-      'Non-binary': 'non_binary',
-      'Prefer not to say': 'prefer_not_to_say',
-    }
 
-    const levelMap: Record<string, string> = {
-      'Youth Recreational': 'youth_recreational',
-      'Youth Competitive': 'youth_competitive',
-      'Youth Elite': 'youth_elite',
-      'Middle School': 'middle_school',
-      'High School JV': 'high_school_jv',
-      'High School Varsity': 'high_school_varsity',
-      'High School Elite': 'high_school_elite',
-      'Club Regional': 'club_regional',
-      'Club National': 'club_national',
-      'College D3': 'college_d3',
-      'College D2': 'college_d2',
-      'College D1': 'college_d1',
-      'College D1 Power': 'college_d1_power',
-      'NAIA / JUCO': 'naia_juco',
-      'Semi-Pro': 'semi_pro',
-      'Professional': 'professional',
-      'Professional Elite': 'professional_elite',
-      'International': 'international',
-      'Olympic / World Class': 'olympic_world_class',
-    }
-
+    // Upsert athlete by email — creates on first read, updates kit_subscriber_id on repeat
     const { data: athleteRow, error: athleteError } = await supabase
       .from('athletes')
       .upsert(
         {
           first_name: firstName,
           email,
-          gender: gender ? (genderMap[gender] ?? null) : null,
+          gender: (() => {
+            const genderMap: Record<string, string> = {
+              'Male': 'male',
+              'Female': 'female',
+              'Non-binary': 'non_binary',
+              'Prefer not to say': 'prefer_not_to_say',
+            }
+            return gender ? (genderMap[gender] ?? null) : null
+          })(),
           sport: sport ?? '',
           position: position ?? null,
-          level: level ? (levelMap[level] ?? null) : null,
+          level: level ?? null,
           kit_subscriber_id: subscriberId ? String(subscriberId) : null,
         },
         { onConflict: 'email', ignoreDuplicates: false }
@@ -179,10 +160,10 @@ export async function POST(req: NextRequest) {
       .select('id')
       .single()
 
-    if (athleteError || !athleteRow) {
-      console.error('Supabase athlete upsert error:', athleteError)
-      return NextResponse.json({ error: 'Supabase error', detail: athleteError }, { status: 500 })
-    }
+      if (athleteError || !athleteRow) {
+        console.error('Supabase athlete upsert error:', athleteError)
+        return NextResponse.json({ error: 'Supabase error', detail: athleteError }, { status: 500 })
+      }
 
     // Insert first_read_submission linked to athlete
     if (athleteRow?.id) {
@@ -223,13 +204,13 @@ export async function POST(req: NextRequest) {
         from: { email: FROM_EMAIL, name: FROM_NAME },
         subject: `Your LaRue file is ready, ${firstName}`,
         content: [{ type: 'text/html', value: athleteEmailBody }],
-        attachments: [
-          {
-            content: mdBase64,
-            filename: mdFilename,
-            type: 'text/plain',
-            disposition: 'attachment',
-          },
+        attachments: [\
+          {\
+            content: mdBase64,\
+            filename: mdFilename,\
+            type: 'text/plain',\
+            disposition: 'attachment',\
+          },\
         ],
       }),
     })
@@ -279,37 +260,36 @@ export async function POST(req: NextRequest) {
 
 function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: AthleteProfile): string {
   const { sport, position, age } = profile
-
-  const sections = [
-    {
-      label: 'HOW I COMPETE AT MY BEST',
-      content: portrait.identity.map(i => `<p style="margin:0 0 8px 0;">${i}</p>`).join(''),
-    },
-    {
-      label: 'WHAT UNLOCKS ME',
-      content: `<p style="margin:0;">${portrait.stateUnlocks}</p>`,
-    },
-    {
-      label: 'UNDER PRESSURE',
-      content: `<p style="margin:0 0 12px 0;">${portrait.pressureState}</p>` +
-        portrait.pressurePatterns.map(p =>
-          `<p style="margin:0 0 6px 0; padding-left:16px; border-left:2px solid #b8821a; color:#1a1714;">${p}</p>`
-        ).join(''),
-    },
-    {
-      label: 'WHAT COACHES NEED TO KNOW',
-      content: `<p style="margin:0 0 12px 0;">${portrait.relationshipGets}</p>` +
-        `<p style="margin:0; padding:12px 16px; border-left:3px solid #b8821a; color:#8a8178; font-style:italic;">&ldquo;${portrait.coachQuote}&rdquo;</p>`,
-    },
-    {
-      label: "WHAT I'M WORKING TOWARD",
-      content: `<p style="margin:0 0 8px 0;">${portrait.directionWant}</p>` +
-        `<p style="margin:0; color:#8a8178;">${portrait.directionConsistent}</p>`,
-    },
-    {
-      label: 'WHERE TO START',
-      content: `<p style="margin:0;">${portrait.nextStep.primaryFocus}</p>`,
-    },
+  const sections = [\
+    {\
+      label: 'HOW I COMPETE AT MY BEST',\
+      content: portrait.identity.map(i => `<p style="margin:0 0 8px 0;">${i}</p>`).join(''),\
+    },\
+    {\
+      label: 'WHAT UNLOCKS ME',\
+      content: `<p style="margin:0;">${portrait.stateUnlocks}</p>`,\
+    },\
+    {\
+      label: 'UNDER PRESSURE',\
+      content: `<p style="margin:0 0 12px 0;">${portrait.pressureState}</p>` +\
+        portrait.pressurePatterns.map(p =>\
+          `<p style="margin:0 0 6px 0; padding-left:16px; border-left:2px solid #b8821a; color:#1a1714;">${p}</p>`\
+        ).join(''),\
+    },\
+    {\
+      label: 'WHAT COACHES NEED TO KNOW',\
+      content: `<p style="margin:0 0 12px 0;">${portrait.relationshipGets}</p>` +\
+        `<p style="margin:0; padding:12px 16px; border-left:3px solid #b8821a; color:#8a8178; font-style:italic;">&ldquo;${portrait.coachQuote}&rdquo;</p>`,\
+    },\
+    {\
+      label: "WHAT I'M WORKING TOWARD",\
+      content: `<p style="margin:0 0 8px 0;">${portrait.directionWant}</p>` +\
+        `<p style="margin:0; color:#8a8178;">${portrait.directionConsistent}</p>`,\
+    },\
+    {\
+      label: 'WHERE TO START',\
+      content: `<p style="margin:0;">${portrait.nextStep.primaryFocus}</p>`,\
+    },\
   ]
 
   const sectionsHtml = sections.map(s => `
@@ -338,7 +318,7 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
             <td style="padding:0 0 40px 0; border-bottom:1px solid #e0d9ce;">
               <p style="margin:0 0 16px 0; font-family:'Courier New',Courier,monospace; font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#b8821a;">LARUE \u00b7 FIRST READ</p>
               <h1 style="margin:0; font-family:Georgia,serif; font-size:48px; font-weight:700; line-height:1; color:#1a1714;">${firstName}</h1>
-              <div style="font-size:14px; letter-spacing:0.08em; color:#666; margin-top:4px;">${position} \u00b7 ${sport} \u00b7 ${age}</div>
+              <div style="font-size:14px;letter-spacing:0.08em;color:#666;margin-top:4px;">${position} \u00b7 ${sport} \u00b7 ${age}</div>
             </td>
           </tr>
 
@@ -368,7 +348,9 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
               <p style="margin:0; font-family:'Courier New',Courier,monospace; font-size:11px; letter-spacing:1px; color:#8a8178;">
                 LaRue | <a href="https://knwn.to" style="color:#8a8178; text-decoration:none;">knwn.to</a><br />
                 Powered by Mettle<br /><br />
-                This is not a clinical assessment. The .md file attached can be loaded into any AI assistant as context.
+                Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br /><br />
+                <a href="https://knwn.to/how-to-use-your-athlete-md" style="color:#b8821a; text-decoration:none; font-weight:700;">How to use your athlete.md &rarr;</a><br /><br />
+                This is not a clinical assessment.
               </p>
             </td>
           </tr>
@@ -408,3 +390,5 @@ function buildNotificationEmail(
   <pre style="background:#f5f5f5;padding:16px;overflow-x:auto;">${JSON.stringify(portrait, null, 2)}</pre>
 </div>`.trim()
 }
+
+// Re-export LaRuePortrait so the notification builder has the type in scope
