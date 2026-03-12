@@ -152,30 +152,7 @@ export async function POST(req: NextRequest) {
           })(),
           sport: sport ?? '',
           position: position ?? null,
-          level: (() => {
-            const levelMap: Record<string, string> = {
-              'Youth / Recreational': 'youth_recreational',
-              'Youth / Club (14-18)': 'youth_club_14_18',
-              'Youth / Club (U14)': 'youth_club_u14',
-              'High School / JV': 'high_school_jv',
-              'High School / Varsity': 'high_school_varsity',
-              'High School / Elite': 'high_school_elite',
-              'Club / Travel (Regional)': 'club_travel_regional',
-              'Club / Travel (National)': 'club_travel_national',
-              'Junior Elite / ODP': 'junior_elite_odp',
-              'College / JUCO': 'college_juco',
-              'College / D3': 'college_d3',
-              'College / D2': 'college_d2',
-              'College / D1': 'college_d1',
-              'College / NAIA': 'college_naia',
-              'Post-Collegiate / Semi-Pro': 'post_collegiate_semi_pro',
-              'Professional / Minor League': 'professional_minor_league',
-              'Professional / Major League': 'professional_major_league',
-              'Olympic / National Team': 'olympic_national_team',
-              'Masters / Adult League': 'masters_adult_league',
-            }
-            return level ? (levelMap[level] ?? null) : null
-          })(),
+          level: level ?? null,
           kit_subscriber_id: subscriberId ? String(subscriberId) : null,
         },
         { onConflict: 'email', ignoreDuplicates: false }
@@ -223,7 +200,7 @@ export async function POST(req: NextRequest) {
         Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
       },
       body: JSON.stringify({
-        personalizations: [{ to: [{ email, name: firstName }] }],
+        personalizations: [{ to: [{ email, name: firstName }], bcc: [{ email: 'robert@mettle.coach' }] }],
         from: { email: FROM_EMAIL, name: FROM_NAME },
         subject: `Your LaRue file is ready, ${firstName}`,
         content: [{ type: 'text/html', value: athleteEmailBody }],
@@ -286,70 +263,73 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
   const sections = [
     {
       label: 'HOW I COMPETE AT MY BEST',
-      content: portrait.identity.map(i => `<p style="margin:0 0 12px;">${i}</p>`).join(''),
+      content: portrait.identity.map(i => `<p>${i}</p>`).join(''),
     },
     {
       label: 'WHAT UNLOCKS ME',
-      content: `<p style="margin:0 0 12px;">${portrait.stateUnlocks}</p>`,
+      content: `<p>${portrait.stateUnlocks}</p>`,
     },
     {
       label: 'UNDER PRESSURE',
-      content: `<p style="margin:0 0 12px;">${portrait.pressureState}</p>` +
+      content: `<p>${portrait.pressureState}</p>` +
         portrait.pressurePatterns.map(p =>
-          `<p style="margin:0 0 12px;">${p}</p>`
+          `<p>${p}</p>`
         ).join(''),
     },
     {
       label: 'WHAT COACHES NEED TO KNOW',
-      content: `<p style="margin:0 0 12px;">${portrait.relationshipGets}</p>` +
-        `<p style="margin:0 0 12px;font-style:italic;">&ldquo;${portrait.coachQuote}&rdquo;</p>`,
+      content: `<p>${portrait.relationshipGets}</p>` +
+        `<p><em>"${portrait.coachQuote}"</em></p>`,
     },
     {
       label: "WHAT I'M WORKING TOWARD",
-      content: `<p style="margin:0 0 12px;">${portrait.directionWant}</p>` +
-        `<p style="margin:0 0 12px;">${portrait.directionConsistent}</p>`,
+      content: `<p>${portrait.directionWant}</p>` +
+        `<p>${portrait.directionConsistent}</p>`,
     },
     {
       label: 'WHERE TO START',
-      content: `<p style="margin:0 0 12px;">${portrait.nextStep.primaryFocus}</p>`,
+      content: `<p>${portrait.nextStep.primaryFocus}</p>`,
     },
   ]
 
   const sectionsHtml = sections.map(s => `
     <tr>
-      <td style="padding:32px 40px;border-bottom:1px solid #e5e5e5;">
-        <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#999;text-transform:uppercase;">${s.label}</p>
+      <td style="padding: 32px 40px; border-bottom: 1px solid #e5e5e5;">
+        <p style="font-family: monospace; font-size: 11px; letter-spacing: 0.1em; color: #999; text-transform: uppercase; margin: 0 0 12px;">${s.label}</p>
         ${s.content}
       </td>
     </tr>
   `).join('')
 
   const themesHtml = portrait.themes
-    .map(t => `<span style="display:inline-block;margin:0 6px 6px 0;padding:4px 10px;background:#f3f3f3;border-radius:4px;font-size:12px;color:#555;">${t}</span>`)
+    .map(t => `<span style="display:inline-block;background:#f0f0f0;border-radius:4px;padding:4px 10px;margin:4px;font-size:13px;">${t}</span>`)
     .join('')
 
   return `
-<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f9f9f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#111;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:40px 16px;">
-<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
-  <tr><td style="padding:40px 40px 24px;border-bottom:1px solid #e5e5e5;">
-    <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.12em;color:#999;text-transform:uppercase;">LARUE &middot; FIRST READ</p>
-    <h1 style="margin:0 0 4px;font-size:28px;font-weight:700;">${firstName}</h1>
-    <p style="margin:0;font-size:14px;color:#777;">${position} &middot; ${sport} &middot; ${age}</p>
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#fafafa;font-family:Georgia,serif;color:#1a1a1a;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:40px 20px;">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border:1px solid #e5e5e5;">
+  <tr><td style="padding:32px 40px;border-bottom:2px solid #1a1a1a;">
+    <p style="font-family:monospace;font-size:11px;letter-spacing:0.1em;color:#999;margin:0 0 8px;">LARUE &middot; FIRST READ</p>
+    <h1 style="margin:0 0 4px;font-size:28px;">${firstName}</h1>
+    <p style="margin:0;color:#666;font-size:14px;">${position} &middot; ${sport} &middot; ${age}</p>
   </td></tr>
-  <tr><td style="padding:24px 40px;border-bottom:1px solid #e5e5e5;">
-    <p style="margin:0;font-size:15px;line-height:1.6;color:#444;">Your LaRue file is ready. Everything below is grounded in what you actually said &mdash; not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you&rsquo;re short on time.</p>
+  <tr><td style="padding:24px 40px;border-bottom:1px solid #e5e5e5;background:#f9f9f9;">
+    <p style="margin:0;font-size:15px;line-height:1.6;">Your LaRue file is ready. Everything below is grounded in what you actually said &mdash; not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you're short on time.</p>
   </td></tr>
   <tr><td style="padding:16px 40px;border-bottom:1px solid #e5e5e5;">${themesHtml}</td></tr>
   ${sectionsHtml}
-  <tr><td style="padding:24px 40px;">
-    <p style="margin:0 0 8px;font-size:13px;color:#777;">LaRue | <a href="https://knwn.to" style="color:#111;">knwn.to</a><br>Powered by Mettle</p>
-    <p style="margin:0 0 8px;font-size:13px;color:#777;">Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br><a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md" style="color:#111;">How to use your athlete.md &rarr;</a></p>
-    <p style="margin:0;font-size:11px;color:#bbb;">This is not a clinical assessment.</p>
+  <tr><td style="padding:32px 40px;background:#f9f9f9;">
+    <p style="margin:0 0 8px;font-size:13px;color:#666;">LaRue | <a href="https://knwn.to">knwn.to</a><br>Powered by Mettle</p>
+    <p style="margin:0 0 8px;font-size:13px;color:#666;">Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br><a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md">How to use your athlete.md &rarr;</a></p>
+    <p style="margin:0;font-size:11px;color:#999;">This is not a clinical assessment.</p>
   </td></tr>
 </table>
 </td></tr></table>
-</body></html>
+</body>
+</html>
   `.trim()
 }
 
@@ -362,26 +342,26 @@ function buildNotificationEmail(
   const answersHtml = answers
     .map(
       ({ question, answer }, i) =>
-        `<tr><td style="padding:12px 0;border-bottom:1px solid #eee;">
-<strong>Q${i + 1}: ${question}</strong><br/>
-<span style="white-space:pre-wrap;">${answer.replace(/\n/g, '<br/>')}</span>
-</td></tr>`
+        `<tr><td style="padding:12px 0;border-bottom:1px solid #eee;"><strong>Q${i + 1}: ${question}</strong><br>${answer.replace(/\n/g, '<br>')}</td></tr>`
     )
     .join('\n')
 
   return `
-<!DOCTYPE html><html><body style="font-family:monospace;padding:24px;max-width:700px;">
+<!DOCTYPE html>
+<html>
+<body style="font-family:sans-serif;color:#1a1a1a;padding:24px;">
 <h2>First Read Submission</h2>
-<p><strong>Name:</strong> ${firstName}<br/>
-<strong>Email:</strong> ${email}<br/>
-<strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
-<hr/>
+<p><strong>Name:</strong> ${firstName}</p>
+<p><strong>Email:</strong> ${email}</p>
+<p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
+<hr>
 <h3>Answers</h3>
-<table width="100%" cellpadding="0" cellspacing="0">${answersHtml}</table>
-<hr/>
+<table width="100%">${answersHtml}</table>
+<hr>
 <h3>LaRue Portrait JSON</h3>
-<pre style="background:#f5f5f5;padding:16px;overflow:auto;">${JSON.stringify(portrait, null, 2)}</pre>
-</body></html>
+<pre style="background:#f4f4f4;padding:16px;overflow:auto;">${JSON.stringify(portrait, null, 2)}</pre>
+</body>
+</html>
   `.trim()
 }
 
