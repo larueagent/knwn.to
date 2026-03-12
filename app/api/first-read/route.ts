@@ -47,9 +47,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     // Step 1: Add subscriber to Kit
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     const subRes = await fetch(`${KIT_API}/subscribers`, {
       method: 'POST',
       headers: kitHeaders,
@@ -68,9 +68,9 @@ export async function POST(req: NextRequest) {
     const subData = await subRes.json()
     const subscriberId = subData?.subscriber?.id
 
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     // Step 2: Apply "first-read-complete" tag
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     const tagRes = await fetch(`${KIT_API}/tags`, {
       method: 'POST',
       headers: kitHeaders,
@@ -89,9 +89,9 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     // Step 3: Store key answers as Kit custom fields
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     if (subscriberId) {
       const fields: Record<string, string> = {
         first_read_sport: answers[0]?.answer?.slice(0, 255) || '',
@@ -106,9 +106,9 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     // Step 4: Generate LaRue JSON portrait (Claude Pass 1)
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     const profile: AthleteProfile = {
       age: age ?? 0,
       gender: gender ?? '',
@@ -118,9 +118,9 @@ export async function POST(req: NextRequest) {
     }
     const portrait = await generatePortrait(firstName, profile, answers)
 
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     // Step 5: Render athlete.md (Claude Pass 2)
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     const athleteMdContent = await generateAthleteMd(firstName, portrait)
 
     // Build the .md filename per spec: {firstName}-athlete-{YYYY-MM-DD}.md
@@ -130,9 +130,9 @@ export async function POST(req: NextRequest) {
     // Base64-encode the .md content for SendGrid attachment
     const mdBase64 = Buffer.from(athleteMdContent, 'utf-8').toString('base64')
 
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     // Step 5.5: Upsert athlete + insert first_read_submission to Supabase
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
 
     // Upsert athlete by email — creates on first read, updates kit_subscriber_id on repeat
     const { data: athleteRow, error: athleteError } = await supabase
@@ -160,7 +160,7 @@ export async function POST(req: NextRequest) {
       .select('id')
       .single()
 
-      if (athleteError || !athleteRow) {
+     if (athleteError || !athleteRow) {
         console.error('Supabase athlete upsert error:', athleteError)
         return NextResponse.json({ error: 'Supabase error', detail: athleteError }, { status: 500 })
       }
@@ -188,9 +188,9 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     // Step 6: Send athlete confirmation email with athlete.md attached
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     const athleteEmailBody = buildAthleteEmail(firstName, portrait, profile)
 
     await fetch(SENDGRID_API, {
@@ -204,20 +204,20 @@ export async function POST(req: NextRequest) {
         from: { email: FROM_EMAIL, name: FROM_NAME },
         subject: `Your LaRue file is ready, ${firstName}`,
         content: [{ type: 'text/html', value: athleteEmailBody }],
-        attachments: [\
-          {\
-            content: mdBase64,\
-            filename: mdFilename,\
-            type: 'text/plain',\
-            disposition: 'attachment',\
-          },\
+        attachments: [
+          {
+            content: mdBase64,
+            filename: mdFilename,
+            type: 'text/plain',
+            disposition: 'attachment',
+          },
         ],
       }),
     })
 
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     // Step 7: Send internal notification with full answers + portrait JSON
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
     const notificationBody = buildNotificationEmail(firstName, email, answers, portrait)
 
     await fetch(SENDGRID_API, {
@@ -260,36 +260,36 @@ export async function POST(req: NextRequest) {
 
 function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: AthleteProfile): string {
   const { sport, position, age } = profile
-  const sections = [\
-    {\
-      label: 'HOW I COMPETE AT MY BEST',\
-      content: portrait.identity.map(i => `<p style="margin:0 0 8px 0;">${i}</p>`).join(''),\
-    },\
-    {\
-      label: 'WHAT UNLOCKS ME',\
-      content: `<p style="margin:0;">${portrait.stateUnlocks}</p>`,\
-    },\
-    {\
-      label: 'UNDER PRESSURE',\
-      content: `<p style="margin:0 0 12px 0;">${portrait.pressureState}</p>` +\
-        portrait.pressurePatterns.map(p =>\
-          `<p style="margin:0 0 6px 0; padding-left:16px; border-left:2px solid #b8821a; color:#1a1714;">${p}</p>`\
-        ).join(''),\
-    },\
-    {\
-      label: 'WHAT COACHES NEED TO KNOW',\
-      content: `<p style="margin:0 0 12px 0;">${portrait.relationshipGets}</p>` +\
-        `<p style="margin:0; padding:12px 16px; border-left:3px solid #b8821a; color:#8a8178; font-style:italic;">&ldquo;${portrait.coachQuote}&rdquo;</p>`,\
-    },\
-    {\
-      label: "WHAT I'M WORKING TOWARD",\
-      content: `<p style="margin:0 0 8px 0;">${portrait.directionWant}</p>` +\
-        `<p style="margin:0; color:#8a8178;">${portrait.directionConsistent}</p>`,\
-    },\
-    {\
-      label: 'WHERE TO START',\
-      content: `<p style="margin:0;">${portrait.nextStep.primaryFocus}</p>`,\
-    },\
+  const sections = [
+    {
+      label: 'HOW I COMPETE AT MY BEST',
+      content: portrait.identity.map(i => `<p style="margin:0 0 8px 0;">${i}</p>`).join(''),
+    },
+    {
+      label: 'WHAT UNLOCKS ME',
+      content: `<p style="margin:0;">${portrait.stateUnlocks}</p>`,
+    },
+    {
+      label: 'UNDER PRESSURE',
+      content: `<p style="margin:0 0 12px 0;">${portrait.pressureState}</p>` +
+        portrait.pressurePatterns.map(p =>
+          `<p style="margin:0 0 6px 0; padding-left:16px; border-left:2px solid #b8821a; color:#1a1714;">${p}</p>`
+        ).join(''),
+    },
+    {
+      label: 'WHAT COACHES NEED TO KNOW',
+      content: `<p style="margin:0 0 12px 0;">${portrait.relationshipGets}</p>` +
+        `<p style="margin:0; padding:12px 16px; border-left:3px solid #b8821a; color:#8a8178; font-style:italic;">&ldquo;${portrait.coachQuote}&rdquo;</p>`,
+    },
+    {
+      label: "WHAT I'M WORKING TOWARD",
+      content: `<p style="margin:0 0 8px 0;">${portrait.directionWant}</p>` +
+        `<p style="margin:0; color:#8a8178;">${portrait.directionConsistent}</p>`,
+    },
+    {
+      label: 'WHERE TO START',
+      content: `<p style="margin:0;">${portrait.nextStep.primaryFocus}</p>`,
+    },
   ]
 
   const sectionsHtml = sections.map(s => `
