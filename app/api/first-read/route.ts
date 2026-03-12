@@ -349,7 +349,7 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
                 LaRue | <a href="https://knwn.to" style="color:#8a8178; text-decoration:none;">knwn.to</a><br />
                 Powered by Mettle<br /><br />
                 Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br /><br />
-                <a href="https://knwn.to/how-to-use-your-athlete-md" style="color:#b8821a; text-decoration:none; font-weight:700;">How to use your athlete.md &rarr;</a><br /><br />
+                <a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md" style="color:#b8821a; text-decoration:none; font-weight:700;">How to use your athlete.md &rarr;</a><br /><br />
                 This is not a clinical assessment.
               </p>
             </td>
