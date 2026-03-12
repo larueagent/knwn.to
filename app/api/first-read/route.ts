@@ -148,11 +148,33 @@ export async function POST(req: NextRequest) {
               'Non-binary': 'non_binary',
               'Prefer not to say': 'prefer_not_to_say',
             }
+
+            const levelMap: Record<string, string> = {
+              'Recreational': 'recreational',
+              'Youth / Club (Under 14)': 'youth_club_under_14',
+              'Youth / Club (14-18)': 'youth_club_14_18',
+              'High School JV': 'high_school_jv',
+              'High School Varsity': 'high_school_varsity',
+              'High School Elite': 'high_school_elite',
+              'Club / AAU Elite': 'club_aau_elite',
+              'Junior National': 'junior_national',
+              'College Walk-On': 'college_walk_on',
+              'College D3': 'college_d3',
+              'College D2': 'college_d2',
+              'College D1': 'college_d1',
+              'College D1 Power': 'college_d1_power',
+              'Post-Collegiate': 'post_collegiate',
+              'Semi-Professional': 'semi_professional',
+              'Professional': 'professional',
+              'Professional Elite': 'professional_elite',
+              'Olympic / National Team': 'olympic_national_team',
+              'Retired / Masters': 'retired_masters',
+            }
             return gender ? (genderMap[gender] ?? null) : null
           })(),
           sport: sport ?? '',
           position: position ?? null,
-          level: level ?? null,
+          level: (level ? (levelMap[level] ?? null) : null),
           kit_subscriber_id: subscriberId ? String(subscriberId) : null,
         },
         { onConflict: 'email', ignoreDuplicates: false }
@@ -160,10 +182,10 @@ export async function POST(req: NextRequest) {
       .select('id')
       .single()
 
-     if (athleteError || !athleteRow) {
-        console.error('Supabase athlete upsert error:', athleteError)
-        return NextResponse.json({ error: 'Supabase error', detail: athleteError }, { status: 500 })
-      }
+    if (athleteError || !athleteRow) {
+      console.error('Supabase athlete upsert error:', athleteError)
+      return NextResponse.json({ error: 'Supabase error', detail: athleteError }, { status: 500 })
+    }
 
     // Insert first_read_submission linked to athlete
     if (athleteRow?.id) {
@@ -263,104 +285,80 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
   const sections = [
     {
       label: 'HOW I COMPETE AT MY BEST',
-      content: portrait.identity.map(i => `<p style="margin:0 0 8px 0;">${i}</p>`).join(''),
+      content: portrait.identity.map(i => `<p>${i}</p>`).join(''),
     },
     {
       label: 'WHAT UNLOCKS ME',
-      content: `<p style="margin:0;">${portrait.stateUnlocks}</p>`,
+      content: `<p>${portrait.stateUnlocks}</p>`,
     },
     {
       label: 'UNDER PRESSURE',
-      content: `<p style="margin:0 0 12px 0;">${portrait.pressureState}</p>` +
+      content: `<p>${portrait.pressureState}</p>` +
         portrait.pressurePatterns.map(p =>
-          `<p style="margin:0 0 6px 0; padding-left:16px; border-left:2px solid #b8821a; color:#1a1714;">${p}</p>`
+          `<p>${p}</p>`
         ).join(''),
     },
     {
       label: 'WHAT COACHES NEED TO KNOW',
-      content: `<p style="margin:0 0 12px 0;">${portrait.relationshipGets}</p>` +
-        `<p style="margin:0; padding:12px 16px; border-left:3px solid #b8821a; color:#8a8178; font-style:italic;">&ldquo;${portrait.coachQuote}&rdquo;</p>`,
+      content: `<p>${portrait.relationshipGets}</p>` +
+        `<p><em>"${portrait.coachQuote}"</em></p>`,
     },
     {
       label: "WHAT I'M WORKING TOWARD",
-      content: `<p style="margin:0 0 8px 0;">${portrait.directionWant}</p>` +
-        `<p style="margin:0; color:#8a8178;">${portrait.directionConsistent}</p>`,
+      content: `<p>${portrait.directionWant}</p>` +
+        `<p>${portrait.directionConsistent}</p>`,
     },
     {
       label: 'WHERE TO START',
-      content: `<p style="margin:0;">${portrait.nextStep.primaryFocus}</p>`,
+      content: `<p>${portrait.nextStep.primaryFocus}</p>`,
     },
   ]
 
   const sectionsHtml = sections.map(s => `
     <tr>
-      <td style="padding: 0 0 32px 0;">
-        <p style="margin:0 0 8px 0; font-family:'Courier New',Courier,monospace; font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#b8821a;">${s.label}</p>
-        <div style="font-family:Georgia,serif; font-size:16px; line-height:26px; color:#1a1714;">${s.content}</div>
+      <td style="padding: 24px 0; border-top: 1px solid #e5e5e5;">
+        <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #999; margin: 0 0 12px;">${s.label}</p>
+        ${s.content}
       </td>
-    </tr>`).join('')
+    </tr>
+  `).join('')
 
   const themesHtml = portrait.themes
-    .map(t => `<span style="display:inline-block; margin-right:12px; font-family:'Courier New',Courier,monospace; font-size:11px; letter-spacing:1.2px; text-transform:uppercase; color:#b8821a;">${t}</span>`)
+    .map(t => `<span style="display: inline-block; background: #f0f0f0; border-radius: 4px; padding: 4px 10px; font-size: 12px; margin: 4px 4px 4px 0;">${t}</span>`)
     .join('')
 
-  return `<!DOCTYPE html>
+  return `
+<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0; padding:0; background-color:#f5f0e8;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5f0e8; padding:40px 16px;">
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a1a; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+  <table width="100%" cellpadding="0" cellspacing="0">
     <tr>
-      <td align="center">
-        <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px; width:100%;">
-
-          <!-- Header -->
-          <tr>
-            <td style="padding:0 0 40px 0; border-bottom:1px solid #e0d9ce;">
-              <p style="margin:0 0 16px 0; font-family:'Courier New',Courier,monospace; font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#b8821a;">LARUE \u00b7 FIRST READ</p>
-              <h1 style="margin:0; font-family:Georgia,serif; font-size:48px; font-weight:700; line-height:1; color:#1a1714;">${firstName}</h1>
-              <div style="font-size:14px;letter-spacing:0.08em;color:#666;margin-top:4px;">${position} \u00b7 ${sport} \u00b7 ${age}</div>
-            </td>
-          </tr>
-
-          <!-- Intro -->
-          <tr>
-            <td style="padding:32px 0;">
-              <p style="margin:0; font-family:Georgia,serif; font-size:16px; line-height:26px; color:#1a1714;">Your LaRue file is ready. Everything below is grounded in what you actually said \u2014 not a template, not a generic profile. Read the <span style="color:#b8821a;">Where to Start</span> section first if you're short on time.</p>
-            </td>
-          </tr>
-
-          <!-- Divider -->
-          <tr><td style="padding:0 0 32px 0; border-top:1px solid #e0d9ce;"></td></tr>
-
-          <!-- Sections -->
-          ${sectionsHtml}
-
-          <!-- Themes -->
-          <tr>
-            <td style="padding:0 0 40px 0; border-top:1px solid #e0d9ce;">
-              <div style="padding-top:24px;">${themesHtml}</div>
-            </td>
-          </tr>
-
-          <!-- Footer -->
-          <tr>
-            <td>
-              <p style="margin:0; font-family:'Courier New',Courier,monospace; font-size:11px; letter-spacing:1px; color:#8a8178;">
-                LaRue | <a href="https://knwn.to" style="color:#8a8178; text-decoration:none;">knwn.to</a><br />
-                Powered by Mettle<br /><br />
-                Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br /><br />
-                <a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md" style="color:#b8821a; text-decoration:none; font-weight:700;">How to use your athlete.md &rarr;</a><br /><br />
-                This is not a clinical assessment.
-              </p>
-            </td>
-          </tr>
-
-        </table>
+      <td style="padding-bottom: 32px;">
+        <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #999; margin: 0 0 8px;">LARUE &middot; FIRST READ</p>
+        <h1 style="font-size: 28px; font-weight: 700; margin: 0 0 4px;">${firstName}</h1>
+        <p style="color: #666; margin: 0;">${position} &middot; ${sport} &middot; ${age}</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding-bottom: 24px;">
+        <p style="color: #444; line-height: 1.6;">Your LaRue file is ready. Everything below is grounded in what you actually said &mdash; not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you're short on time.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding-bottom: 16px;">${themesHtml}</td>
+    </tr>
+    ${sectionsHtml}
+    <tr>
+      <td style="padding-top: 32px; border-top: 1px solid #e5e5e5; font-size: 13px; color: #999;">
+        <p>LaRue | <a href="https://knwn.to" style="color: #999;">knwn.to</a><br>Powered by Mettle</p>
+        <p>Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br><a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md">How to use your athlete.md &rarr;</a></p>
+        <p><em>This is not a clinical assessment.</em></p>
       </td>
     </tr>
   </table>
 </body>
-</html>`.trim()
+</html>
+`.trim()
 }
 
 function buildNotificationEmail(
@@ -372,23 +370,22 @@ function buildNotificationEmail(
   const answersHtml = answers
     .map(
       ({ question, answer }, i) =>
-        `<p><strong>Q${i + 1}: ${question}</strong></p><p>${answer.replace(/\n/g, '<br />')}</p><br />`
+        `<p><strong>Q${i + 1}: ${question}</strong></p><p>${answer.replace(/\n/g, '<br>')}</p>`
     )
     .join('\n')
 
   return `
-<div style="font-family: monospace; max-width: 700px; margin: 0 auto;">
-  <h2>First Read Submission</h2>
-  <p><strong>Name:</strong> ${firstName}</p>
-  <p><strong>Email:</strong> ${email}</p>
-  <p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
-  <hr />
-  <h3>Answers</h3>
-  ${answersHtml}
-  <hr />
-  <h3>LaRue Portrait JSON</h3>
-  <pre style="background:#f5f5f5;padding:16px;overflow-x:auto;">${JSON.stringify(portrait, null, 2)}</pre>
-</div>`.trim()
+<h2>First Read Submission</h2>
+<p><strong>Name:</strong> ${firstName}</p>
+<p><strong>Email:</strong> ${email}</p>
+<p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
+<hr>
+<h3>Answers</h3>
+${answersHtml}
+<hr>
+<h3>LaRue Portrait JSON</h3>
+<pre>${JSON.stringify(portrait, null, 2)}</pre>
+`.trim()
 }
 
 // Re-export LaRuePortrait so the notification builder has the type in scope
