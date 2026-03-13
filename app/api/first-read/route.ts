@@ -132,7 +132,7 @@ export async function POST(req: NextRequest) {
     // ---------------------------------------------------------------------------
     // Step 5: Render athlete.md (Claude Pass 2)
     // ---------------------------------------------------------------------------
-    const athleteMdContent = await generateAthleteMd(firstName, portrait)
+    const athleteMdContent = await generateAthleteMd(firstName, portrait, profile)
 
     // Build the .md filename per spec: {firstName}-athlete-{YYYY-MM-DD}.md
     const dateStr = new Date().toISOString().split('T')[0]
@@ -273,69 +273,71 @@ export async function POST(req: NextRequest) {
 // ---------------------------------------------------------------------------
 
 function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: AthleteProfile): string {
-  const { sport, position, age } = profile
+  const { sport, position, level, age } = profile
+
+  const themePills = portrait.themes
+    .map(t => `<span style="display:inline-block;margin:4px 2px;padding:6px 14px;background:#1A1714;color:#F5F0E8;border-radius:4px;font-size:11px;font-family:Arial,Helvetica,sans-serif;letter-spacing:0.05em">${t}</span>`)
+    .join('')
+
   const sections = [
     {
       label: 'HOW I COMPETE AT MY BEST',
-      content: portrait.identity.map(i => `<p>${i}</p>`).join(''),
+      content: portrait.identity.map(i => `<p style="margin:0 0 10px;font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#1A1714">${i}</p>`).join(''),
     },
     {
       label: 'WHAT UNLOCKS ME',
-      content: `<p>${portrait.stateUnlocks}</p>`,
+      content: `<p style="margin:0;font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#1A1714">${portrait.stateUnlocks}</p>`,
     },
     {
       label: 'UNDER PRESSURE',
-      content: `<p>${portrait.pressureState}</p>` +
+      content: `<p style="margin:0 0 12px;font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#1A1714">${portrait.pressureState}</p>` +
         portrait.pressurePatterns.map(p =>
-          `<p>&mdash; ${p}</p>`
+          `<p style="margin:0 0 8px;font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#1A1714;padding-left:16px">&mdash; ${p}</p>`
         ).join(''),
     },
     {
       label: 'WHAT COACHES NEED TO KNOW',
-      content: `<p>${portrait.relationshipGets}</p>` +
-        `<p><em>"${portrait.coachQuote}"</em></p>`,
+      content: `<p style="margin:0 0 12px;font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#1A1714">${portrait.relationshipGets}</p>` +
+        `<table width="100%" cellpadding="0" cellspacing="0" style="margin:0"><tr><td style="border-left:3px solid #B8821A;padding:10px 16px;background:#EDE8DF"><p style="margin:0;font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#1A1714;font-style:italic">"${portrait.coachQuote}"</p></td></tr></table>`,
     },
     {
       label: "WHAT I'M WORKING TOWARD",
-      content: `<p>${portrait.directionWant}</p>` +
-        `<p>${portrait.directionConsistent}</p>`,
+      content: `<p style="margin:0 0 10px;font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#1A1714">${portrait.directionWant}</p>` +
+        `<p style="margin:0;font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#1A1714">${portrait.directionConsistent}</p>`,
     },
     {
       label: 'WHERE TO START',
-      content: `<p>${portrait.nextStep.primaryFocus}</p>`,
+      content: `<p style="margin:0;font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#1A1714">${portrait.nextStep.primaryFocus}</p>`,
     },
   ]
 
   const sectionsHtml = sections.map(s => `
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px">
-      <tr><td style="padding:24px;background:#f9f9f9;border-radius:8px">
-        <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#999;margin:0 0 12px">${s.label}</p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px">
+      <tr><td style="padding:24px;background:#FAF7F2;border-radius:8px;border:1px solid #E0D9CE">
+        <p style="font-size:11px;font-weight:700;letter-spacing:0.12em;color:#B8821A;margin:0 0 14px;font-family:'Courier New',Courier,monospace">${s.label}</p>
         ${s.content}
       </td></tr>
     </table>
   `).join('')
 
-  const themesHtml = portrait.themes
-    .map(t => `<span style="display:inline-block;margin:4px;padding:4px 10px;background:#111;color:#fff;border-radius:4px;font-size:12px">${t}</span>`)
-    .join('')
-
   return `
-    <!DOCTYPE html><html><body style="font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:24px;color:#111">
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px">
-        <tr><td style="padding:24px;background:#111;color:#fff;border-radius:8px">
-          <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#999;margin:0 0 8px">LARUE &middot; FIRST READ</p>
-          <h1 style="margin:0 0 4px;font-size:28px">${firstName}</h1>
-          <p style="margin:0;color:#aaa">${position} &middot; ${sport} &middot; ${age}</p>
-          <p style="margin:16px 0 0;font-size:14px;color:#ccc">Your LaRue file is ready. Everything below is grounded in what you actually said &mdash; not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you&rsquo;re short on time.</p>
+    <!DOCTYPE html><html><body style="font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:24px;background:#F5F0E8;color:#1A1714">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px">
+        <tr><td style="padding:28px;background:#1A1714;color:#F5F0E8;border-radius:8px">
+          <p style="font-size:10px;font-weight:700;letter-spacing:0.14em;color:#8A8178;margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;text-transform:uppercase">First Read by LaRue &middot; knwn.to</p>
+          <h1 style="margin:0 0 6px;font-size:30px;font-family:Georgia,serif;font-weight:normal;color:#F5F0E8">${firstName}</h1>
+          <p style="margin:0 0 20px;color:#8A8178;font-family:Arial,Helvetica,sans-serif;font-size:13px">${position} &middot; ${level} &middot; Age: ${age}</p>
+          <p style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#8A8178;margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;text-transform:uppercase">What came through</p>
+          <div>${themePills}</div>
         </td></tr>
       </table>
-      <div style="margin-bottom:24px">${themesHtml}</div>
+      <p style="font-family:Georgia,serif;font-size:15px;line-height:1.7;color:#1A1714;margin:0 0 28px">Your LaRue file is ready. Everything below is grounded in what you actually said &mdash; not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you&rsquo;re short on time.</p>
       ${sectionsHtml}
       <table width="100%" cellpadding="0" cellspacing="0">
-        <tr><td style="padding:24px;border-top:1px solid #eee;font-size:12px;color:#999">
-          LaRue | <a href="https://knwn.to" style="color:#999">knwn.to</a><br>Powered by Mettle<br><br>
+        <tr><td style="padding:24px;border-top:1px solid #E0D9CE;font-size:12px;color:#8A8178;font-family:Arial,Helvetica,sans-serif">
+          LaRue | <a href="https://knwn.to" style="color:#8A8178">knwn.to</a><br>Powered by Mettle<br><br>
           Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br>
-          <a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md" style="color:#111">How to use your athlete.md &rarr;</a><br><br>
+          <a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md" style="color:#1A1714">How to use your athlete.md &rarr;</a><br><br>
           <em>This is not a clinical assessment.</em>
         </td></tr>
       </table>
