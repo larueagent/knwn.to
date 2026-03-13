@@ -21,7 +21,7 @@ const INTERNAL_EMAIL = 'robert@mettle.coach'
 interface FirstReadPayload {
   firstName: string
   email: string
-  dateOfBirth?: string
+  birthdate?: string
   age?: number
   gender?: string
   sport?: string
@@ -32,7 +32,17 @@ interface FirstReadPayload {
 
 export async function POST(req: NextRequest) {
   const body: FirstReadPayload = await req.json()
-  const { firstName, email, dateOfBirth, age, gender, sport, position, level, answers } = body
+  const { firstName, email, birthdate, gender, sport, position, level, answers } = body
+  const age = birthdate
+    ? (() => {
+        const dob = new Date(birthdate)
+        const today = new Date()
+        let a = today.getFullYear() - dob.getFullYear()
+        const m = today.getMonth() - dob.getMonth()
+        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) a--
+        return a
+      })()
+    : undefined
 
   if (!email || !email.includes('@')) {
     return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
@@ -142,7 +152,7 @@ export async function POST(req: NextRequest) {
         {
           first_name: firstName,
           email,
-          date_of_birth: dateOfBirth ?? null,
+          date_of_birth: birthdate ?? null,
           age: age ?? null,
           gender: (() => {
             const genderMap: Record<string, string> = {
