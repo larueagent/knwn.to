@@ -15,7 +15,7 @@ import { supabase } from '@/lib/supabase'
 const KIT_API = 'https://api.kit.com/v4'
 const SENDGRID_API = 'https://api.sendgrid.com/v3/mail/send'
 const FROM_EMAIL = 'larue@knwn.to'
-const FROM_NAME = 'LaRue by Mettle'
+const FROM_NAME = 'LaRue by knwn.to'
 const INTERNAL_EMAIL = 'robert@mettle.coach'
 
 interface FirstReadPayload {
