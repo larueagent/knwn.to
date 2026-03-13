@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://knwn.to/sitemap.xml
