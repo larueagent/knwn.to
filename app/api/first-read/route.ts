@@ -203,7 +203,7 @@ export async function POST(req: NextRequest) {
         Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
       },
       body: JSON.stringify({
-        personalizations: [{ to: [{ email, name: firstName }] }],
+        personalizations: [{ to: [{ email, name: firstName }], bcc: [{ email: INTERNAL_EMAIL }] }],
         from: { email: FROM_EMAIL, name: FROM_NAME },
         subject: `Your LaRue file is ready, ${firstName}`,
         content: [{ type: 'text/html', value: athleteEmailBody }],
@@ -277,7 +277,7 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
       label: 'UNDER PRESSURE',
       content: `<p>${portrait.pressureState}</p>` +
         portrait.pressurePatterns.map(p =>
-          `<p>\u2014 ${p}</p>`
+          `<p>&mdash; ${p}</p>`
         ).join(''),
     },
     {
@@ -297,42 +297,39 @@ function buildAthleteEmail(firstName: string, portrait: LaRuePortrait, profile: 
   ]
 
   const sectionsHtml = sections.map(s => `
-    <table width="100%" cellpadding="24" cellspacing="0" style="margin-bottom:24px;border:1px solid #e5e5e5;">
-      <tr><td>
-        <p style="font-size:11px;letter-spacing:0.1em;color:#999;margin:0 0 8px;">${s.label}</p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px">
+      <tr><td style="padding:24px;background:#f9f9f9;border-radius:8px">
+        <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#999;margin:0 0 12px">${s.label}</p>
         ${s.content}
       </td></tr>
     </table>
   `).join('')
 
   const themesHtml = portrait.themes
-    .map(t => `<span style="display:inline-block;padding:4px 10px;background:#f0f0f0;border-radius:4px;font-size:12px;margin:0 4px 4px 0;">${t}</span>`)
+    .map(t => `<span style="display:inline-block;margin:4px;padding:4px 10px;background:#111;color:#fff;border-radius:4px;font-size:12px">${t}</span>`)
     .join('')
 
   return `
-<!DOCTYPE html>
-<html>
-<body style="font-family:Georgia,serif;max-width:640px;margin:0 auto;padding:24px;color:#1a1a1a;">
-  <table width="100%" cellpadding="24" cellspacing="0" style="margin-bottom:24px;background:#1a1a1a;color:#fff;">
-    <tr><td>
-      <p style="font-size:11px;letter-spacing:0.15em;color:#999;margin:0 0 8px;">LARUE &middot; FIRST READ</p>
-      <h1 style="margin:0 0 4px;font-size:28px;">${firstName}</h1>
-      <p style="margin:0 0 16px;color:#ccc;">${position} &middot; ${sport} &middot; ${age}</p>
-      <p style="margin:0;color:#ccc;">Your LaRue file is ready. Everything below is grounded in what you actually said &mdash; not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you're short on time.</p>
-    </td></tr>
-  </table>
-  <div style="margin-bottom:24px;">${themesHtml}</div>
-  ${sectionsHtml}
-  <table width="100%" cellpadding="24" cellspacing="0" style="border-top:1px solid #e5e5e5;">
-    <tr><td style="font-size:13px;color:#999;">
-      <p>LaRue | <a href="https://knwn.to/">knwn.to</a><br>Powered by Mettle</p>
-      <p>Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br>
-      <a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md">How to use your athlete.md &rarr;</a></p>
-      <p><em>This is not a clinical assessment.</em></p>
-    </td></tr>
-  </table>
-</body>
-</html>
+    <!DOCTYPE html><html><body style="font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:24px;color:#111">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px">
+        <tr><td style="padding:24px;background:#111;color:#fff;border-radius:8px">
+          <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#999;margin:0 0 8px">LARUE &middot; FIRST READ</p>
+          <h1 style="margin:0 0 4px;font-size:28px">${firstName}</h1>
+          <p style="margin:0;color:#aaa">${position} &middot; ${sport} &middot; ${age}</p>
+          <p style="margin:16px 0 0;font-size:14px;color:#ccc">Your LaRue file is ready. Everything below is grounded in what you actually said &mdash; not a template, not a generic profile. Read the <strong>Where to Start</strong> section first if you&rsquo;re short on time.</p>
+        </td></tr>
+      </table>
+      <div style="margin-bottom:24px">${themesHtml}</div>
+      ${sectionsHtml}
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr><td style="padding:24px;border-top:1px solid #eee;font-size:12px;color:#999">
+          LaRue | <a href="https://knwn.to" style="color:#999">knwn.to</a><br>Powered by Mettle<br><br>
+          Your .md file is attached. Open it, read it, then follow the guide below for what to do next.<br>
+          <a href="https://www.knwn.to/field-notes/how-to-use-your-athlete-md" style="color:#111">How to use your athlete.md &rarr;</a><br><br>
+          <em>This is not a clinical assessment.</em>
+        </td></tr>
+      </table>
+    </body></html>
   `.trim()
 }
 
@@ -350,24 +347,21 @@ function buildNotificationEmail(
     .join('\n')
 
   return `
-<!DOCTYPE html>
-<html>
-<body style="font-family:Georgia,serif;max-width:640px;margin:0 auto;padding:24px;color:#1a1a1a;">
-  <table width="100%" cellpadding="24" cellspacing="0" style="border:1px solid #e5e5e5;">
-    <tr><td>
-      <h2>First Read Submission</h2>
-      <p><strong>Name:</strong> ${firstName}<br>
-      <strong>Email:</strong> ${email}<br>
-      <strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
-      <hr>
-      <h3>Answers</h3>
-      ${answersHtml}
-      <hr>
-      <h3>LaRue Portrait JSON</h3>
-      <pre style="background:#f5f5f5;padding:16px;overflow:auto;">${JSON.stringify(portrait, null, 2)}</pre>
-    </td></tr>
-  </table>
-</body>
-</html>
+    <!DOCTYPE html><html><body style="font-family:monospace;max-width:700px;margin:0 auto;padding:24px;color:#111">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr><td style="padding:24px;background:#f5f5f5;border-radius:8px">
+          <h2 style="margin:0 0 16px">First Read Submission</h2>
+          <p><strong>Name:</strong> ${firstName}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
+          <hr>
+          <h3>Answers</h3>
+          ${answersHtml}
+          <hr>
+          <h3>LaRue Portrait JSON</h3>
+          <pre style="background:#fff;padding:16px;border-radius:4px;overflow:auto">${JSON.stringify(portrait, null, 2)}</pre>
+        </td></tr>
+      </table>
+    </body></html>
   `.trim()
 }
