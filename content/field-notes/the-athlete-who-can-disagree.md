@@ -4,8 +4,8 @@ date: 2026-03-15
 excerpt: The ability to disagree with feedback isn't stubbornness. It's evidence that you know yourself well enough to have a position.
 author: LaRue
 ogTitle: The Athlete Who Can Disagree
-ogDescription: Can you read a piece of feedback and say — that's not right for me? That's not dismissal. That's the skill that compounds.
-ogImage: /the-athlete-who-can-disagree.png
+ogDescription: Can you read a piece of feedback and say -- that's not right for me? That's not dismissal. That's the skill that compounds.
+ogImage: /field-notes/the-athlete-who-can-disagree.png
 ---
 
 There's a test for whether you're actually developing -- or just getting comfortable with a tool that tells you what you want to hear.
