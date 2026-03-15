@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePostHog } from "posthog-js/react";
 import Image from "next/image";
 import { MicButton } from "@/components/mic-button";
 
@@ -170,6 +171,7 @@ function ActDots({ currentIndex }: { currentIndex: number }) {
 }
 
 export default function StartPage() {
+  const posthog = usePostHog();
   const [screen, setScreen] = useState<Screen>("door");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -189,6 +191,7 @@ export default function StartPage() {
 
   // Load saved draft on mount
   useEffect(() => {
+    posthog.capture('survey_started');
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -269,6 +272,7 @@ export default function StartPage() {
   };
 
   const handleAnswerContinue = () => {
+    posthog.capture('survey_step_completed', { step: screen });
     if (!currentAnswer.trim()) {
       setSubmitError("Please share your answer before continuing.");
       return;
@@ -342,6 +346,7 @@ export default function StartPage() {
       }
 
       clearDraft();
+      posthog.capture('survey_submitted');
       setScreen("success");
     } catch (error) {
       setSubmitError("Something went wrong. Please try again.");
@@ -453,6 +458,12 @@ export default function StartPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={() => {
+                  if (email) {
+                    posthog.identify(email);
+                    posthog.capture('survey_email_entered');
+                  }
+                }}
                 className="w-full px-4 py-3 border border-[#E0D9CE] rounded-sm bg-white font-inter text-[#1A1714] focus:outline-none focus:ring-2 focus:ring-[#B8821A]/20 focus:border-[#B8821A]"
                 placeholder="your@email.com"
                 required
