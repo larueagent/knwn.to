@@ -23,7 +23,7 @@ That knowledge lives somewhere. It's already in you. You've just never had a doc
 
 * * *
 
-### The athlete.md is that document.
+## The athlete.md is that document.
 
 Not a scouting report. Not a psych eval. Not a coach's impression of you or a parent's version of who you are.
 
@@ -41,7 +41,7 @@ Both of those things are true at once. That's the point.
 
 * * *
 
-### Here's what's strange about the athlete.md:
+## Here's what's strange about the athlete.md:
 
 You didn't write it. But it's written as you.
 
@@ -55,7 +55,7 @@ LaRue just made them legible. Not to tell you what's broken. To show you how you
 
 * * *
 
-### Why does this matter?
+## Why does this matter?
 
 You've spent thousands of hours getting your body ready. Film. Weights. Conditioning. Drills. All of it visible, measurable, improvable.
 
@@ -67,7 +67,7 @@ Here's what changes when you have it: You stop blaming yourself for things you d
 
 * * *
 
-### What the athlete.md is not:
+## What the athlete.md is not:
 
 It is not a diagnosis. There is nothing in it that says something is wrong with you.
 
