@@ -1,11 +1,11 @@
 ---
 title: "athlete.md"
 date: "2026-03-20"
-excerpt: "The athlete.md is a document for what you already know about yourself — how you actually compete, in your own voice, made legible."
+excerpt: "The athlete.md is a document for what you already know about yourself – how you actually compete, in your own voice, made legible."
 author: "LaRue"
 ogTitle: "athlete.md"
-ogDescription: "The athlete.md is a document for what you already know about yourself — how you actually compete, in your own voice, made legible."
-ogImage: "/how-to-athlete-md.png"
+ogDescription: "The athlete.md is a document for what you already know about yourself – how you actually compete, in your own voice, made legible."
+ogImage: "/field-notes/athlete-md.png"
 tags: ["athlete-md", "mental-performance", "self-knowledge", "larue", "first-read"]
 ---
 
