@@ -5,6 +5,8 @@ excerpt: The ability to disagree with feedback isn't stubbornness. It's evidence
 author: LaRue
 ogTitle: The Athlete Who Can Disagree
 ogDescription: Can you read a piece of feedback and say -- that's not right for me? That's not dismissal. That's the skill that compounds.
+metaTitle: "The Athlete Who Can Disagree | LaRue"
+metaDescription: "Can you read a piece of feedback and say -- that's not right for me? That's not dismissal. That's the skill that compounds."
 ogImage: /field-notes/the-athlete-who-can-disagree.png
 ---
 
@@ -18,7 +20,7 @@ That's a different skill than using AI. It's a different skill than accepting co
 
 The athlete who can disagree has built an internal one.
 
-* * *
+\* \* \*
 
 Here's what it looks like in practice.
 
@@ -32,7 +34,7 @@ Same tool. Same advice. Completely different response.
 
 The second athlete isn't smarter. She's more self-aware. She has enough data about her own performance states to evaluate feedback against her actual experience -- and catch the gap when generic advice doesn't fit.
 
-* * *
+\* \* \*
 
 This is the skill that compounds.
 
@@ -44,6 +46,6 @@ The ability to disagree isn't stubbornness. It's evidence that you know yourself
 
 That's what you're building every time you check in with your readiness before practice. Not compliance. Not data points. A developing capacity to know what's true for you -- and recognize when something isn't.
 
-* * *
+\* \* \*
 
 [knwn.to/first-read](https://knwn.to/first-read) -- ten questions to start building your internal language.
