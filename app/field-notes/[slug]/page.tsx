@@ -4,6 +4,7 @@ import { getFieldNoteBySlug, getAllFieldNotes } from '@/lib/field-notes';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
+import rehypeRaw from 'rehype-raw';
 import rehypeStringify from 'rehype-stringify';
 import { visit } from 'unist-util-visit';
 import type { Metadata } from 'next';
@@ -80,28 +81,58 @@ export default async function FieldNotePage({ params }: Props) {
 
   const processed = await unified()
     .use(remarkParse)
-    .use(remarkRehype)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
     .use(rehypeInlineStyles)
-    .use(rehypeStringify)
+    .use(rehypeStringify, { allowDangerousHtml: true })
     .process(note.content);
 
   const contentHtml = processed.toString();
 
   return (
-    <div className="min-h-screen bg-[#0D0C0B] text-[#E8E0D5] flex flex-col">
-      {/* Back nav */}
-      <div className="max-w-2xl mx-auto px-6 pt-16 pb-4 w-full">
-        <Link
-          href="/field-notes"
-          className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase"
-        >
-          &#8592; Field Notes
-        </Link>
-      </div>
+    <main
+      style={{
+        minHeight: '100vh',
+        backgroundColor: '#0F0D0B',
+        paddingTop: '5rem',
+        paddingBottom: '5rem',
+      }}
+    >
+      <article
+        style={{
+          maxWidth: '680px',
+          margin: '0 auto',
+          padding: '0 1.5rem',
+        }}
+      >
+        {/* Back nav */}
+        <nav style={{ marginBottom: '3rem' }}>
+          <Link
+            href="/field-notes"
+            style={{
+              color: '#B8821A',
+              textDecoration: 'none',
+              fontSize: '0.875rem',
+              fontFamily: 'var(--font-inter), system-ui, sans-serif',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+            }}
+          >
+            ← Field Notes
+          </Link>
+        </nav>
 
-      <article className="flex-1 max-w-2xl mx-auto px-6 pt-8 pb-24 w-full">
         {/* Date */}
-        <p style={{fontFamily:'var(--font-mono)',fontSize:'0.75rem',color:'#B8821A',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:'1rem'}}>
+        <p
+          style={{
+            fontFamily: 'var(--font-inter), system-ui, sans-serif',
+            fontSize: '0.875rem',
+            color: '#6B6560',
+            marginBottom: '0.75rem',
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+          }}
+        >
           {new Date(note.date).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -111,41 +142,66 @@ export default async function FieldNotePage({ params }: Props) {
         </p>
 
         {/* Title */}
-        <h1 style={{fontFamily:'var(--font-syne),sans-serif',fontSize:'2.2rem',fontWeight:700,color:'#E8E0D5',lineHeight:1.2,marginBottom:'1.5rem'}}>
+        <h1
+          style={{
+            fontFamily: 'var(--font-syne), sans-serif',
+            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+            fontWeight: '700',
+            color: '#E8E0D5',
+            lineHeight: '1.2',
+            marginBottom: '1rem',
+          }}
+        >
           {note.title}
         </h1>
 
         {/* Author */}
-        <p style={{fontFamily:'var(--font-mono)',fontSize:'0.75rem',color:'#8A8178',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:'3rem'}}>
+        <p
+          style={{
+            fontFamily: 'var(--font-inter), system-ui, sans-serif',
+            fontSize: '0.9375rem',
+            color: '#6B6560',
+            marginBottom: '2.5rem',
+          }}
+        >
           By {note.author}
         </p>
 
         {/* Divider */}
-        <div style={{borderTop:'1px solid #2A2520',marginBottom:'3rem'}} />
+        <hr
+          style={{
+            border: 'none',
+            borderTop: '1px solid #2A2520',
+            marginBottom: '2.5rem',
+          }}
+        />
 
         {/* Content */}
         <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-      </article>
 
-      {/* Footer */}
-      <footer className="border-t border-[#2A2520] py-10 px-6">
-        <div className="max-w-2xl mx-auto">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <nav className="flex flex-wrap gap-x-6 gap-y-2">
-              <Link href="/" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">knwn.to</Link>
-              <Link href="/first-read" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">Start Here</Link>
-              <Link href="/field-notes" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">Field Notes</Link>
-              <Link href="/book" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">The Book</Link>
-              <Link href="/for-coaches" className="font-mono text-xs text-[#8A8178] hover:text-[#B8821A] transition-colors tracking-widest uppercase">For Coaches</Link>
-            </nav>
-            <span className="font-mono text-xs text-[#4A443E] tracking-widest uppercase">Powered by Mettle</span>
-          </div>
-          <p className="font-mono text-xs text-[#4A443E] leading-relaxed">
-            LaRue is an AI assistant. He is not a licensed therapist, psychologist, or medical professional. If you are in crisis, please contact a qualified mental health provider.{' '}
-            <span className="text-[#8A8178]">© 2026 Mettle Performance. All rights reserved.</span>
-          </p>
-        </div>
-      </footer>
-    </div>
+        {/* Footer */}
+        <footer
+          style={{
+            marginTop: '4rem',
+            paddingTop: '2rem',
+            borderTop: '1px solid #2A2520',
+          }}
+        >
+          <Link
+            href="/field-notes"
+            style={{
+              color: '#B8821A',
+              textDecoration: 'none',
+              fontSize: '0.875rem',
+              fontFamily: 'var(--font-inter), system-ui, sans-serif',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+            }}
+          >
+            ← Back to Field Notes
+          </Link>
+        </footer>
+      </article>
+    </main>
   );
 }
