@@ -8,7 +8,7 @@ excerpt: "The athletes who thrive next decade will have ruthless AI process on o
 ogTitle: "The Barbell That Wins in Youth Sport"
 ogDescription: "AI on one end. A certified human on the other. The athletes who thrive next decade will live on both ends of that barbell — and knwn.to is the only platform built that way."
 metaTitle: "The Barbell That Wins in Youth Sport | LaRue"
-metaDescription: "AI on one end. A certified human on the other. The athletes who thrive next decade will live on both ends of that barbell — and knwn.to is the only platform built that way."
+metaDescription: "AI on one end. A certified mental performance consultant on the other. The athletes who thrive next decade will live on both ends of that barbell."
 ogImage: "/the-barbell-that-wins-in-youth-sport.png"
 ---
 
