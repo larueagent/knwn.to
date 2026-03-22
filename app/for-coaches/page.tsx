@@ -48,8 +48,8 @@ export default function ForCoachesPage() {
           <div className="flex flex-col gap-8">
             {[
               { n: "01", title: "Athletes build their athlete.md", body: "LaRue walks every athlete through 10 questions about how they compete — pressure, preparation, what derails them, what they need. The output is a plain text profile they own." },
-              { n: "02", title: "You see your roster clearly", body: "Instead of spending the first three sessions doing intake, you start with a full picture of every athlete — who internalizes under pressure, who needs silence before competition, who&apos;s been struggling for three weeks. That context is shareable, searchable, and always current." },
-              { n: "03", title: "LaRue flags what needs your attention", body: "Your assistant coach monitors athlete state between sessions. When something needs a real conversation, he surfaces it — so you spend your time on the athletes who need you most, not on status checks." },
+              { n: "02", title: "You see your roster clearly", body: "Instead of spending the first three sessions doing intake, you start with a full picture of every athlete — who internalizes under pressure, who needs silence before competition, who has been struggling for three weeks. That context is shareable, searchable, and always current." },
+              { n: "03", title: "LaRue flags what needs your attention", body: "Your assistant coach monitors athlete state between sessions. When something needs a real conversation, LaRue surfaces it — so you spend your time on the athletes who need you most, not on status checks." },
             ].map(({ n, title, body }) => (
               <div key={n} className="flex gap-8">
                 <span className="font-mono text-xs text-[#B8821A] tracking-widest pt-1 shrink-0">{n}</span>
@@ -67,7 +67,7 @@ export default function ForCoachesPage() {
         <div className="max-w-2xl w-full">
           <p className="font-mono text-xs tracking-widest uppercase text-[#B8821A] mb-4">Virtual Assistant Coach</p>
           <h2 className="font-syne font-bold text-3xl text-[#1A1714] mb-6 leading-tight">The VAC pilot is open.</h2>
-          <p className="font-inter text-base text-[#4A443E] leading-relaxed mb-4">VAC — Virtual Assistant Coach — is LaRue deployed as your assistant coach. He knows every athlete on your roster from day one, tracks their readiness state across the season, and handles the intake and monitoring work that currently lives in your head or doesn&apos;t get done at all.</p>
+          <p className="font-inter text-base text-[#4A443E] leading-relaxed mb-4">VAC — Virtual Assistant Coach — is LaRue deployed as your assistant coach. LaRue knows every athlete on your roster from day one, tracks their readiness state across the season, and handles the intake and monitoring work that currently lives in your head or doesn&apos;t get done at all.</p>
           <p className="font-inter text-base text-[#8A8178] leading-relaxed mb-8">We are onboarding a small cohort of coaches for the pilot. If you work with competitive athletes and want to be part of the first class, apply below.</p>
           <Link href="mailto:robert@knwn.to" target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-4 bg-[#B8821A] text-white font-syne font-semibold text-base rounded hover:bg-[#a07115] transition-colors">Request a spot in the pilot &#8594;</Link>
         </div>
