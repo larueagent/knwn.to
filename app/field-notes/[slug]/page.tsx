@@ -90,85 +90,57 @@ export default async function FieldNotePage({ params }: Props) {
   const contentHtml = processed.toString();
 
   return (
-    <main style={{ maxWidth: '680px', margin: '0 auto', padding: '4rem 1.5rem 6rem', backgroundColor: '#110F0D', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-[#0D0C0B] text-[#E8E0D5] flex flex-col">
       {/* Back nav */}
-      <div style={{ marginBottom: '2.5rem' }}>
+      <div className="max-w-2xl mx-auto px-6 pt-16 pb-4 w-full">
         <Link
           href="/field-notes"
-          style={{
-            fontFamily: 'var(--font-inter),system-ui,sans-serif',
-            fontSize: '0.875rem',
-            color: '#8A8178',
-            textDecoration: 'none',
-            letterSpacing: '0.05em',
-            textTransform: 'uppercase',
-          }}
+          className="text-sm text-[#8A8178] hover:text-[#E8E0D5] transition-colors"
         >
           ← Field Notes
         </Link>
       </div>
 
-      {/* Date */}
-      <p style={{
-        fontFamily: 'var(--font-inter),system-ui,sans-serif',
-        fontSize: '0.875rem',
-        color: '#8A8178',
-        marginBottom: '1rem',
-        letterSpacing: '0.05em',
-        textTransform: 'uppercase',
-      }}>
-        {new Date(note.date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          timeZone: 'UTC',
-        })}
-      </p>
+      <article className="flex-1 max-w-2xl mx-auto px-6 pt-8 pb-24 w-full">
+        {/* Date */}
+        <p className="text-sm text-[#8A8178] mb-3">
+          {new Date(note.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'UTC',
+          })}
+        </p>
 
-      {/* Title */}
-      <h1 style={{
-        fontFamily: 'var(--font-syne),sans-serif',
-        fontSize: '2rem',
-        fontWeight: 700,
-        color: '#E8E0D5',
-        lineHeight: 1.25,
-        marginBottom: '0.75rem',
-      }}>
-        {note.title}
-      </h1>
+        {/* Title */}
+        <h1 className="font-syne text-3xl font-bold text-[#E8E0D5] mb-3 leading-tight">
+          {note.title}
+        </h1>
 
-      {/* Author */}
-      <p style={{
-        fontFamily: 'var(--font-inter),system-ui,sans-serif',
-        fontSize: '0.875rem',
-        color: '#8A8178',
-        marginBottom: '2.5rem',
-      }}>
-        By {note.author}
-      </p>
+        {/* Author */}
+        <p className="text-sm text-[#8A8178] mb-6">
+          By {note.author}
+        </p>
 
-      {/* Divider */}
-      <hr style={{ border: 'none', borderTop: '1px solid #2A2520', marginBottom: '2.5rem' }} />
+        {/* Divider */}
+        <hr className="border-t border-[#2A2520] mb-8" />
 
-      {/* Content */}
-      <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+        {/* Content */}
+        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+      </article>
 
       {/* Footer */}
-      <div style={{ marginTop: '4rem', paddingTop: '2rem', borderTop: '1px solid #2A2520' }}>
-        <Link
-          href="/field-notes"
-          style={{
-            fontFamily: 'var(--font-inter),system-ui,sans-serif',
-            fontSize: '0.875rem',
-            color: '#8A8178',
-            textDecoration: 'none',
-            letterSpacing: '0.05em',
-            textTransform: 'uppercase',
-          }}
-        >
-          ← All Field Notes
-        </Link>
-      </div>
-    </main>
+      <footer className="border-t border-[#2A2520] py-10 px-6">
+        <div className="max-w-2xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <nav className="flex gap-6 text-sm text-[#8A8178]">
+            <Link href="/" className="hover:text-[#E8E0D5] transition-colors">Home</Link>
+            <Link href="/field-notes" className="hover:text-[#E8E0D5] transition-colors">Field Notes</Link>
+          </nav>
+          <p className="text-xs text-[#5A5450]">
+            LaRue is an AI. Not a therapist, coach, or licensed professional.
+          </p>
+        </div>
+      </footer>
+    </div>
   );
 }
