@@ -89,46 +89,31 @@ export default async function FieldNotePage({ params }: Props) {
   const contentHtml = processedContent.toString();
 
   return (
-    <div
-      className="flex flex-col flex-1 w-full py-16 pl-10 pr-10"
-      style={{ backgroundColor: '#0D0B09' }}
-    >
-      <div className="max-w-[2xl] mx-auto w-full">
+    <main style={{ minHeight: '100vh', backgroundColor: '#0D0C0B', padding: '3rem 1.5rem' }}>
+      <div style={{ maxWidth: '680px', margin: '0 auto' }}>
+
         {/* Header */}
-        <div className="mb-10">
+        <div style={{ marginBottom: '3rem' }}>
           <Link
             href="/field-notes"
-            className="inline-flex items-center gap-2 text-sm"
-            style={{ color: '#B8821A' }}
+            style={{ color: '#B8821A', fontSize: '0.875rem', textDecoration: 'none', fontFamily: 'var(--font-inter),system-ui,sans-serif' }}
           >
-            <span>&#x2b;</span>
-            <span>Field Notes</span>
+            +Field Notes
           </Link>
-          <h1
-            className="mt-6 mb-2"
-            style={{
-              fontFamily: 'var(--font-syne), sans-serif',
-              fontSize: 'clamp(1.75rem, 4vw,2.75rem)',
-              fontWeight: 700,
-              color: '#E8E0D5',
-              lineHeight: 1.2,
-            }}
-          >
-            {note!.title}
-          </h1>
-          <p
-            className="mt-2"
-            style={{ color: '8A8178', fontSize: '0.875rem' }}
-          >
-            {note!.date}
-          </p>
         </div>
 
+        <h1 style={{ fontFamily: 'var(--font-syne),sans-serif', fontSize: '2.75rem', fontWeight: 700, color: '#E8E0D5', lineHeight: 1.2, marginBottom: '1rem' }}>
+          {note!.title}
+        </h1>
+
+        <p style={{ color: '#6B6560', fontSize: '0.875rem', marginBottom: '3rem', fontFamily: 'var(--font-inter),system-ui,sans-serif' }}>
+          {new Date(note!.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
+
         {/* Content */}
-        <div
-          dangerouslySetInnerHTML={{ __html: contentHtml }}
-        />
+        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+
       </div>
-    </div>
+    </main>
   );
 }
