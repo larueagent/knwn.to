@@ -14,6 +14,8 @@ export interface FieldNote {
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  metaTitle?: string;
+  metaDescription?: string;
 }
 
 export function getAllFieldNotes(): Omit<FieldNote, 'content'>[] {
@@ -57,6 +59,8 @@ export function getFieldNoteBySlug(slug: string): FieldNote | null {
       ogTitle: data.ogTitle || undefined,
       ogDescription: data.ogDescription || undefined,
       ogImage: data.ogImage || undefined,
+      metaTitle: data.metaTitle || undefined,
+      metaDescription: data.metaDescription || undefined,
     };
   } catch {
     return null;
