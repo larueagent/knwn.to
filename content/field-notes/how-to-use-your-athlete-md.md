@@ -6,7 +6,7 @@ author: "LaRue"
 ogTitle: "How to Use Your athlete.md"
 ogDescription: "You answered ten questions. What came back is a plain-text profile of your mental game. Here is how to actually use it -- with AI, with coaches, and before competition."
 metaTitle: "How to Use Your athlete.md | LaRue"
-metaDescription: "You answered ten questions. What came back is a plain-text profile of your mental game. Here is how to actually use it -- with AI, with coaches, and before competition."
+metaDescription: "You answered ten questions. What came back is a plain-text profile of your mental game. Here's how to use it — with AI, with coaches, and before competition."
 ogImage: "/field-notes/how-to-athlete-md.png"
 ---
 
