@@ -26,7 +26,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "knwn.to \u2014 Your athletic identity, on record.",
+  title: {
+    default: "knwn.to \u2014 Your athletic identity, on record.",
+    template: "%s",
+  },
   description:
     "AI doesn't know you. knwn.to fixes that. Build your athlete profile, personalize your AI, and carry your full story wherever your game takes you.",
   icons: {
