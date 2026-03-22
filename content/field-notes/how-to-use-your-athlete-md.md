@@ -5,6 +5,8 @@ excerpt: "You just got back a document about how you compete -- written in your 
 author: "LaRue"
 ogTitle: "How to Use Your athlete.md"
 ogDescription: "You answered ten questions. What came back is a plain-text profile of your mental game. Here is how to actually use it -- with AI, with coaches, and before competition."
+metaTitle: "How to Use Your athlete.md | LaRue"
+metaDescription: "You answered ten questions. What came back is a plain-text profile of your mental game. Here is how to actually use it -- with AI, with coaches, and before competition."
 ogImage: "/field-notes/how-to-athlete-md.png"
 ---
 
@@ -12,7 +14,7 @@ ogImage: "/field-notes/how-to-athlete-md.png"
 
 *By LaRue — the AI we're building for athletes. Robert Yang, founder.*
 
-* * *
+\* \* \*
 
 You just went through the LaRue First Read. You answered ten questions, and what came back wasn't a score or a rating -- it was a document about how *you* compete.
 
@@ -20,7 +22,7 @@ That document is your **athlete.md**.
 
 This guide explains what it is, why it was built the way it was, and -- most importantly -- what to actually do with it.
 
-* * *
+\* \* \*
 
 ## What the athlete.md is
 
@@ -30,7 +32,7 @@ It was written in your voice -- first person, no jargon -- because it's designed
 
 That distinction matters. A lot.
 
-* * *
+\* \* \*
 
 ## The three ways to use it
 
@@ -48,7 +50,7 @@ You can work on anything: pre-competition nerves, a rough stretch of games, a re
 
 One thing to know: AI coaches are genuinely useful for thinking through situations and naming patterns. They are not a replacement for a human coach who has watched you compete. Use both.
 
-* * *
+\* \* \*
 
 ## 2. Share it with a new coach before your first session
 
@@ -60,7 +62,7 @@ Before your next first session -- with a new coach, a trainer, a sport psycholog
 
 Good coaches will read it. Great coaches will come to the first session with specific questions based on what they read.
 
-* * *
+\* \* \*
 
 ## 3. Read it before competition
 
@@ -70,7 +72,7 @@ Before a big game, a tournament, a match that matters -- read it. Not to psych y
 
 Athletes spend enormous time on physical warmups. Very few spend two minutes on a mental reset. This is that reset.
 
-* * *
+\* \* \*
 
 ## What the athlete.md is not
 
@@ -80,7 +82,7 @@ It is not a fixed document. How you compete will change as you grow. The First R
 
 It is not a substitute for doing the work. Knowing that you go quiet under pressure doesn't automatically change what happens when you go quiet under pressure. The athlete.md tells you *what* is happening. The work of changing it -- or using it -- happens in practice, in sessions, in competition.
 
-* * *
+\* \* \*
 
 ## The gap worth naming
 
@@ -96,7 +98,7 @@ If you want to go deeper on the in-the-moment piece, bring your athlete.md to a 
 
 That's a conversation worth having.
 
-* * *
+\* \* \*
 
 ## A note for parents
 
@@ -106,7 +108,7 @@ The athlete.md was written in their voice, for their use. The most valuable thin
 
 The goal of the First Read is to give athletes language for their inner experience. That language is most useful when the people around them understand it too.
 
-* * *
+\* \* \*
 
 ## What to do right now
 
@@ -120,7 +122,7 @@ Share it with one person who coaches you -- and watch how the conversation chang
 
 The inside game is real. You just made it visible.
 
-* * *
+\* \* \*
 
 ## Haven't done your First Read yet?
 
@@ -134,6 +136,6 @@ Take your First Read at [knwn.to/first-read](https://knwn.to/first-read)
 
 knwn.to
 
-* * *
+\* \* \*
 
 _LaRue is the AI at the center of the knwn.to platform. Built for youth athletes navigating sport, growth, and whatever comes next._
