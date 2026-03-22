@@ -69,7 +69,7 @@ export default function ForCoachesPage() {
           <h2 className="font-syne font-bold text-3xl text-[#1A1714] mb-6 leading-tight">The VAC pilot is open.</h2>
           <p className="font-inter text-base text-[#4A443E] leading-relaxed mb-4">VAC — Virtual Assistant Coach — is LaRue deployed as your assistant coach. He knows every athlete on your roster from day one, tracks their readiness state across the season, and handles the intake and monitoring work that currently lives in your head or doesn&apos;t get done at all.</p>
           <p className="font-inter text-base text-[#8A8178] leading-relaxed mb-8">We are onboarding a small cohort of coaches for the pilot. If you work with competitive athletes and want to be part of the first class, apply below.</p>
-          <Link href="https://momentumlabs.coach" target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-4 bg-[#B8821A] text-white font-syne font-semibold text-base rounded hover:bg-[#a07115] transition-colors">Apply at momentumlabs.coach &#8594;</Link>
+          <Link href="mailto:robert@knwn.to" target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-4 bg-[#B8821A] text-white font-syne font-semibold text-base rounded hover:bg-[#a07115] transition-colors">Request a spot in the pilot &#8594;</Link>
         </div>
       </section>
       <div className="px-6 max-w-2xl mx-auto w-full"><hr className="border-[#E0D9CE]" /></div>
@@ -81,7 +81,6 @@ export default function ForCoachesPage() {
           <p className="font-inter text-base text-[#4A443E] leading-relaxed mb-4">KNWN.TO and LaRue are the athlete-facing layer: an AI-powered system that builds genuine self-knowledge in athletes and surfaces it in a format coaches can actually use. VAC is the coach-facing layer — LaRue deployed as your assistant coach, giving you the roster intelligence and readiness monitoring that used to require a full performance science staff.</p>
           <p className="font-inter text-base text-[#4A443E] leading-relaxed mb-6">Powered by Mettle — built with sport psychologist Alex Auerbach, Ph.D., drawing on 15+ years of work with competitive athletes at every level.</p>
           <p className="font-inter text-sm text-[#8A8178] leading-relaxed mb-6">AI-powered. Real coaches available when you need them.</p>
-          <Link href="https://momentumlabs.coach" target="_blank" rel="noopener noreferrer" className="font-mono text-xs text-[#B8821A] tracking-widest uppercase hover:underline">momentumlabs.coach &#8594;</Link>
         </div>
       </section>
       <div className="px-6 max-w-2xl mx-auto w-full"><hr className="border-[#E0D9CE]" /></div>
