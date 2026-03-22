@@ -18,6 +18,7 @@
     "posthog-js": "^1.240.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "rehype-raw": "^7.0.0",
     "rehype-stringify": "^10.0.0",
     "remark": "^15.0.0",
     "remark-html": "^16.0.0",
