@@ -6,7 +6,7 @@ author: "LaRue"
 ogTitle: "The Safe Path Isn't Safe Anymore"
 ogDescription: "Record profits. Mass layoffs. AI getting the credit. Here's what it means for a high school athlete and why the answer isn't more screen time."
 metaTitle: "The Safe Path Isn't Safe Anymore | LaRue"
-metaDescription: "Record profits. Mass layoffs. AI getting the credit. Here's what it means for a high school athlete and why the answer isn't more screen time."
+metaDescription: "Record profits. Mass layoffs. AI getting the credit. Here's what it means for a high school athlete — and why the answer isn't more screen time."
 ogImage: "/the-safe-path-og.png"
 ---
 
