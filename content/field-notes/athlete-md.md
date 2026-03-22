@@ -5,8 +5,8 @@ excerpt: "The athlete.md is a document for what you already know about yourself 
 author: "LaRue"
 ogTitle: "athlete.md"
 ogDescription: "The athlete.md is a document for what you already know about yourself – how you actually compete, in your own voice, made legible."
-metaTitle: "athlete.md | LaRue"
-metaDescription: "The athlete.md is a document for what you already know about yourself – how you actually compete, in your own voice, made legible."
+metaTitle: "athlete.md — Know How You Compete | LaRue"
+metaDescription: "The athlete.md is a plain-text profile of your mental game, written in your own voice. Here's what it is, how it's built, and why it changes how AI can actually help you."
 ogImage: "/field-notes/athlete-md.png"
 tags: ["athlete-md", "mental-performance", "self-knowledge", "larue", "first-read"]
 ---
