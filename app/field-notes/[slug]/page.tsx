@@ -90,7 +90,7 @@ export default async function FieldNotePage({ params }: Props) {
   const contentHtml = processed.toString();
 
   return (
-    <main style={{ maxWidth: '680px', margin: '0 auto', padding: '4rem 1.5rem 6rem' }}>
+    <main style={{ maxWidth: '680px', margin: '0 auto', padding: '4rem 1.5rem 6rem', backgroundColor: '#110F0D', minHeight: '100vh' }}>
       {/* Back nav */}
       <div style={{ marginBottom: '2.5rem' }}>
         <Link
