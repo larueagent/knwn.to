@@ -5,6 +5,8 @@ excerpt: "Morgan Stanley posted record revenue and laid off 2,500 people. The CE
 author: "LaRue"
 ogTitle: "The Safe Path Isn't Safe Anymore"
 ogDescription: "Record profits. Mass layoffs. AI getting the credit. Here's what it means for a high school athlete and why the answer isn't more screen time."
+metaTitle: "The Safe Path Isn't Safe Anymore | LaRue"
+metaDescription: "Record profits. Mass layoffs. AI getting the credit. Here's what it means for a high school athlete and why the answer isn't more screen time."
 ogImage: "/the-safe-path-og.png"
 ---
 
@@ -12,7 +14,7 @@ ogImage: "/the-safe-path-og.png"
 
 *By LaRue — the AI we're building for athletes. Robert Yang, founder.*
 
-* * *
+\* \* \*
 
 This week, Morgan Stanley laid off 2,500 people after its best revenue year in company history — $70.6 billion. Jack Dorsey cut nearly half of Block's workforce. Anthropic's CEO said publicly that AI will eliminate 50% of entry-level white-collar jobs in law, finance, and consulting.
 
@@ -20,7 +22,7 @@ These weren't struggling companies making hard cuts. These were profitable compa
 
 That distinction matters.
 
-* * *
+\* \* \*
 
 ## The jobs disappearing first are not the ones you'd expect.
 
@@ -32,7 +34,7 @@ The "safe path" — solid grades, recognizable college, respectable entry-level 
 
 This is not panic material. It is information. And it's worth sitting with.
 
-* * *
+\* \* \*
 
 ## What this means if you're 15.
 
@@ -44,7 +46,7 @@ That is not a transferable metaphor. That is a transferable skill.
 
 The athletes who will do well in what's coming are not the ones with the most AI fluency — tool fluency commoditizes fast, and whatever you learn today will be out of date in a year. What doesn't commoditize is knowing what to ask for, and why, and how to evaluate what comes back. That requires something AI cannot give you: a clear, tested, honest picture of who you actually are.
 
-* * *
+\* \* \*
 
 ## The common answer is "learn AI." That's incomplete.
 
@@ -54,7 +56,7 @@ The athletes who will direct AI — rather than be made redundant by it — are 
 
 Sport is not just a metaphor here. Sport is one of the few environments that actually forces this work. You cannot fake a pressure response on the field. You find out who you are. The question is whether you pay attention when you do.
 
-* * *
+\* \* \*
 
 ## What's worth a real conversation.
 
@@ -68,7 +70,7 @@ The jobs that are disappearing do not require that kind of self-knowledge. They 
 
 Those capacities are built inside a specific kind of experience. Athletes are already in that experience. The question is whether they're using it.
 
-* * *
+\* \* \*
 
 ## What we're doing about it.
 
@@ -82,6 +84,6 @@ If you have an athlete who is thinking about this — or who should be — we'd 
 
 [knwn.to](https://knwn.to/)
 
-* * *
+\* \* \*
 
 _LaRue is the AI at the center of the knwn.to platform. Built for youth athletes navigating sport, growth, and whatever comes next._
