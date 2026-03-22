@@ -28,8 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://knwn.to${ogImage}`;
 
   return {
-    title: `${note.title} — Field Notes — knwn.to`,
-    description: note.excerpt,
+    title: note.metaTitle || `${note.title} — Field Notes — knwn.to`,
+    description: note.metaDescription || note.excerpt,
     openGraph: {
       title: ogTitle,
       description: ogDescription,
@@ -90,118 +90,85 @@ export default async function FieldNotePage({ params }: Props) {
   const contentHtml = processed.toString();
 
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        backgroundColor: '#0F0D0B',
-        paddingTop: '5rem',
-        paddingBottom: '5rem',
-      }}
-    >
-      <article
-        style={{
-          maxWidth: '680px',
-          margin: '0 auto',
-          padding: '0 1.5rem',
-        }}
-      >
-        {/* Back nav */}
-        <nav style={{ marginBottom: '3rem' }}>
-          <Link
-            href="/field-notes"
-            style={{
-              color: '#B8821A',
-              textDecoration: 'none',
-              fontSize: '0.875rem',
-              fontFamily: 'var(--font-inter), system-ui, sans-serif',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-            }}
-          >
-            ← Field Notes
-          </Link>
-        </nav>
-
-        {/* Date */}
-        <p
+    <main style={{ maxWidth: '680px', margin: '0 auto', padding: '4rem 1.5rem 6rem' }}>
+      {/* Back nav */}
+      <div style={{ marginBottom: '2.5rem' }}>
+        <Link
+          href="/field-notes"
           style={{
-            fontFamily: 'var(--font-inter), system-ui, sans-serif',
+            fontFamily: 'var(--font-inter),system-ui,sans-serif',
             fontSize: '0.875rem',
-            color: '#6B6560',
-            marginBottom: '0.75rem',
+            color: '#8A8178',
+            textDecoration: 'none',
             letterSpacing: '0.05em',
             textTransform: 'uppercase',
           }}
         >
-          {new Date(note.date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            timeZone: 'UTC',
-          })}
-        </p>
+          ← Field Notes
+        </Link>
+      </div>
 
-        {/* Title */}
-        <h1
+      {/* Date */}
+      <p style={{
+        fontFamily: 'var(--font-inter),system-ui,sans-serif',
+        fontSize: '0.875rem',
+        color: '#8A8178',
+        marginBottom: '1rem',
+        letterSpacing: '0.05em',
+        textTransform: 'uppercase',
+      }}>
+        {new Date(note.date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          timeZone: 'UTC',
+        })}
+      </p>
+
+      {/* Title */}
+      <h1 style={{
+        fontFamily: 'var(--font-syne),sans-serif',
+        fontSize: '2rem',
+        fontWeight: 700,
+        color: '#E8E0D5',
+        lineHeight: 1.25,
+        marginBottom: '0.75rem',
+      }}>
+        {note.title}
+      </h1>
+
+      {/* Author */}
+      <p style={{
+        fontFamily: 'var(--font-inter),system-ui,sans-serif',
+        fontSize: '0.875rem',
+        color: '#8A8178',
+        marginBottom: '2.5rem',
+      }}>
+        By {note.author}
+      </p>
+
+      {/* Divider */}
+      <hr style={{ border: 'none', borderTop: '1px solid #2A2520', marginBottom: '2.5rem' }} />
+
+      {/* Content */}
+      <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+
+      {/* Footer */}
+      <div style={{ marginTop: '4rem', paddingTop: '2rem', borderTop: '1px solid #2A2520' }}>
+        <Link
+          href="/field-notes"
           style={{
-            fontFamily: 'var(--font-syne), sans-serif',
-            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-            fontWeight: '700',
-            color: '#E8E0D5',
-            lineHeight: '1.2',
-            marginBottom: '1rem',
+            fontFamily: 'var(--font-inter),system-ui,sans-serif',
+            fontSize: '0.875rem',
+            color: '#8A8178',
+            textDecoration: 'none',
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
           }}
         >
-          {note.title}
-        </h1>
-
-        {/* Author */}
-        <p
-          style={{
-            fontFamily: 'var(--font-inter), system-ui, sans-serif',
-            fontSize: '0.9375rem',
-            color: '#6B6560',
-            marginBottom: '2.5rem',
-          }}
-        >
-          By {note.author}
-        </p>
-
-        {/* Divider */}
-        <hr
-          style={{
-            border: 'none',
-            borderTop: '1px solid #2A2520',
-            marginBottom: '2.5rem',
-          }}
-        />
-
-        {/* Content */}
-        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-
-        {/* Footer */}
-        <footer
-          style={{
-            marginTop: '4rem',
-            paddingTop: '2rem',
-            borderTop: '1px solid #2A2520',
-          }}
-        >
-          <Link
-            href="/field-notes"
-            style={{
-              color: '#B8821A',
-              textDecoration: 'none',
-              fontSize: '0.875rem',
-              fontFamily: 'var(--font-inter), system-ui, sans-serif',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-            }}
-          >
-            ← Back to Field Notes
-          </Link>
-        </footer>
-      </article>
+          ← All Field Notes
+        </Link>
+      </div>
     </main>
   );
 }
