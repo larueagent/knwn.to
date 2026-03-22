@@ -38,6 +38,8 @@ export function getAllFieldNotes(): Omit<FieldNote, 'content'>[] {
         ogTitle: data.ogTitle || undefined,
         ogDescription: data.ogDescription || undefined,
         ogImage: data.ogImage || undefined,
+        metaTitle: data.metaTitle || undefined,
+        metaDescription: data.metaDescription || undefined,
       };
     });
 
