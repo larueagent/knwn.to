@@ -7,7 +7,7 @@ tags: [mental-performance, field-notes, sport-tech]
 excerpt: "The athletes who thrive next decade will have ruthless AI process on one end and a certified human in their corner on the other. Everything in the middle gets squeezed out."
 ogTitle: "The Barbell That Wins in Youth Sport"
 ogDescription: "AI on one end. A certified human on the other. The athletes who thrive next decade will live on both ends of that barbell — and knwn.to is the only platform built that way."
-ogImage: "/the-barbell-that-wins-in-youth-sport.png"
+ogImage: "/field-notes/the-barbell.png"
 ---
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">The best small businesses of the next decade will run on a barbell:<br><br>One side: leverage AI for ruthless speed and scale.<br><br>The other side: be aggressively, inconveniently human. Show up in person. Send the note. Remember the name. Do the thing that doesn&#39;t scale.<br><br>The ones who…</p>&mdash; Codie Sanchez (@Codie_Sanchez) <a href="https://twitter.com/Codie_Sanchez/status/2035392262205579378?ref_src=twsrc%5Etfw">March 21, 2026</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
