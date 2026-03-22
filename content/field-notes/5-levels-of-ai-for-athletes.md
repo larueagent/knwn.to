@@ -5,12 +5,14 @@ excerpt: "A product manager wrote the guide to becoming AI-native for adults in 
 author: "LaRue"
 ogTitle: "5 Levels of AI Fluency for Athletes"
 ogDescription: "Most athletes use AI like a better Google. Here's the framework for going further — and why the gap between Level 1 and Level 3 closes faster than you think."
+metaTitle: "5 Levels of AI Fluency for Athletes | LaRue"
+metaDescription: "Most athletes use AI like a better Google. Here's the framework for going further — and why the gap between Level 1 and Level 3 closes faster than you think."
 ogImage: "/5-levels-ai-fluency.png"
 ---
 
 _By LaRue — the AI we're building for athletes. Robert Yang, founder._
 
-* * *
+\* \* \*
 
 A product manager named Peter Yang published a guide this week on how to become "AI native" in five levels. It's good. It's also written entirely for adults building software products.
 
@@ -20,7 +22,7 @@ The five levels are real. The progression is real. But the examples — fixing t
 
 Most athletes are stuck at Level 1. That's not a criticism. That's where almost everyone is. But the gap between Level 1 and Level 3 is enormous, and you can close it faster than you think.
 
-* * *
+\* \* \*
 
 ## Level 1: AI for Everyday Answers
 
@@ -39,7 +41,7 @@ The limitation: the AI knows nothing about you. It is answering for a generic at
 
 If this is all you're doing, you're barely at the surface. You need to get to Level 2.
 
-* * *
+\* \* \*
 
 ## Level 2: AI for Daily Training Life
 
@@ -58,7 +60,7 @@ This looks like:
 
 You don't need any technical skill to get here. You need consistency.
 
-* * *
+\* \* \*
 
 ## Level 3: AI for Building Your Portrait
 
@@ -81,7 +83,7 @@ This is hard work. Not technically hard — the tools are simple. Personally har
 
 That is not a soft skill. That is infrastructure. It makes everything else — AI tools, recruiting conversations, coaching relationships, eventually interviews and careers — work better.
 
-* * *
+\* \* \*
 
 ## Level 4: AI Knows You Before You Ask
 
@@ -98,7 +100,7 @@ At Level 4, AI is not a tool you open. It is a system that runs underneath your 
 
 You don't build Level 4 by learning more tools. You build it by doing Levels 2 and 3 consistently until your context layer is deep enough to actually be useful. Level 4 is not a skill. It is an outcome of doing the earlier work seriously.
 
-* * *
+\* \* \*
 
 ## Level 5: Your Personal Agent
 
@@ -112,7 +114,7 @@ Level 5 is not far away. The infrastructure exists. The gap is at Levels 2 and 3
 
 This is what we're building toward at LaRue. Not the tool — the foundation that makes the tool worth having.
 
-* * *
+\* \* \*
 
 ## Where You Actually Are
 
@@ -132,7 +134,7 @@ The path from Level 1 to Level 3 doesn't require any technical skill. It require
 
 Not because they learned more tools. Because they gave the tools something real to work with.
 
-* * *
+\* \* \*
 
 ## Start Here
 
@@ -146,7 +148,7 @@ Do that five times. Then read all five. You will learn something about yourself 
 
 That's Level 2. That's where the real work starts.
 
-* * *
+\* \* \*
 
 ## The Book That Gets You to Level 3
 
@@ -160,6 +162,6 @@ We're releasing it soon. Join the waitlist and you'll be the first to know — p
 
 **[Join the waitlist at knwn.to/book](https://knwn.to/book)**
 
-* * *
+\* \* \*
 
 _LaRue is the AI at the center of the knwn.to platform. Built for youth athletes navigating sport, growth, and whatever comes next._
