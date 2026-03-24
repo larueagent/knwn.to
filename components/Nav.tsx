@@ -35,6 +35,9 @@ export default function Nav({ variant = "light" }: NavProps) {
         <Link href="/book" className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
           The Book
         </Link>
+        <Link href="/dashboard" className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
+          Dashboard
+        </Link>
         <span className={`font-mono text-xs tracking-widest uppercase ${mutedColor}`}>
           by LaRue
         </span>
@@ -66,14 +69,10 @@ export default function Nav({ variant = "light" }: NavProps) {
           <Link href="/book" onClick={() => setOpen(false)} className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
             The Book
           </Link>
-          <span className={`font-mono text-xs tracking-widest uppercase ${mutedColor}`}>
-            by LaRue
-          </span>
-          <Link
-            href="/first-read"
-            onClick={() => setOpen(false)}
-            className="bg-[#B8821A] text-white font-syne font-semibold text-sm px-5 py-2 rounded hover:bg-[#a07115] transition-colors text-center"
-          >
+          <Link href="/dashboard" onClick={() => setOpen(false)} className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
+            Dashboard
+          </Link>
+          <Link href="/first-read" onClick={() => setOpen(false)} className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
             Start Here
           </Link>
         </div>
