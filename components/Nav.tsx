@@ -35,9 +35,6 @@ export default function Nav({ variant = "light" }: NavProps) {
         <Link href="/book" className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
           The Book
         </Link>
-        <Link href="/dashboard" className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
-          Dashboard
-        </Link>
         <span className={`font-mono text-xs tracking-widest uppercase ${mutedColor}`}>
           by LaRue
         </span>
@@ -68,9 +65,6 @@ export default function Nav({ variant = "light" }: NavProps) {
           </Link>
           <Link href="/book" onClick={() => setOpen(false)} className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
             The Book
-          </Link>
-          <Link href="/dashboard" onClick={() => setOpen(false)} className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
-            Dashboard
           </Link>
           <Link href="/first-read" onClick={() => setOpen(false)} className={`font-mono text-xs tracking-widest uppercase ${textColor} hover:opacity-70 transition-opacity`}>
             Start Here
