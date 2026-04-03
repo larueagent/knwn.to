@@ -1,50 +1,15 @@
 // lib/generate-first-read.ts
 // LaRue v2.1 -- Two-pass Claude pipeline
-// Pass 1: generatePortrait()  -> LaRue JSON (system prompt v2.1)
-// Pass 2: generateAthleteMd() -> athlete.md plain text (output prompt v2.2)
+// Pass 1: generatePortrait()    -> LaRue JSON (system prompt v2.1)
+// Pass 2: generateAthleteReport -> athlete.md (see lib/larue/generate-athlete-report.ts)
 
-const ANTHROPIC_API = 'https://api.anthropic.com/v1/messages'
-const CLAUDE_MODEL = 'claude-sonnet-4-5-20250929'
+import { ANTHROPIC_API, CLAUDE_MODEL } from './larue/types'
+import { generateAthleteReport }       from './larue/generate-athlete-report'
 
-export interface QuestionAnswer {
-  question: string
-  answer: string
-}
+export type { QuestionAnswer, AthleteProfile, LaRuePortrait } from './larue/types'
+export { generateAthleteReport }
 
-export interface AthleteProfile {
-  age: number
-  birthdate?: string
-  gender: string
-  sport: string
-  position: string
-  level: string
-}
-
-export interface LaRuePortrait {
-  sport: string
-  portrait: string
-  identity: string[]
-  stateUnlocks: string
-  pressureNarrative: string
-  pressureState: string
-  pressurePatterns: string[]
-  relationshipGets: string
-  relationshipDoesnt: string
-  coachQuote: string
-  directionWant: string
-  directionConsistent: string
-  readinessSignals: {
-    dominantQuality: string
-    developmentEdge: string
-    inferredTier: string
-    tierRationale: string
-  }
-  nextStep: {
-    primaryFocus: string
-    approachSignal: string
-  }
-  themes: string[]
-}
+import type { QuestionAnswer, AthleteProfile, LaRuePortrait } from './larue/types'
 
 const PORTRAIT_SYSTEM_PROMPT = `You are LaRue, a precision sports psychology intelligence system built by Mettle.
 
@@ -121,8 +86,8 @@ Produce a JSON object with exactly these fields. Return only the JSON. No markdo
 
 export async function generatePortrait(
   firstName: string,
-  profile: AthleteProfile,
-  answers: QuestionAnswer[]
+  profile:   AthleteProfile,
+  answers:   QuestionAnswer[]
 ): Promise<LaRuePortrait> {
   const formatAct = (qs: QuestionAnswer[], offset: number) =>
     qs.map((qa, i) => `Q${offset + i + 1}: ${qa.question}\nA: ${qa.answer}`).join('\n\n')
@@ -151,15 +116,15 @@ export async function generatePortrait(
   const res = await fetch(ANTHROPIC_API, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.ANTHROPIC_API_KEY!,
+      'Content-Type':      'application/json',
+      'x-api-key':         process.env.ANTHROPIC_API_KEY!,
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: CLAUDE_MODEL,
-      max_tokens: 4096,
+      model:       CLAUDE_MODEL,
+      max_tokens:  4096,
       temperature: 0,
-      system: PORTRAIT_SYSTEM_PROMPT,
+      system:      PORTRAIT_SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userPrompt }],
     }),
   })
@@ -184,149 +149,10 @@ export async function generatePortrait(
   }
 }
 
-const ATHLETE_MD_SYSTEM_PROMPT = `You are a writer and formatter. Your job is to convert a structured JSON athlete portrait into a clean, plain-text markdown file that serves two audiences simultaneously:
-
-1. The athlete themselves -- this is their file. It should read like something written directly by them, in their own voice. Every section should feel true and specific. A 15-year-old should be able to read this and think "that's me." No section should feel like a data dump or config file.
-
-2. Any AI system (ChatGPT, Claude, Delphi, custom GPTs) -- this file will be loaded as context. The structure, headers, and natural-language descriptions give an AI everything it needs without requiring key-value parsing.
-
-Rules:
-- Output only valid markdown. No preamble. No commentary after.
-- Never use jargon from sport psychology or performance science.
-- Write all content in first person ("I", "my", "me"). The athlete is speaking in their own voice.
-- Every section must read as natural prose or direct statements -- no key-value pairs, no config-style syntax, no metadata lines that break the voice.
-- Keep total file length under 650 words. Every line earns its place.
-- Do not add sections not listed in the schema below.
-- Date format: Month DD, YYYY
-- The primary reader is 13-24 years old. If a sentence would not make sense to a high schooler on first read, rewrite it.
-
-Banned words and phrases -- never use these, even if they appear in the JSON. If a field contains one of these terms, translate it before writing:
-  somatic, dysregulation, approval-seeking, hypervigilant, physiological, psychophysiological, self-regulation, rumination, cognitive, schema, metacognitive, arousal, autonomic, parasympathetic, sympathetic, maladaptive, avoidant, attachment, clinical, diagnostic, pathology, approval-driven, performance anxiety
-
-Plain-language replacements (examples -- use your judgment for others):
-- "somatic carryover" -> "carrying mistakes in my body"
-- "approval-seeking" -> "playing for someone else" or "looking for permission to perform"
-- "hypervigilant" -> "on high alert" or "scanning for what could go wrong"
-- "approval-driven performance" -> "playing for others"
-- "dysregulation" -> "when things start to unravel"
-- "arousal regulation" -> "managing my energy"
-
-Translation reference (use these, never the taxonomy terms):
-
-| Taxonomy Term               | Write it as               |
-|-------------------------|------------------------|
-| Capacity                    | foundation and recovery   |
-| Mental Strength             | belief and confidence     |
-| Endurance                   | drive and purpose         |
-| Psychological Flexibility   | adaptability              |
-| Self-Regulation             | self-coaching             |
-| Preparation                 | getting ready             |
-| Immersion                   | full engagement           |
-| Adaptation                  | in-game adjustment        |
-| Energy Optimization         | managing my intensity     |
-| Resilience                  | bouncing back             |`
-
-export async function generateAthleteMd(
+// Re-export generateAthleteMd as an alias for backwards compatibility
+// with any callers that use the old name.
+export const generateAthleteMd = (
   firstName: string,
-  portrait: LaRuePortrait,
-  profile: AthleteProfile
-): Promise<string> {
-  const date = new Date().toLocaleDateString('en-US', {
-    month: 'long',
-    day: '2-digit',
-    year: 'numeric',
-  })
-
-  const userPrompt = `Athlete first name: ${firstName}
-Age: ${profile.age}
-Gender: ${profile.gender}
-Today's date: ${date}
-
-Here is the LaRue JSON portrait:
-${JSON.stringify(portrait, null, 2)}
-
-Produce the athlete.md file using exactly this structure:
-
-# ${firstName}
-Generated by LaRue | ${date}
-
-I'm a {sport} athlete. {One sentence synthesizing dominantQuality_translated and inferredTier into a natural opening. Naturally weave in the athlete's age and gender where it fits the voice -- do not make it sound like a form field. Do not use taxonomy terms. Do not use the word "tier." Write in first person.}
-
-## How I compete at my best
-{identity[0] -- rewritten in first person}
-{identity[1] -- rewritten in first person}
-{identity[2] -- rewritten in first person}
-
-## What unlocks me
-{stateUnlocks -- rewritten in first person}
-
-## Under pressure
-{pressureState -- rewritten in first person}
-
-- {pressurePatterns[0] -- rewritten in first person}
-- {pressurePatterns[1] -- rewritten in first person}
-- {pressurePatterns[2] -- rewritten in first person}
-
-## What coaches need to know
-{relationshipGets -- rewritten in first person}
-
-> "{coachQuote}"
-
-## What people get wrong about me
-{relationshipDoesnt -- rewritten in first person}
-
-## What I'm working toward
-{directionWant -- rewritten in first person}
-
-{directionConsistent -- rewritten in first person}
-
-## Where to start
-{Write 2-3 sentences in first person that give the athlete one specific, concrete thing to notice or do before their next competition. Draw from approachSignal and primaryFocus in the JSON.
-
-Do NOT summarize their dominant quality or development edge.
-Do NOT tell them what to work on long-term.
-Do NOT use any banned words.
-
-The register: the athlete talking to themselves -- honest, specific, and direct. Give them something they can actually use on Monday, not a concept to study.
-
-Good example register: "I notice when my chest tightens and my hands go cold -- that's my signal. That's the moment I've left the game and started playing for the outcome. I already know what it feels like to just play. The work right now is catching that moment before it catches me."}
-
-{themes[0]} | {themes[1]} | {themes[2]}
-
-IMPORTANT -- before rendering the themes line: translate each theme tag into plain language the athlete would actually use. Tags that read like clinical or academic labels must be rewritten.
-  Examples:
-  "Somatic carryover" -> "carrying mistakes in my body"
-  "Approval-driven performance" -> "playing for others"
-  "Flow access without control" -> "flow without the switch"
-  "Emotional dysregulation" -> "when things unravel fast"
-If a tag already reads like plain athlete language, keep it.
-
----
-*This file was generated by LaRue, a mental performance intelligence system built by Mettle. It's yours -- you can share it with a coach, load it into an AI assistant, or just keep it for yourself. It is not a clinical assessment. mettle.coach*
-
----`
-
-  const res = await fetch(ANTHROPIC_API, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.ANTHROPIC_API_KEY!,
-      'anthropic-version': '2023-06-01',
-    },
-    body: JSON.stringify({
-      model: CLAUDE_MODEL,
-      max_tokens: 1000,
-      temperature: 0,
-      system: ATHLETE_MD_SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: userPrompt }],
-    }),
-  })
-
-  if (!res.ok) {
-    const err = await res.text()
-    throw new Error(`athlete.md generation failed: ${err}`)
-  }
-
-  const data = await res.json()
-  return data.content?.[0]?.text ?? ''
-}
+  portrait:  LaRuePortrait,
+  profile:   AthleteProfile
+) => generateAthleteReport(firstName, portrait, profile)
