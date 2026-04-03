@@ -32,7 +32,7 @@ export function getAllFieldNotes(): Omit<FieldNote, 'content'>[] {
       return {
         slug,
         title: data.title || '',
-        date: String(data.date) || '',
+        date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date) || '',
         excerpt: data.excerpt || '',
         author: data.author || '',
         ogTitle: data.ogTitle || undefined,
@@ -54,7 +54,7 @@ export function getFieldNoteBySlug(slug: string): FieldNote | null {
     return {
       slug,
       title: data.title || '',
-      date: String(data.date) || '',
+      date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date) || '',
       excerpt: data.excerpt || '',
       author: data.author || '',
       content,
