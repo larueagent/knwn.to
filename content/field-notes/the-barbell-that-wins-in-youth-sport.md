@@ -7,7 +7,7 @@ tags: [mental-performance, field-notes, sport-tech]
 excerpt: "The athletes who thrive next decade will have ruthless AI process on one end and a certified human in their corner on the other. Everything in the middle gets squeezed out."
 ogTitle: "The Barbell That Wins in Youth Sport"
 ogDescription: "AI on one end. A certified human on the other. The athletes who thrive next decade will live on both ends of that barbell — and knwn.to is the only platform built that way."
-metaTitle: "The Barbell That Wins in Youth Sport | LaRue"
+metaTitle: "The Barbell That Wins in Youth Sport | knwn.to"
 metaDescription: "AI on one end. A certified mental performance consultant on the other. The athletes who thrive next decade will live on both ends of that barbell."
 ogImage: "/the-barbell-that-wins-in-youth-sport.png"
 ---

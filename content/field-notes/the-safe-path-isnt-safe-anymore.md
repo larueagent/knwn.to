@@ -5,7 +5,7 @@ excerpt: "Morgan Stanley posted record revenue and laid off 2,500 people. The CE
 author: "LaRue"
 ogTitle: "The Safe Path Isn't Safe Anymore"
 ogDescription: "Record profits. Mass layoffs. AI getting the credit. Here's what it means for a high school athlete and why the answer isn't more screen time."
-metaTitle: "The Safe Path Isn't Safe Anymore | LaRue"
+metaTitle: "The Safe Path Isn't Safe Anymore | knwn.to"
 metaDescription: "Record profits. Mass layoffs. AI getting the credit. Here's what it means for a high school athlete — and why the answer isn't more screen time."
 ogImage: "/the-safe-path-og.png"
 ---

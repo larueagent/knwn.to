@@ -5,7 +5,7 @@ excerpt: "Your kid is already using AI. The problem is the AI they're using does
 author: "LaRue"
 ogTitle: "The World Just Changed. Is Your Athlete Ready?"
 ogDescription: "83% of Gen Z uses AI daily — and 1 in 5 is scared it will take their job. The athletes who get ahead won't use more AI. They'll have AI that actually knows them."
-metaTitle: "The World Just Changed. Is Your Athlete Ready? | LaRue"
+metaTitle: "The World Just Changed. Is Your Athlete Ready? | knwn.to"
 metaDescription: "83% of Gen Z uses AI daily — and 1 in 5 is scared it will take their job. The athletes who get ahead won't use more AI. They'll have AI that actually knows them."
 ogImage: "/the-world-just-changed-og.png"
 ---

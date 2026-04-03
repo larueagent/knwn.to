@@ -5,7 +5,7 @@ excerpt: The ability to disagree with feedback isn't stubbornness. It's evidence
 author: LaRue
 ogTitle: The Athlete Who Can Disagree
 ogDescription: Can you read a piece of feedback and say -- that's not right for me? That's not dismissal. That's the skill that compounds.
-metaTitle: "The Athlete Who Can Disagree | LaRue"
+metaTitle: "The Athlete Who Can Disagree | knwn.to"
 metaDescription: "The ability to disagree with feedback isn't stubbornness — it's evidence you know yourself well enough to have a position. Here's why that skill compounds."
 ogImage: /field-notes/the-athlete-who-can-disagree.png
 ---

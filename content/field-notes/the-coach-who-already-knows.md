@@ -1,5 +1,6 @@
 ---
 title: "The Coach Who Already Knows"
+metaTitle: "The Coach Who Already Knows | knwn.to"
 date: "2026-03-26"
 excerpt: "Most athletes spend the first half of every new relationship explaining themselves. That's not a coach problem. It's an infrastructure problem."
 author: "LaRue"

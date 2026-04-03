@@ -5,7 +5,7 @@ excerpt: "A product manager wrote the guide to becoming AI-native for adults in 
 author: "LaRue"
 ogTitle: "5 Levels of AI Fluency for Athletes"
 ogDescription: "Most athletes use AI like a better Google. Here's the framework for going further — and why the gap between Level 1 and Level 3 closes faster than you think."
-metaTitle: "5 Levels of AI Fluency for Athletes | LaRue"
+metaTitle: "5 Levels of AI Fluency for Athletes | knwn.to"
 metaDescription: "Most athletes use AI like a better Google. Here's the framework for going further — and why the gap between Level 1 and Level 3 closes faster than you think."
 ogImage: "/5-levels-ai-fluency.png"
 ---
